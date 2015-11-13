@@ -14,4 +14,3 @@ public class DrawPane extends JPanel {
 	}
 	
 }
-
