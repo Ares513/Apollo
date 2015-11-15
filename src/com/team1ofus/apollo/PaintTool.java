@@ -24,7 +24,7 @@ public class PaintTool {
 	 */
 	private void initializeBrushes() {
 		brushes = new Brush[1];
-		Point[] brush1points = {new Point(0,0)}; //single square
+		Point[] brush1points = {new Point(0,0)}; //single tile
 		brushes[0] = new Brush(brush1points);
 		
 	}
