@@ -57,13 +57,19 @@ public class PaintTool {
 	/*
 	 * Selects the tiletype based on enum
 	 */
-	public void selectTileType(Object type) {
-		if(type instanceof TILE_TYPE)
-			tileToPaint = (TILE_TYPE) type;
+	public void selectTileType(TILE_TYPE type) {
+			tileToPaint = type;
 	}
-	
-	/* What is this supposed to do?
-	public Cell paintAtTile(Cell cell) {
-		
-	}*/
+
+	public int getBrushSelection() {
+		return brushSelection;
+	}
+
+	public Brush[] getBrushes() {
+		return brushes;
+	}
+
+	public TILE_TYPE getTileToPaint() {
+		return tileToPaint;
+	}
 }
