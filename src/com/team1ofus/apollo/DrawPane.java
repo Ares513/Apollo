@@ -17,7 +17,7 @@ public class DrawPane extends JPanel {
 				dummyData[i][j] = new DataTile(TILE_TYPE.WALL);
 			}
 		}
-		dummyData[1][2] = new DataTile(TILE_TYPE.HALLWAY);
+		dummyData[1][2] = new DataTile(TILE_TYPE.PEDESTRIAN_WALKWAY);
 		render = new CellRenderer(dummyData);
 	}
 	public void paintComponent(Graphics g) {

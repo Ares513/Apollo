@@ -21,7 +21,7 @@ public class CellRenderer {
 					g.setColor(Color.gray);
 					
 					break;
-				case HALLWAY:
+				case PEDESTRIAN_WALKWAY:
 					g.setColor(Color.WHITE);
 					break;
 				}
