@@ -60,7 +60,7 @@ public class PaintTool {
 	public void selectTileType(TILE_TYPE type) {
 			tileToPaint = type;
 	}
-
+	//Need to be able to query the currently selected brush; set with methods you created.
 	public int getBrushSelection() {
 		return brushSelection;
 	}
