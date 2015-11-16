@@ -1,25 +1,22 @@
 package com.team1ofus.apollo;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 import java.awt.BorderLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.JInternalFrame;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 import java.awt.Color;
-import javax.swing.Box;
 import java.awt.Font;
 import java.awt.Point;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 public class ApolloUI {
 	private JFrame frame;
 	private Point mousePosition;
+	private Point tilePosition;
 	public ApolloUI() {
 		initialize();
 	}
@@ -48,12 +45,24 @@ public class ApolloUI {
 		lblMousePosition.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		verticalBox.add(lblMousePosition);
 		
+		JLabel lblTilePosition = new JLabel("#tile#");
+		lblTilePosition.setFont(new Font("Trebuchet MS", Font.PLAIN, 18));
+		verticalBox.add(lblTilePosition);
+		
+		/*
+		 * This sets up the CellRenderer inside of DrawPane with the data it needs.
+		 */
 		DrawPane panel = new DrawPane();
+		
+		
 		panel.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseMoved(MouseEvent e) {
+				tilePosition = panel.pickTile(e.getX(), e.getY());
+				lblTilePosition.setText(tilePosition.x + " , " + tilePosition.y); 
 				mousePosition = new Point(e.getX(), e.getY());
-				lblMousePosition.setText(mousePosition.toString()); 
+				lblMousePosition.setText(mousePosition.x + " , " + mousePosition.y);
+				
 			}
 		});
 		panel.addMouseListener(new MouseAdapter() {
@@ -65,7 +74,7 @@ public class ApolloUI {
 		frame.getContentPane().add(panel, BorderLayout.CENTER);
 		frame.setVisible(true);
 	}
-	public Point getMouseLocation() {
+	public Point getMouseLocation() { //UIManagement can get the mouse position at any time.
 		return mousePosition;
 	}
 }

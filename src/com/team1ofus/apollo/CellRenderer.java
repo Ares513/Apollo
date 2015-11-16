@@ -2,6 +2,7 @@ package com.team1ofus.apollo;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Point;
 
 public class CellRenderer {
 	DataTile[][] tiles;
@@ -30,5 +31,9 @@ public class CellRenderer {
 			}
 		}
 	}
-	
+	public Point pickTile(int mouseX, int mouseY) {
+		int x = (int) (Math.floor((mouseX)/tileWidth));
+		int y = (int) (Math.floor((mouseY)/tileHeight));
+		return new Point(x,y);
+	}
 }
