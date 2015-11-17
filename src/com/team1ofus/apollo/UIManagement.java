@@ -2,7 +2,7 @@ package com.team1ofus.apollo;
 
 import java.util.ArrayList;
 
-public class UIManagement implements IDataInteractionListener, IHumanInteractionListener, ICellUpdateListener{
+public class UIManagement implements IDataUpdateListener, IHumanInteractionListener, ICellUpdateListener{
 	ApolloUI window;
 	PaintTool paintTool;
 	ArrayList<Cell> cells;
@@ -23,9 +23,6 @@ public class UIManagement implements IDataInteractionListener, IHumanInteraction
 		paintTool = new PaintTool();
 	}
 	
-	public void onDataInteraction() {
-		
-	}
 	
 	public void onHumanInteraction() {
 		
@@ -35,4 +32,7 @@ public class UIManagement implements IDataInteractionListener, IHumanInteraction
 		
 	}
 	
+	public	void onDataUpdate(){
+		
+	}
 }

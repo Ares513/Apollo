@@ -8,16 +8,16 @@ import java.util.ArrayList;
  * 
  */
 public class UIManagementInteractionEventObject {
- public ArrayList<IUIManagementInteractionListener> listeners = new ArrayList<IUIManagementInteractionListener>();
- public void addListener(IUIManagementInteractionListener input) {
-	 listeners.add(input);
- }
- public void removeListener(IUIManagementInteractionListener input) {
-	 listeners.remove(input);
- }
- public void triggerSave(ArrayList<Cell> cellsToSave) {
-	 for(IUIManagementInteractionListener listener : listeners) {
-		 listener.onSaveTriggered(cellsToSave);
-	 }
- }
+	public ArrayList<IUIManagementInteractionListener> listeners = new ArrayList<IUIManagementInteractionListener>();
+	public void addListener(IUIManagementInteractionListener input) {
+		listeners.add(input);
+	}
+	public void removeListener(IUIManagementInteractionListener input) {
+		listeners.remove(input);
+	}
+	public void triggerSave(ArrayList<Cell> cellsToSave) {
+		for(IUIManagementInteractionListener listener : listeners) {
+			listener.onSaveTriggered(cellsToSave);
+		}
+	}
 }
