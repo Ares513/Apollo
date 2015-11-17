@@ -16,6 +16,9 @@ public class Bootstrapper {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					DataManagement data;
+					data = new DataManagement();
+					
 					UIManagement UI;
 					UI = new UIManagement();
 				
