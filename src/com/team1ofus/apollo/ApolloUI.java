@@ -23,7 +23,6 @@ import java.awt.GridBagConstraints;
 import javax.swing.JComboBox;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import net.miginfocom.swing.MigLayout;
 import java.awt.Component;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.FlowLayout;
