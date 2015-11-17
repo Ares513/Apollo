@@ -16,6 +16,16 @@ import javax.swing.Box;
 import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.MouseMotionAdapter;
+import javax.swing.JSpinner;
+import java.awt.GridLayout;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import javax.swing.JComboBox;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import net.miginfocom.swing.MigLayout;
+import java.awt.Component;
+import javax.swing.DefaultComboBoxModel;
 
 public class ApolloUI {
 	private JFrame frame;
@@ -37,23 +47,34 @@ public class ApolloUI {
 		windowUI.setBackground(Color.RED);
 		windowUI.setForeground(Color.RED);
 		frame.getContentPane().add(windowUI, BorderLayout.EAST);
+		windowUI.setLayout(new MigLayout("", "[148px]", "[574px]"));
 		
 		Box verticalBox = Box.createVerticalBox();
-		windowUI.add(verticalBox);
 		
 		JButton btnThisIsA = new JButton("this is a test");
 		verticalBox.add(btnThisIsA);
 		
-		JLabel lblMousePosition = new JLabel("#mouse#");
-		lblMousePosition.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		verticalBox.add(lblMousePosition);
+		JLabel button = new JLabel("#mouse#");
+		button.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		verticalBox.add(button);
+		windowUI.add(verticalBox, "cell 0 0,aligny top");
+		
+		JComboBox tiles = new JComboBox();
+		verticalBox.add(tiles);
+		tiles.setAlignmentY(5.0f);
+		tiles.setModel(new DefaultComboBoxModel(TILE_TYPE.values()));
+		
+		JComboBox brushes = new JComboBox();
+		verticalBox.add(brushes);
+		brushes.setModel(new DefaultComboBoxModel(new String[] {"Single Tile"}));
+		brushes.setAlignmentY(Component.TOP_ALIGNMENT);
 		
 		DrawPane panel = new DrawPane();
 		panel.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseMoved(MouseEvent e) {
 				mousePosition = new Point(e.getX(), e.getY());
-				lblMousePosition.setText(mousePosition.toString()); 
+				button.setText(mousePosition.toString()); 
 			}
 		});
 		panel.addMouseListener(new MouseAdapter() {
@@ -62,6 +83,9 @@ public class ApolloUI {
 				
 			}
 		});
+		
+		Box verticalBox_1 = Box.createVerticalBox();
+		frame.getContentPane().add(verticalBox_1, BorderLayout.SOUTH);
 		frame.getContentPane().add(panel, BorderLayout.CENTER);
 		frame.setVisible(true);
 	}
