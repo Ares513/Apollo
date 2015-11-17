@@ -8,6 +8,7 @@ public class UIManagement {
 	}
 	void initialize() {
 		window = new ApolloUI();
+		
 		paintTool = new PaintTool();
 	}
 	
