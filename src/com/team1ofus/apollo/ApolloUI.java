@@ -23,9 +23,9 @@ import java.awt.GridBagConstraints;
 import javax.swing.JComboBox;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import net.miginfocom.swing.MigLayout;
 import java.awt.Component;
 import javax.swing.DefaultComboBoxModel;
+import java.awt.FlowLayout;
 
 public class ApolloUI {
 	private JFrame frame;
@@ -47,7 +47,7 @@ public class ApolloUI {
 		windowUI.setBackground(Color.RED);
 		windowUI.setForeground(Color.RED);
 		frame.getContentPane().add(windowUI, BorderLayout.EAST);
-		windowUI.setLayout(new MigLayout("", "[148px]", "[574px]"));
+		windowUI.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		Box verticalBox = Box.createVerticalBox();
 		
@@ -57,7 +57,7 @@ public class ApolloUI {
 		JLabel button = new JLabel("#mouse#");
 		button.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		verticalBox.add(button);
-		windowUI.add(verticalBox, "cell 0 0,aligny top");
+		windowUI.add(verticalBox);
 		
 		JComboBox tiles = new JComboBox();
 		verticalBox.add(tiles);
