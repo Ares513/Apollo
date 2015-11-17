@@ -1,5 +1,9 @@
 package com.team1ofus.apollo;
 
-public interface IUIManagementInteractionListener {
+import java.util.ArrayList;
 
+public interface IUIManagementInteractionListener {
+	public void onSaveTriggered(ArrayList<Cell> cellsToSave);
+		
+	
 }
