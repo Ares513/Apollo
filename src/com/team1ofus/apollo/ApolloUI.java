@@ -14,10 +14,18 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import java.awt.Color;
+
+import javax.imageio.ImageIO;
 import javax.swing.Box;
 import java.awt.Font;
 import java.awt.Point;
+import java.awt.Image;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+
 import javax.swing.JSpinner;
 import java.awt.GridLayout;
 import java.awt.GridBagLayout;
@@ -47,7 +55,11 @@ public class ApolloUI {
 	private Box verticalBox_1;
 	private JButton saveButton;
 	public HumanInteractionEventObject events;
+	private JComboBox underlyingImageSelection;
+	ArrayList<Image> imageSelection = new ArrayList<Image>();
 	public ApolloUI() {
+		imageSelection = new ArrayList<Image>(); //editor image selection; could use abstraction but we'll deal with that later.
+		
 		events = new HumanInteractionEventObject();
 		painter = new PaintTool();
 		
@@ -55,6 +67,7 @@ public class ApolloUI {
 
 	/**
 	 * Initialize the contents of the frame.
+	 * @wbp.parser.entryPoint
 	 */
 	public void initialize(Cell cellToEdit) {
 		buildControls(cellToEdit);
@@ -131,6 +144,12 @@ public class ApolloUI {
 				events.triggerSave(cellToEdit);
 			}
 		});
+		underlyingImageSelection.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//when a selection is made.
+				
+			}
+		});
 		frame.getContentPane().add(panel, BorderLayout.CENTER);
 		frame.setVisible(true);
 		panel.grabFocus();
@@ -146,6 +165,17 @@ public class ApolloUI {
 		//panel.render.editTile(picked.x, picked.y, new DataTile(painter.getTileToPaint()));
 		
 		panel.paint(panel.getGraphics());
+	}
+	private void loadImages() {
+		BufferedImage img = null;
+		try {
+			img = ImageIO.read(new File("stratton_hall-page1.jpg"));
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	private void doOffsetCalc(KeyEvent e, JLabel offsetLbl) {
 		switch(e.getKeyCode()) {
@@ -205,6 +235,11 @@ public class ApolloUI {
 		brushes.setModel(new DefaultComboBoxModel(new String[] {"Single Tile"}));
 		brushes.setAlignmentY(Component.TOP_ALIGNMENT);
 		windowUI.add(verticalBox);
+		
+		underlyingImageSelection = new JComboBox();
+
+		underlyingImageSelection.setAlignmentY(5.0f);
+		verticalBox.add(underlyingImageSelection);
 		tiles = new JComboBox();
 		verticalBox.add(tiles);
 		tiles.setAlignmentY(5.0f);
