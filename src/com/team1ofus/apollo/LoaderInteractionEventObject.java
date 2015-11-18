@@ -11,7 +11,7 @@ public class LoaderInteractionEventObject {
 	public synchronized void removeChooseListener(ILoaderInteractionListener input) {
 		listeners.remove(input);
 	}
-	public void selectionMade(int selection, ArrayList<Cell> allCells) {
+	public void selectionMade(Cell selection, ArrayList<Cell> allCells) {
 		for(ILoaderInteractionListener listener : listeners) {
 			listener.selectionMade(selection, allCells);
 		}

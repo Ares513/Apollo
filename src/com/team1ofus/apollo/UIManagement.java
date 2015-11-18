@@ -49,14 +49,14 @@ public class UIManagement implements IDataUpdateListener, IHumanInteractionListe
 		
 	}
 	@Override
-	public void selectionMade(int selection, ArrayList<Cell> allCells) {
+	public void selectionMade(Cell selection, ArrayList<Cell> allCells) {
 		// TODO Auto-generated method stub
 		window = new ApolloUI();
 		window.events.addSaveListener(this);
 		cells = allCells;
 		events.triggerSave(cells);
 		loader.dispose();
-		window.initialize(cells.get(selection));
+		window.initialize(selection);
 	}
 
 }
