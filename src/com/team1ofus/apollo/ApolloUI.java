@@ -41,20 +41,22 @@ public class ApolloUI {
 	private JComboBox tiles;
 	private JComboBox brushes;
 	private Box verticalBox;
-	private Box verticalBox_1;
 	private JLabel lblOffset;
-	private JLabel lblMousePos;
 	DrawPane panel;
 	int scrollSpeed = 5;
-	public ApolloUI(Cell cellToEdit) {
+	private Box verticalBox_1;
+	private JButton saveButton;
+	public HumanInteractionEventObject events;
+	public ApolloUI() {
+		events = new HumanInteractionEventObject();
 		painter = new PaintTool();
-		initialize(cellToEdit);
+		
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize(Cell cellToEdit) {
+	public void initialize(Cell cellToEdit) {
 		buildControls(cellToEdit);
 		panel.addKeyListener(new KeyAdapter() {
 			@Override
@@ -124,7 +126,10 @@ public class ApolloUI {
 				
 			}
 		});
-		frame.getContentPane().add(verticalBox_1, BorderLayout.SOUTH);
+		saveButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
 		frame.getContentPane().add(panel, BorderLayout.CENTER);
 		frame.setVisible(true);
 		panel.grabFocus();
@@ -176,7 +181,19 @@ public class ApolloUI {
 		frame.getContentPane().add(windowUI, BorderLayout.EAST);
 		windowUI.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
+		verticalBox_1 = Box.createVerticalBox();
+		windowUI.add(verticalBox_1);
+		
+		saveButton = new JButton("Save");
+
+		saveButton.setVerticalAlignment(SwingConstants.TOP);
+		saveButton.setToolTipText("Save to a file.");
+		verticalBox_1.add(saveButton);
+		
 		verticalBox = Box.createVerticalBox();
+		lblOffset = new JLabel("0,0");
+		lblOffset.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		verticalBox.add(lblOffset);
 
 
 		
@@ -185,17 +202,10 @@ public class ApolloUI {
 		verticalBox.add(brushes);
 		brushes.setModel(new DefaultComboBoxModel(new String[] {"Single Tile"}));
 		brushes.setAlignmentY(Component.TOP_ALIGNMENT);
-		lblOffset = new JLabel("0,0");
-		lblOffset.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		verticalBox.add(lblOffset);
 		windowUI.add(verticalBox);
 		tiles = new JComboBox();
-		lblMousePos = new JLabel("#mouse#");
-		lblMousePos.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		verticalBox.add(lblMousePos);
 		verticalBox.add(tiles);
 		tiles.setAlignmentY(5.0f);
 		tiles.setModel(new DefaultComboBoxModel(TILE_TYPE.values()));
-		verticalBox_1 = Box.createVerticalBox();
 	}
 }

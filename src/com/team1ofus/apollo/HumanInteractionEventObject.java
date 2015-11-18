@@ -3,24 +3,22 @@ package com.team1ofus.apollo;
 import java.util.ArrayList;
 import java.util.EventObject;
 
-public class HumanInteractionEventObject extends EventObject {
+public class HumanInteractionEventObject {
 	
-	public ArrayList<HumanInteractionEventObject> listeners = new ArrayList<HumanInteractionEventObject>();
-	public synchronized void addMouseClickListener(HumanInteractionEventObject input) {
+	public ArrayList<IHumanInteractionListener> listeners = new ArrayList<IHumanInteractionListener>();
+	public synchronized void addSaveListener(IHumanInteractionListener input) {
 		listeners.add(input);
 	}
-	public synchronized void removeMouseClickListener(HumanInteractionEventObject input) {
+	public synchronized void removeSaveListener(IHumanInteractionListener input) {
 		listeners.remove(input);
 	}
-	public void triggerSave(ArrayList<Cell> cellsToSave) {
-		for(HumanInteractionEventObject listener : listeners) {
-			//listener.onSaveTriggered();
+	public void triggerSave(Cell cellToSave) {
+		for(IHumanInteractionListener listener : listeners) {
+			listener.onSaveTriggered(cellToSave);
 		}
 	}
 	
-	public HumanInteractionEventObject(Object arg0) {
-		super(arg0);
-		// TODO Auto-generated constructor stub
+	public HumanInteractionEventObject() {
 	}
 }
 

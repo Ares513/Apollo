@@ -13,19 +13,15 @@ public class UIManagement implements IDataUpdateListener, IHumanInteractionListe
 		
 		cells = allCells; //loaded from DataManagement
 		//Changes are made to Cells until a Save operation is made.
+	
 	}
 	/*
 	 * Launch the application once event handling and stitching is complete.
 	 */
 	public void begin() {
-		window = new ApolloUI(cells.get(0));
-		
-		
-		
-	}
-	
-	
-	public void onHumanInteraction() {
+		window = new ApolloUI();
+		window.events.addSaveListener(this);
+		window.initialize(cells.get(0));
 		
 	}
 	
@@ -34,6 +30,12 @@ public class UIManagement implements IDataUpdateListener, IHumanInteractionListe
 	}
 	
 	public	void onDataUpdate() {
+		
+	}
+	@Override
+	public void onSaveTriggered(Cell cellToSave) {
+		cells.set(0, cellToSave);
+		events.triggerSave(cells);
 		
 	}
 }
