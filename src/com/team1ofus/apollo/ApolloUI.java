@@ -51,7 +51,7 @@ public class ApolloUI {
 	private Box verticalBox;
 	private JLabel lblOffset;
 	DrawPane panel;
-	int scrollSpeed = 5;
+	int scrollSpeed = 10;
 	private Box verticalBox_1;
 	private JButton saveButton;
 	public HumanInteractionEventObject events;
@@ -59,7 +59,7 @@ public class ApolloUI {
 	ArrayList<Image> imageSelection = new ArrayList<Image>();
 	public ApolloUI() {
 		imageSelection = new ArrayList<Image>(); //editor image selection; could use abstraction but we'll deal with that later.
-		
+		loadImages();
 		events = new HumanInteractionEventObject();
 		painter = new PaintTool();
 		
@@ -164,17 +164,24 @@ public class ApolloUI {
 		
 		//panel.render.editTile(picked.x, picked.y, new DataTile(painter.getTileToPaint()));
 		
-		panel.paint(panel.getGraphics());
+		panel.repaint(panel.render.offset.x, panel.render.offset.y, panel.getWidth(), panel.getHeight());
 	}
 	private void loadImages() {
+		imageSelection.add(loadImage("stratton_hall-page1.jpg"));
+		imageSelection.add(loadImage("stratton_hall-page2.jpg"));
+		imageSelection.add(loadImage("stratton_hall-page3.jpg"));
+		imageSelection.add(loadImage("stratton_hall-page4.jpg"));
+	}
+	private BufferedImage loadImage(String path) {
 		BufferedImage img = null;
 		try {
-			img = ImageIO.read(new File("stratton_hall-page1.jpg"));
-			
+			img = ImageIO.read(new File(path));
+			return img;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return img;
 		
 	}
 	private void doOffsetCalc(KeyEvent e, JLabel offsetLbl) {
@@ -196,13 +203,16 @@ public class ApolloUI {
 			break;
 		}
 		
-		panel.paint(panel.getGraphics());
+		panel.repaint(0, 0, panel.getWidth(), panel.getHeight());
 		lblOffset.setText(panel.render.offset.getX() + "," + panel.render.offset.getY());
 	}
 	private void buildControls(Cell cellToEdit) {
 		frame = new JFrame();
 		frame.setTitle(cellToEdit.getID());
 		panel  = new DrawPane(cellToEdit);
+		//this loads the default image automagically and needs to be changed when we implement this more formally
+		panel.setCurrentImage(imageSelection.get(0));
+		//
 		frame.setBounds(100, 100, 969, 596);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -239,6 +249,11 @@ public class ApolloUI {
 		underlyingImageSelection = new JComboBox();
 
 		underlyingImageSelection.setAlignmentY(5.0f);
+		underlyingImageSelection.addItem("stratton_hall-page1.jpg");
+		underlyingImageSelection.addItem("stratton_hall-page2.jpg");
+		underlyingImageSelection.addItem("stratton_hall-page3.jpg");
+		underlyingImageSelection.addItem("stratton_hall-page4.jpg"); //will need to link this later
+		
 		verticalBox.add(underlyingImageSelection);
 		tiles = new JComboBox();
 		verticalBox.add(tiles);

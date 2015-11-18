@@ -2,7 +2,9 @@ package com.team1ofus.apollo;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Point;
+import java.awt.image.BufferedImage;
 
 public class CellRenderer {
 	int tileWidth;
@@ -15,25 +17,48 @@ public class CellRenderer {
 		tileHeight =(int) Math.round(16*inCell.scaling);
 		offset = new Point(0,0);
 	}
-	public void renderTiles(Graphics g) {
+	public void renderTiles(Graphics g, Image underlyingImage) {
+		
+		
+		g.drawImage(underlyingImage, offset.x*-1, offset.y*-1, Color.white, null);
 		
 		for(int i=0; i<editCell.tiles[0].length; i++) {
 			for(int j=0; j<editCell.tiles[1].length; j++) {
 				switch(editCell.tiles[i][j].getType()) {
 				case WALL:
-					g.setColor(Color.gray);
+					//Color grey = new Color(Color.gray.getRed(), Color.gray.getGreen(), Color.gray.getBlue(), 125);
+					
+					//g.setColor(grey);
 					
 					break;
 				case PEDESTRIAN_WALKWAY:
-					g.setColor(Color.GREEN);
+					Color green = new Color(Color.GREEN.getRed(), Color.GREEN.getGreen(), Color.GREEN.getBlue(), 125);
+					g.setColor(green);
+					g.fillRect(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight);
 					break;
 				default:
 					break;
 				}
-				g.fillRect(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight);
 				g.setColor(Color.black);
+				//drawGridLines(g);
 				g.drawRect(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight);
+//				g.fillRect(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight);
+//				g.setColor(Color.black);
+//				g.drawRect(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight);
 			}
+		}
+	}
+	private void drawGridLines(Graphics g) {
+		int width = editCell.getWidth();
+		int height = editCell.getHeight();
+		int right = width * tileWidth;
+		int bottom = height * tileHeight;
+		for(int i=0; i< width; i++) {
+			g.drawLine(tileWidth*i - offset.x, 0, tileWidth*i - offset.y, bottom);
+		}
+		for(int i=0; i < height; i++) {
+			
+			g.drawLine(0, tileHeight*i - offset.x, right, tileHeight*i - offset.y);
 		}
 	}
 	public Point pickTile(int mouseX, int mouseY) {

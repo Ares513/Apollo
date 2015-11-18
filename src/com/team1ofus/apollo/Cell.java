@@ -33,4 +33,10 @@ public class Cell implements Serializable {
 	public void setID(String inID) {
 		id = inID;
 	}
+	public int getWidth() {
+		return tiles[0].length;
+	}
+	public int getHeight() {
+		return tiles[1].length;
+	}
 }
