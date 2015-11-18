@@ -141,6 +141,7 @@ public class ApolloUI {
 		});
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				panel.grabFocus();
 				events.triggerSave(cellToEdit);
 			}
 		});
@@ -149,6 +150,7 @@ public class ApolloUI {
 				//when a selection is made.
 				panel.currentImage = imageSelection.get(underlyingImageSelection.getSelectedIndex());
 				makePanelDirty();
+				panel.grabFocus;
 			}
 		});
 		frame.getContentPane().add(panel, BorderLayout.CENTER);
