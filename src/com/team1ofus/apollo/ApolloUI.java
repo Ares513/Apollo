@@ -213,6 +213,7 @@ public class ApolloUI {
 	private void buildControls(Cell cellToEdit) {
 		frame = new JFrame();
 		frame.setTitle(cellToEdit.getID());
+		frame.setResizable(false);
 		panel  = new DrawPane(cellToEdit);
 		//this loads the default image automagically and needs to be changed when we implement this more formally
 		panel.setCurrentImage(imageSelection.get(0));
