@@ -53,7 +53,12 @@ public class PaintTool {
 	public void selectTileType(int typeIndex) {
 		tileToPaint = tileMap.get(typeIndex);
 	}
-	
+	public void applyBrush(CellRenderer render, int x, int y) {
+		for(Point p : brushes[getBrushSelection()].getReferencePoints()) {
+			render.editTile(x + p.x, y + p.y, new DataTile(getTileToPaint()));
+		}
+		
+	}
 	/*
 	 * Selects the tiletype based on enum
 	 */

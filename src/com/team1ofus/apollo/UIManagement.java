@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class UIManagement {
 	ApolloUI window;
-	PaintTool paintTool;
+
 	ArrayList<Cell> cells;
 	public UIManagementInteractionEventObject events; //later, add getters and setters to prevent direct access.
 	public UIManagement(ArrayList<Cell> allCells) {
@@ -17,9 +17,10 @@ public class UIManagement {
 	 * Launch the application once event handling and stitching is complete.
 	 */
 	public void begin() {
-		window = new ApolloUI();
+		window = new ApolloUI(cells.get(0));
 		
-		paintTool = new PaintTool();
+		
+		
 	}
 	
 }

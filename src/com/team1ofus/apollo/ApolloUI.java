@@ -30,14 +30,16 @@ import java.awt.FlowLayout;
 public class ApolloUI {
 	private JFrame frame;
 	private Point mousePosition;
-	public ApolloUI() {
-		initialize();
+	private PaintTool painter;
+	public ApolloUI(Cell cellToEdit) {
+		painter = new PaintTool();
+		initialize(cellToEdit);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initialize(Cell cellToEdit) {
 		frame = new JFrame();
 
 		frame.setBounds(100, 100, 969, 596);
@@ -69,7 +71,7 @@ public class ApolloUI {
 		brushes.setModel(new DefaultComboBoxModel(new String[] {"Single Tile"}));
 		brushes.setAlignmentY(Component.TOP_ALIGNMENT);
 		
-		DrawPane panel = new DrawPane();
+		DrawPane panel = new DrawPane(cellToEdit);
 		panel.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseMoved(MouseEvent e) {
@@ -79,8 +81,14 @@ public class ApolloUI {
 		});
 		panel.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
+			public void mouseClicked(MouseEvent e) {
+				//PICK TILES HERE
+				Point picked = panel.render.pickTile(e.getX(), e.getY());
+				painter.applyBrush(panel.render, picked.x, picked.y);
 				
+				panel.render.editTile(picked.x, picked.y, new DataTile(painter.getTileToPaint()));
+				
+				panel.paint(panel.getGraphics());
 			}
 		});
 		
