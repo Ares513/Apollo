@@ -22,9 +22,9 @@ public class CellRenderer {
 	    g.fillRect(0, 0, tileWidth * editCell.getWidth(), tileHeight * editCell.getHeight());
 		g.drawImage(underlyingImage, offset.x*-1, offset.y*-1, Color.white, null);
 		
-		for(int i=0; i<editCell.tiles[0].length; i++) {
-			for(int j=0; j<editCell.tiles[1].length; j++) {
-				switch(editCell.tiles[i][j].getType()) {
+		for(int i=0; i<editCell.getWidth(); i++) {
+			for(int j=0; j<editCell.getHeight(); j++) {
+				switch(editCell.getTile(i,j).getType()) {
 				case WALL:
 					//Color grey = new Color(Color.gray.getRed(), Color.gray.getGreen(), Color.gray.getBlue(), 125);
 					

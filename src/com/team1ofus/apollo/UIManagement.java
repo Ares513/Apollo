@@ -55,6 +55,7 @@ public class UIManagement implements IDataUpdateListener, IHumanInteractionListe
 		window.events.addSaveListener(this);
 		cells = allCells;
 		events.triggerSave(cells);
+		loader.dispose();
 		window.initialize(cells.get(selection));
 	}
 

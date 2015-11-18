@@ -11,6 +11,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionListener;
+import java.nio.file.FileSystemException;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import javax.swing.JSplitPane;
@@ -63,7 +64,6 @@ public class Loader extends JDialog {
 				
 				nameInput = new JTextField();
 				horizontalBox_1.add(nameInput);
-				nameInput.setText("default");
 				nameInput.setColumns(10);
 				
 				Component horizontalStrut_5 = Box.createHorizontalStrut(20);
@@ -125,7 +125,13 @@ public class Loader extends JDialog {
 						int height = Integer.parseInt(heightInput.getText());
 						String mapID = nameInput.getText();
 						if(mapID.contains(".map")) {
-							throw new Exception("Do not include extensions");
+							throw new FileSystemException("Do not include extensions");
+						}
+						String[] duplicateCheck = getNames(allCells);
+						for(int i=0; i<names.length; i++) {
+							if(mapID.equals(names)) {
+								throw new FileSystemException("Duplicate file not overwritten.");
+							}
 						}
 						cellToCreate = new Cell(width, height, 1.0, TILE_TYPE.WALL, mapID + ".map");
 						allCells.add(cellToCreate);
@@ -134,7 +140,9 @@ public class Loader extends JDialog {
 						for(int i=0; i<names.length; i++) {
 							mapChooser.addItem(names[i]);
 						}
-						} catch(Exception ex) {
+						
+						
+						} catch(NumberFormatException | FileSystemException er) {
 							//if errors are encountered in parsing, do nothing.
 							System.out.println("Error!");
 						}

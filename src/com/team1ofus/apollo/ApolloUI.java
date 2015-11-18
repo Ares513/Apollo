@@ -161,7 +161,8 @@ public class ApolloUI {
 		return mousePosition;
 	}
 	private void makePanelDirty() {
-		panel.repaint(0, 0, panel.getWidth() + 100, panel.getHeight() + 100);
+		//panel.repaint(0, 0, panel.getWidth() + 100, panel.getHeight() + 100);
+		panel.repaint();
 	}
 	private void doPaint(DrawPane panel, MouseEvent e) {
 		//PICK TILES HERE

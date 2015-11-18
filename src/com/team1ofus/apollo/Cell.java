@@ -17,13 +17,14 @@ public class Cell implements Serializable {
 		id = name;
 		//identifier
 		tiles = new DataTile[width][height];
-		fillTiles(TILE_TYPE.WALL);
+		fillTiles(TILE_TYPE.WALL, width, height);
 		
 	}
-	private void fillTiles(TILE_TYPE fillTile) {
-		for(int i=0; i<tiles[0].length; i++) {
-			for(int j=0; j<tiles[1].length; j++) {
+	private void fillTiles(TILE_TYPE fillTile, int width, int height) {
+		for(int i=0; i< width; i++) {
+			for(int j=0; j< height; j++) {
 				tiles[i][j] = new DataTile(fillTile);
+				
 			}
 		}
 	}
@@ -38,5 +39,17 @@ public class Cell implements Serializable {
 	}
 	public int getHeight() {
 		return tiles[1].length;
+	}
+	public DataTile getTile(int x, int y) {
+			
+			int xActual = x;
+			int yActual = y;
+			if(x > getWidth() - 1) {
+				xActual = getWidth() - 1;
+			}
+			if(y > getHeight() - 1) {
+				yActual = getHeight() - 1;
+			}
+			return tiles[xActual][yActual];
 	}
 }
