@@ -1,4 +1,7 @@
 package com.team1ofus.apollo;
+
+import java.io.Serializable;
+
 /*
  * We only need a single DataTile class.
  * The methods that require us to make an interface revolve around A*.
@@ -6,7 +9,11 @@ package com.team1ofus.apollo;
  * needs to do its job.
  * @author Evan King
  */
-public class DataTile {
+public class DataTile implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private TILE_TYPE type;
 	public DataTile(TILE_TYPE type) {
 		this.type = type;

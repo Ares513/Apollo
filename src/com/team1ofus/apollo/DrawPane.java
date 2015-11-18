@@ -1,26 +1,30 @@
 package com.team1ofus.apollo;
 
 import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Point;
 
 import javax.swing.JPanel;
 
 public class DrawPane extends JPanel {
 	CellRenderer render;
-	public DrawPane() {
-		//test data
-		DataTile[][] dummyData;
-		dummyData = new DataTile[50][50];
+	Image currentImage;
+	public DrawPane(Cell inCell) {
 		
-		for(int i=0; i<50; i++) {
-			for(int j=0; j<50; j++) {
-				dummyData[i][j] = new DataTile(TILE_TYPE.WALL);
-			}
-		}
-		dummyData[1][2] = new DataTile(TILE_TYPE.HALLWAY);
-		render = new CellRenderer(dummyData);
+		
+		render = new CellRenderer(inCell);
 	}
 	public void paintComponent(Graphics g) {
-		render.renderTiles(g);
+		render.renderTiles(g, currentImage);
+	}
+	public Point pickTile(int mouseX, int mouseY) {
+		return render.pickTile(mouseX, mouseY);
+	}
+	public Image getCurrentImage() {
+		return currentImage;
+	}
+	public void setCurrentImage(Image currentImage) {
+		this.currentImage = currentImage;
 	}
 	
 }

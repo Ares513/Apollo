@@ -7,6 +7,17 @@ package com.team1ofus.apollo;
  * tileToPaint TILE_TYPE
  */
 
-public class Brush{
+
+import java.awt.Point;
+
+public class Brush {
+	private Point[] referencePoints; //points in relation to the point/tile selected to paint
+
+	public Brush(Point[] pts) {
+		referencePoints = pts;
+	}
 	
+	public Point[] getReferencePoints() {
+		return referencePoints;
+	}
 }
