@@ -7,11 +7,13 @@ import java.awt.Point;
 public class CellRenderer {
 	int tileWidth;
 	int tileHeight;
+	Point offset;
 	Cell editCell;
 	public CellRenderer(Cell inCell) {
 		editCell = inCell;
 		tileWidth = 32;
 		tileHeight = 32;
+		offset = new Point(0,0);
 	}
 	public void renderTiles(Graphics g) {
 		
@@ -23,20 +25,20 @@ public class CellRenderer {
 					
 					break;
 				case PEDESTRIAN_WALKWAY:
-					g.setColor(Color.WHITE);
+					g.setColor(Color.GREEN);
 					break;
 				default:
 					break;
 				}
-				g.fillRect(i*tileWidth, j*tileHeight, tileWidth, tileHeight);
+				g.fillRect(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight);
 				g.setColor(Color.black);
-				g.drawRect(i*tileWidth, j*tileHeight, tileWidth, tileHeight);
+				g.drawRect(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight);
 			}
 		}
 	}
 	public Point pickTile(int mouseX, int mouseY) {
-		int x = (int) (Math.floor((mouseX)/tileWidth));
-		int y = (int) (Math.floor((mouseY)/tileHeight));
+		int x = (int) (Math.floor((mouseX - offset.x)/tileWidth));
+		int y = (int) (Math.floor((mouseY - offset.y)/tileHeight));
 		return new Point(x,y);
 	}
 	public void editTile(int x, int y, DataTile swapped) {
@@ -45,5 +47,8 @@ public class CellRenderer {
 			editCell.tiles[x][y] = swapped;
 		}
 		
+	}
+	public void incrementOffset(int dx, int dy) {
+		offset.translate(dx, dy);
 	}
 }
