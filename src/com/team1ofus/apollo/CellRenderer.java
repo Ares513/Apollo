@@ -21,9 +21,17 @@ public class CellRenderer {
 		g.setColor(Color.WHITE);
 	    g.fillRect(0, 0, tileWidth * editCell.getWidth(), tileHeight * editCell.getHeight());
 		g.drawImage(underlyingImage, offset.x*-1, offset.y*-1, Color.white, null);
-		
-		for(int i=0; i<editCell.getWidth(); i++) {
-			for(int j=0; j<editCell.getHeight(); j++) {
+		int cellWidth = editCell.getWidth();
+		int cellHeight = editCell.getHeight();
+		for(int i=0; i<cellWidth; i++) {
+			for(int j=0; j<cellHeight; j++) {
+				try {
+					editCell.getTile(i, j);
+								
+				} catch (ArrayIndexOutOfBoundsException e) {
+					System.out.println("helloworld");
+				}
+				
 				switch(editCell.getTile(i,j).getType()) {
 				case WALL:
 					//Color grey = new Color(Color.gray.getRed(), Color.gray.getGreen(), Color.gray.getBlue(), 125);
@@ -68,8 +76,8 @@ public class CellRenderer {
 	}
 	public void editTile(int x, int y, DataTile swapped) {
 		//edits the contents of a tile
-		if(x >= 0 && x < editCell.tiles[0].length - 1 && y >= 0 && y < editCell.tiles[1].length - 1) {
-			editCell.tiles[x][y] = swapped;
+		if(x >= 0 && x < editCell.getWidth() && y >= 0 && y < editCell.getHeight()) {
+			editCell.setTile(x, y, swapped.getType());
 		}
 		
 	}
@@ -78,13 +86,13 @@ public class CellRenderer {
 		offset.translate(dx, dy);
 		if(offset.x < 0) {
 			offset.x = 0;
-		} else if(offset.x > editCell.tiles[0].length * tileWidth - windowWidth) {
-			offset.x = editCell.tiles[0].length * tileWidth - windowWidth;
+		} else if(offset.x > editCell.getWidth() * tileWidth - windowWidth) {
+			offset.x = editCell.getWidth() * tileWidth - windowWidth;
 		}
 		if(offset.y < 0) {
 			offset.y = 0;
-		} else if(offset.y > editCell.tiles[1].length * tileHeight - windowHeight) {
-			offset.y = editCell.tiles[1].length * tileHeight - windowHeight; 
+		} else if(offset.y > editCell.getHeight() * tileHeight - windowHeight) {
+			offset.y = editCell.getHeight() * tileHeight - windowHeight; 
 		
 		}
 		

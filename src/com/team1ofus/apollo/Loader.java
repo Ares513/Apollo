@@ -129,7 +129,7 @@ public class Loader extends JDialog {
 						}
 						String[] duplicateCheck = getNames(allCells);
 						for(int i=0; i<duplicateCheck.length; i++) {
-							if(mapID.equals(duplicateCheck)) {
+							if(mapID.equals(duplicateCheck[i])) {
 								throw new FileSystemException("Duplicate file not overwritten.");
 							}
 						}
