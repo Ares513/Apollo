@@ -147,7 +147,8 @@ public class ApolloUI {
 		underlyingImageSelection.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//when a selection is made.
-				
+				panel.currentImage = imageSelection.get(underlyingImageSelection.getSelectedIndex());
+				makePanelDirty();
 			}
 		});
 		frame.getContentPane().add(panel, BorderLayout.CENTER);
@@ -157,6 +158,9 @@ public class ApolloUI {
 	public Point getMouseLocation() {
 		return mousePosition;
 	}
+	private void makePanelDirty() {
+		panel.repaint(0, 0, panel.getWidth() + 100, panel.getHeight() + 100);
+	}
 	private void doPaint(DrawPane panel, MouseEvent e) {
 		//PICK TILES HERE
 		Point picked = panel.render.pickTile(e.getX(), e.getY());
@@ -164,7 +168,7 @@ public class ApolloUI {
 		
 		//panel.render.editTile(picked.x, picked.y, new DataTile(painter.getTileToPaint()));
 		
-		panel.repaint(panel.render.offset.x, panel.render.offset.y, panel.getWidth(), panel.getHeight());
+		makePanelDirty();
 	}
 	private void loadImages() {
 		imageSelection.add(loadImage("stratton_hall-page1.jpg"));
@@ -203,7 +207,7 @@ public class ApolloUI {
 			break;
 		}
 		
-		panel.repaint(0, 0, panel.getWidth(), panel.getHeight());
+		makePanelDirty();
 		lblOffset.setText(panel.render.offset.getX() + "," + panel.render.offset.getY());
 	}
 	private void buildControls(Cell cellToEdit) {

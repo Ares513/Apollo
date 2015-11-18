@@ -11,7 +11,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-public class UIManagement implements IDataUpdateListener, IHumanInteractionListener, ICellUpdateListener{
+public class UIManagement implements IDataUpdateListener, IHumanInteractionListener, ILoaderInteractionListener {
 	ApolloUI window;
 	Loader loader;
 
@@ -30,9 +30,8 @@ public class UIManagement implements IDataUpdateListener, IHumanInteractionListe
 	 */
 	public void begin() {
 		loader = new Loader(cells);
-		window = new ApolloUI();
-		window.events.addSaveListener(this);
-		window.initialize(cells.get(0));
+		loader.events.addChooseListener(this);
+		//await loader callback.
 		
 	}
 	
@@ -48,6 +47,15 @@ public class UIManagement implements IDataUpdateListener, IHumanInteractionListe
 		cells.set(0, cellToSave);
 		events.triggerSave(cells);
 		
+	}
+	@Override
+	public void selectionMade(int selection, ArrayList<Cell> allCells) {
+		// TODO Auto-generated method stub
+		window = new ApolloUI();
+		window.events.addSaveListener(this);
+		cells = allCells;
+		events.triggerSave(cells);
+		window.initialize(cells.get(selection));
 	}
 
 }

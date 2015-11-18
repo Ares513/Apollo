@@ -18,8 +18,8 @@ public class CellRenderer {
 		offset = new Point(0,0);
 	}
 	public void renderTiles(Graphics g, Image underlyingImage) {
-		
-		
+		g.setColor(Color.WHITE);
+	    g.fillRect(0, 0, tileWidth * editCell.getWidth(), tileHeight * editCell.getHeight());
 		g.drawImage(underlyingImage, offset.x*-1, offset.y*-1, Color.white, null);
 		
 		for(int i=0; i<editCell.tiles[0].length; i++) {
