@@ -1,7 +1,5 @@
 package com.team1ofus.apollo;
 
-package com.team1ofus.apollo;
-
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -57,7 +55,7 @@ public class ApolloUI {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize(Cell cellToEdit) {
-		buildControls(cellToEdit)
+		buildControls(cellToEdit);
 		panel.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
