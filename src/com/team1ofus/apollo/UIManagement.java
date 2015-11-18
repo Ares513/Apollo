@@ -2,11 +2,12 @@ package com.team1ofus.apollo;
 
 import java.util.ArrayList;
 
-public class UIManagement {
+public class UIManagement implements IDataUpdateListener, IHumanInteractionListener, ICellUpdateListener{
 	ApolloUI window;
 
 	ArrayList<Cell> cells;
 	public UIManagementInteractionEventObject events; //later, add getters and setters to prevent direct access.
+	
 	public UIManagement(ArrayList<Cell> allCells) {
 		events = new UIManagementInteractionEventObject();
 		
@@ -23,4 +24,16 @@ public class UIManagement {
 		
 	}
 	
+	
+	public void onHumanInteraction() {
+		
+	}
+	
+	public void onCellUpdate() {
+		
+	}
+	
+	public	void onDataUpdate(){
+		
+	}
 }
