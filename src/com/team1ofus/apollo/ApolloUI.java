@@ -100,6 +100,13 @@ public class ApolloUI {
 					doPaint(panel, e);
 				}
 			}
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				if(SwingUtilities.isLeftMouseButton(e)) {
+					//left is pressed!
+					doPaint(panel, e);
+				}
+			}
 		});
 		panel.addMouseListener(new MouseAdapter() {
 			@Override
