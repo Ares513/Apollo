@@ -128,8 +128,8 @@ public class Loader extends JDialog {
 							throw new FileSystemException("Do not include extensions");
 						}
 						String[] duplicateCheck = getNames(allCells);
-						for(int i=0; i<names.length; i++) {
-							if(mapID.equals(names)) {
+						for(int i=0; i<duplicateCheck.length; i++) {
+							if(mapID.equals(duplicateCheck)) {
 								throw new FileSystemException("Duplicate file not overwritten.");
 							}
 						}
