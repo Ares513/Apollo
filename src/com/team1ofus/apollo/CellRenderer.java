@@ -11,8 +11,8 @@ public class CellRenderer {
 	Cell editCell;
 	public CellRenderer(Cell inCell) {
 		editCell = inCell;
-		tileWidth = 32;
-		tileHeight = 32;
+		tileWidth = (int) Math.round(16*inCell.scaling);
+		tileHeight =(int) Math.round(16*inCell.scaling);
 		offset = new Point(0,0);
 	}
 	public void renderTiles(Graphics g) {
@@ -37,8 +37,8 @@ public class CellRenderer {
 		}
 	}
 	public Point pickTile(int mouseX, int mouseY) {
-		int x = (int) (Math.floor((mouseX - offset.x)/tileWidth));
-		int y = (int) (Math.floor((mouseY - offset.y)/tileHeight));
+		int x = (int) (Math.floor((mouseX + offset.x)/tileWidth));
+		int y = (int) (Math.floor((mouseY + offset.y)/tileHeight));
 		return new Point(x,y);
 	}
 	public void editTile(int x, int y, DataTile swapped) {
@@ -48,7 +48,20 @@ public class CellRenderer {
 		}
 		
 	}
-	public void incrementOffset(int dx, int dy) {
+	public void incrementOffset(int dx, int dy, int windowWidth, int windowHeight) {
+		//some optimizations to be made here
 		offset.translate(dx, dy);
+		if(offset.x < 0) {
+			offset.x = 0;
+		} else if(offset.x > editCell.tiles[0].length * tileWidth - windowWidth) {
+			offset.x = editCell.tiles[0].length * tileWidth - windowWidth;
+		}
+		if(offset.y < 0) {
+			offset.y = 0;
+		} else if(offset.y > editCell.tiles[1].length * tileHeight - windowHeight) {
+			offset.y = editCell.tiles[1].length * tileHeight - windowHeight; 
+		
+		}
+		
 	}
 }

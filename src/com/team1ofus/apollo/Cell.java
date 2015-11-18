@@ -12,7 +12,7 @@ public class Cell implements Serializable {
 	private static final long serialVersionUID = 2L;
 	public DataTile[][] tiles;
 	//minimum required information
-	double scaling;
+	double scaling  = 1;
 	public Cell(int width, int height, double scaling, TILE_TYPE defaultTile) {
 		id = UUID.randomUUID().toString();
 		//identifier

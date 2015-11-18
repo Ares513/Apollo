@@ -45,7 +45,7 @@ public class ApolloUI {
 	private JLabel lblOffset;
 	private JLabel lblMousePos;
 	DrawPane panel;
-	int scrollSpeed = 1;
+	int scrollSpeed = 5;
 	public ApolloUI(Cell cellToEdit) {
 		painter = new PaintTool();
 		initialize(cellToEdit);
@@ -100,13 +100,14 @@ public class ApolloUI {
 			public void actionPerformed(ActionEvent e) {
 				//selection box changed for tiles
 				painter.selectTileType((TILE_TYPE) tiles.getSelectedItem());
+				panel.grabFocus();
 			}
 		});
 		brushes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//selection box changed for brushes
 				painter.selectBrush(brushes.getSelectedIndex());
-				
+				panel.grabFocus();
 				
 			}
 		});
@@ -142,17 +143,18 @@ public class ApolloUI {
 	}
 	private void doOffsetCalc(KeyEvent e, JLabel offsetLbl) {
 		switch(e.getKeyCode()) {
+		//some optimizations to be made here
 		case KeyEvent.VK_LEFT:
-			panel.render.incrementOffset(-1*scrollSpeed, 0);
+			panel.render.incrementOffset(-1*scrollSpeed, 0, panel.getWidth(), panel.getHeight());
 			break;
 		case KeyEvent.VK_RIGHT:
-			panel.render.incrementOffset(scrollSpeed, 0);
+			panel.render.incrementOffset(scrollSpeed, 0, panel.getWidth(), panel.getHeight());
 			break;
 		case KeyEvent.VK_DOWN:
-			panel.render.incrementOffset(0, scrollSpeed);
+			panel.render.incrementOffset(0, scrollSpeed, panel.getWidth(), panel.getHeight());
 			break;
 		case KeyEvent.VK_UP:
-			panel.render.incrementOffset(0, -1*scrollSpeed);
+			panel.render.incrementOffset(0, -1*scrollSpeed, panel.getWidth(), panel.getHeight());
 			break;
 		default:
 			break;
