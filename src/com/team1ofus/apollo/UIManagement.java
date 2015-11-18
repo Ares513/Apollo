@@ -33,7 +33,7 @@ public class UIManagement implements IDataUpdateListener, IHumanInteractionListe
 		
 	}
 	
-	public	void onDataUpdate(){
+	public	void onDataUpdate() {
 		
 	}
 }

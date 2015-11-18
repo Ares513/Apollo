@@ -14,7 +14,7 @@ public class CellRenderer {
 		tileHeight = 32;
 	}
 	public void renderTiles(Graphics g) {
-		g.clearRect(0, 0, tileWidth*editCell.tiles[0].length, tileHeight*editCell.tiles[1].length);
+		
 		for(int i=0; i<editCell.tiles[0].length; i++) {
 			for(int j=0; j<editCell.tiles[1].length; j++) {
 				switch(editCell.tiles[i][j].getType()) {

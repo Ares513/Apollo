@@ -8,9 +8,9 @@ import javax.swing.JPanel;
 public class DrawPane extends JPanel {
 	CellRenderer render;
 	public DrawPane(Cell inCell) {
+		Cell cell = new Cell(50, 50, 1.0, TILE_TYPE.WALL);
 		
-		
-		render = new CellRenderer(inCell);
+		render = new CellRenderer(cell);
 	}
 	public void paintComponent(Graphics g) {
 		render.renderTiles(g);

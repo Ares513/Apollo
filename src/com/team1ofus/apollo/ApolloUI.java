@@ -11,6 +11,8 @@ import javax.swing.JInternalFrame;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+
 import java.awt.Color;
 import javax.swing.Box;
 import java.awt.Font;
@@ -26,6 +28,8 @@ import javax.swing.GroupLayout.Alignment;
 import java.awt.Component;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.FlowLayout;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class ApolloUI {
 	private JFrame frame;
@@ -62,11 +66,25 @@ public class ApolloUI {
 		windowUI.add(verticalBox);
 		
 		JComboBox tiles = new JComboBox();
+		tiles.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//seletion box changed for tiles
+				painter.selectTileType(tiles.getSelectedIndex());
+			}
+		});
 		verticalBox.add(tiles);
 		tiles.setAlignmentY(5.0f);
 		tiles.setModel(new DefaultComboBoxModel(TILE_TYPE.values()));
 		
 		JComboBox brushes = new JComboBox();
+		brushes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				//selection box changed for brushes
+				painter.selectBrush(brushes.getSelectedIndex());
+				
+				
+			}
+		});
 		verticalBox.add(brushes);
 		brushes.setModel(new DefaultComboBoxModel(new String[] {"Single Tile"}));
 		brushes.setAlignmentY(Component.TOP_ALIGNMENT);
@@ -77,18 +95,16 @@ public class ApolloUI {
 			public void mouseMoved(MouseEvent e) {
 				mousePosition = new Point(e.getX(), e.getY());
 				button.setText(mousePosition.toString()); 
+				if(SwingUtilities.isLeftMouseButton(e)) {
+					//left is pressed!
+					doPaint(panel, e);
+				}
 			}
 		});
 		panel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				//PICK TILES HERE
-				Point picked = panel.render.pickTile(e.getX(), e.getY());
-				painter.applyBrush(panel.render, picked.x, picked.y);
-				
-				panel.render.editTile(picked.x, picked.y, new DataTile(painter.getTileToPaint()));
-				
-				panel.paint(panel.getGraphics());
+				doPaint(panel, e);
 			}
 		});
 		
@@ -99,5 +115,14 @@ public class ApolloUI {
 	}
 	public Point getMouseLocation() {
 		return mousePosition;
+	}
+	private void doPaint(DrawPane panel, MouseEvent e) {
+		//PICK TILES HERE
+		Point picked = panel.render.pickTile(e.getX(), e.getY());
+		painter.applyBrush(panel.render, picked.x, picked.y);
+		
+		//panel.render.editTile(picked.x, picked.y, new DataTile(painter.getTileToPaint()));
+		
+		panel.paint(panel.getGraphics());
 	}
 }
