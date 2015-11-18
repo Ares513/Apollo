@@ -150,7 +150,7 @@ public class ApolloUI {
 				//when a selection is made.
 				panel.currentImage = imageSelection.get(underlyingImageSelection.getSelectedIndex());
 				makePanelDirty();
-				panel.grabFocus;
+				panel.grabFocus();
 			}
 		});
 		frame.getContentPane().add(panel, BorderLayout.CENTER);

@@ -129,9 +129,14 @@ public class Loader extends JDialog {
 						}
 						cellToCreate = new Cell(width, height, 1.0, TILE_TYPE.WALL, mapID + ".map");
 						allCells.add(cellToCreate);
-						mapChooser.setModel(new DefaultComboBoxModel(getNames(allCells)));
+						mapChooser.removeAllItems();
+						String[] names = getNames(allCells);
+						for(int i=0; i<names.length; i++) {
+							mapChooser.addItem(names[i]);
+						}
 						} catch(Exception ex) {
 							//if errors are encountered in parsing, do nothing.
+							System.out.println("Error!");
 						}
 					}
 				});
