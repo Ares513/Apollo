@@ -86,7 +86,7 @@ public class ApolloUI {
 			}
 		});
 		verticalBox.add(brushes);
-		brushes.setModel(new DefaultComboBoxModel(new String[] {"Single Tile"}));
+		brushes.setModel(new DefaultComboBoxModel(new String[] {"Single Tile", "2x2 Square", "3x3 Square"}));
 		brushes.setAlignmentY(Component.TOP_ALIGNMENT);
 		
 		DrawPane panel = new DrawPane(cellToEdit);

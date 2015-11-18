@@ -23,10 +23,13 @@ public class PaintTool {
 	 * sizes?
 	 */
 	private void initializeBrushes() {
-		brushes = new Brush[1];
+		brushes = new Brush[3];
 		Point[] brush1points = {new Point(0,0)}; //single tile
 		brushes[0] = new Brush(brush1points);
-		
+		Point[] brush2points = {new Point(0,0), new Point(1,0), new Point(0,1), new Point(1,1)}; //2 x 2 square
+		brushes[1] = new Brush(brush2points);
+		Point[] brush3points = {new Point(0,0), new Point(1,0), new Point(0,1), new Point(-1,0), new Point(0,-1), new Point(1,-1), new Point(-1,1), new Point(-1,-1), new Point(1,1)}; //3 x 3 square
+		brushes[2] = new Brush(brush3points);
 	}
 	
 	/*
