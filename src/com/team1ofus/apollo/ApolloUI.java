@@ -128,6 +128,7 @@ public class ApolloUI {
 		});
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				events.triggerSave(cellToEdit);
 			}
 		});
 		frame.getContentPane().add(panel, BorderLayout.CENTER);
@@ -170,6 +171,7 @@ public class ApolloUI {
 	}
 	private void buildControls(Cell cellToEdit) {
 		frame = new JFrame();
+		frame.setTitle(cellToEdit.getID());
 		panel  = new DrawPane(cellToEdit);
 		frame.setBounds(100, 100, 969, 596);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -9,12 +9,12 @@ public class Cell implements Serializable {
 	 * 
 	 */
 	private String id;
-	private static final long serialVersionUID = 2L;
+	private static final long serialVersionUID = 3L;
 	public DataTile[][] tiles;
 	//minimum required information
 	double scaling  = 1;
-	public Cell(int width, int height, double scaling, TILE_TYPE defaultTile) {
-		id = UUID.randomUUID().toString();
+	public Cell(int width, int height, double scaling, TILE_TYPE defaultTile, String name) {
+		id = name;
 		//identifier
 		tiles = new DataTile[width][height];
 		fillTiles(TILE_TYPE.WALL);
@@ -29,5 +29,8 @@ public class Cell implements Serializable {
 	}
 	public String getID() {
 		return id;
+	}
+	public void setID(String inID) {
+		id = inID;
 	}
 }

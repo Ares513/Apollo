@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -33,24 +34,23 @@ public class DataManagement implements IUIManagementInteractionListener {
 			e.printStackTrace();
 		}
 		//make a placeholder map.
-		if(cells.size() == 0) {
-			cells.add(makePlaceholderMap());
-		}
-		
+//		if(cells.size() == 0) {
+//			cells.add(makePlaceholderMap());
+//		}
 	}
 	/*
 	 * Create a temporary map.
 	 */
 	private Cell makePlaceholderMap() {
 		Cell output;
-		return output = new Cell(50, 50, 1, TILE_TYPE.WALL);
+		return output = new Cell(50, 50, 1, TILE_TYPE.WALL, UUID.randomUUID().toString());
 		
 	}
 	private ArrayList<Cell> loadAllCells() throws ClassNotFoundException, IOException {
 		ArrayList<Cell> output = new ArrayList<Cell>();
 			List<Path> filteredPaths = getAvailableCells(BootstrapperConstants.APP_FILE_DIRECTORY);
 			for(Path p : filteredPaths) {
-				output.add(loadCell(p.toString()));
+				output.add(loadCell(p));
 					
 			}
 			if(output.size() == 0) {
@@ -65,18 +65,20 @@ public class DataManagement implements IUIManagementInteractionListener {
 	private void saveAllCells(ArrayList<Cell> cellsToSave) throws ClassNotFoundException, IOException {
 		for(Cell c : cellsToSave) {
 			
-				saveCell(BootstrapperConstants.APP_FILE_DIRECTORY + "\\" + c.getID() + ".map", c);
+				saveCell(BootstrapperConstants.APP_FILE_DIRECTORY + "\\" + c.getID(), c);
 
 		}
 	}
-	private Cell loadCell(String pathWithNameAndExtension) throws IOException, ClassNotFoundException {
+	private Cell loadCell(Path target) throws IOException, ClassNotFoundException {
 			
-			FileInputStream in = new FileInputStream(pathWithNameAndExtension);
+			FileInputStream in = new FileInputStream(target.toString());
 			
 			ObjectInputStream objIn = new ObjectInputStream(in);
 			Cell result = (Cell) objIn.readObject();
+			
 			objIn.close();
 			in.close();
+			result.setID(target.getFileName().toString());
 			return result;
 			
 			//The default.map file isn't located.
