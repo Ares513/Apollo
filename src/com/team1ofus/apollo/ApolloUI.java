@@ -138,6 +138,7 @@ public class ApolloUI {
 					JOptionPane namedialog = new JOptionPane();
 					String s = (String) namedialog.showInputDialog(new JFrame(), "Enter location name:", "Location", JOptionPane.PLAIN_MESSAGE, null, null, "");
 					//NEEDS TO BE SENT SOMEWHERE
+					//TODO: send this information somewhere:
 					System.out.println(s);
 				}
 			}
