@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JInternalFrame;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
@@ -58,6 +59,8 @@ public class ApolloUI {
 	private JButton saveButton;
 	public HumanInteractionEventObject events;
 	private JComboBox underlyingImageSelection;
+	private JComboBox paintMode;
+	int mode = 0;
 	ArrayList<Image> imageSelection = new ArrayList<Image>();
 	public ApolloUI() {
 		imageSelection = new ArrayList<Image>(); //editor image selection; could use abstraction but we'll deal with that later.
@@ -129,7 +132,14 @@ public class ApolloUI {
 		panel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				doPaint(panel, e);
+				if(mode == 0)
+					doPaint(panel, e);
+				else if(mode == 1) {
+					JOptionPane namedialog = new JOptionPane();
+					String s = (String) namedialog.showInputDialog(new JFrame(), "Enter location name:", "Location", JOptionPane.PLAIN_MESSAGE, null, null, "");
+					//NEEDS TO BE SENT SOMEWHERE
+					System.out.println(s);
+				}
 			}
 		});
 		tiles.addActionListener(new ActionListener() {
@@ -172,6 +182,11 @@ public class ApolloUI {
 				panel.currentImage = imageSelection.get(underlyingImageSelection.getSelectedIndex());
 				makePanelDirty();
 				panel.grabFocus();
+			}
+		});
+		paintMode.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setMode(paintMode.getSelectedIndex());
 			}
 		});
 		frame.getContentPane().add(panel, BorderLayout.CENTER);
@@ -301,9 +316,28 @@ public class ApolloUI {
 		verticalBox.add(tiles);
 		tiles.setAlignmentY(5.0f);
 		tiles.setModel(new DefaultComboBoxModel(TILE_TYPE.values()));
+		
+		paintMode = new JComboBox();
+		paintMode.setModel(new DefaultComboBoxModel(new String[] {"Tile painting", "Location Painting"}));
+		verticalBox.add(paintMode);
+		tiles.setAlignmentY(5.0f);
 	}
 	
 	private void repaintPanel() {
 		panel.repaint();
+	}
+	
+	private void setMode(int modeIndex) {
+		mode = modeIndex;
+		if(modeIndex == 0) {
+			underlyingImageSelection.setEnabled(true);
+			brushes.setEnabled(true);
+			tiles.setEnabled(true);
+		}
+		else if(modeIndex == 1) {
+			underlyingImageSelection.setEnabled(false);
+			brushes.setEnabled(false);
+			tiles.setEnabled(false);
+		}
 	}
 }
