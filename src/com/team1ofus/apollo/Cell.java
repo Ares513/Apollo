@@ -2,6 +2,7 @@ package com.team1ofus.apollo;
 
 import java.awt.Point;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class Cell implements Serializable {
@@ -9,12 +10,13 @@ public class Cell implements Serializable {
 	 * 
 	 */
 	private String id;
-	private static final long serialVersionUID = 4L;
+	private static final long serialVersionUID = 5L;
 	private DataTile[][] tiles;
 	//minimum required information
 	double scaling  = 1;
 	private int fixedWidth;
 	private int fixedHeight;
+	ArrayList<LocationInfo> listedLocations; //Specific locations, i.e fountain. No cell association.
 	public Cell(int width, int height, double scaling, TILE_TYPE defaultTile, String name) {
 		id = name;
 		//identifier
