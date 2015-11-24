@@ -33,6 +33,8 @@ import java.awt.GridBagConstraints;
 import javax.swing.JComboBox;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+
+
 import java.awt.Component;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.FlowLayout;
@@ -103,7 +105,26 @@ public class ApolloUI {
 					//left is pressed!
 					doPaint(panel, e);
 				}
+				else if(SwingUtilities.isRightMouseButton(e)){
+
+					//safety check
+					
+					if(mousePosition != null) {
+						int x = (int) (-0.5*(e.getX() - mousePosition.getX()));
+						int y = (int) (-0.5*(e.getY() - mousePosition.getY()));
+						//DebugManagement.writeNotificationToLog("Dragging occurred, dx dy " + x + " , " + y);
+						panel.render.incrementOffset(x, y, frame.getWidth(), frame.getHeight());
+						//pathPanel.setOffset(panel.render.offset);
+						repaintPanel();
+						mousePosition = e.getPoint();
+					} else {
+						mousePosition = new Point(e.getX(), e.getY());
+					}
+				
+				}
 			}
+			
+			
 		});
 		panel.addMouseListener(new MouseAdapter() {
 			@Override
@@ -267,5 +288,9 @@ public class ApolloUI {
 		verticalBox.add(tiles);
 		tiles.setAlignmentY(5.0f);
 		tiles.setModel(new DefaultComboBoxModel(TILE_TYPE.values()));
+	}
+	
+	private void repaintPanel() {
+		panel.repaint();
 	}
 }
