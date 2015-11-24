@@ -16,7 +16,7 @@ public class Cell implements Serializable {
 	double scaling  = 1;
 	private int fixedWidth;
 	private int fixedHeight;
-	ArrayList<LocationInfo> listedLocations; //Specific locations, i.e fountain. No cell association.
+	ArrayList<LocationInfo> listedLocations; //Specific locations, i.e fountain. No cell association variable if it doesn't associate to anything."
 	public Cell(int width, int height, double scaling, TILE_TYPE defaultTile, String name) {
 		id = name;
 		//identifier
@@ -44,6 +44,9 @@ public class Cell implements Serializable {
 	}
 	public int getHeight() {
 		return fixedHeight;
+	}
+	public void addLocation(LocationInfo input) {
+		listedLocations.add(input);
 	}
 	public void setTile(int x, int y, TILE_TYPE tileToSet) {
 		int xActual = x;
