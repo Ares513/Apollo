@@ -10,17 +10,19 @@ public class CellRenderer {
 	int tileWidth;
 	int tileHeight;
 	Point offset;
+	Point underlyingOffset;
 	Cell editCell;
 	public CellRenderer(Cell inCell) {
 		editCell = inCell;
 		tileWidth = (int) Math.round(16*inCell.scaling);
 		tileHeight =(int) Math.round(16*inCell.scaling);
 		offset = new Point(0,0);
+		underlyingOffset = new Point(0,0);
 	}
 	public void renderTiles(Graphics g, Image underlyingImage) {
 		g.setColor(Color.WHITE);
 	    g.fillRect(0, 0, tileWidth * editCell.getWidth(), tileHeight * editCell.getHeight());
-		g.drawImage(underlyingImage, offset.x*-1, offset.y*-1, Color.white, null);
+		g.drawImage(underlyingImage, offset.x*-1 - underlyingOffset.x, offset.y*-1 - underlyingOffset.y, Color.white, null);
 		int cellWidth = editCell.getWidth();
 		int cellHeight = editCell.getHeight();
 		for(int i=0; i<cellWidth; i++) {
@@ -94,6 +96,17 @@ public class CellRenderer {
 		} else if(offset.y > editCell.getHeight() * tileHeight - windowHeight) {
 			offset.y = editCell.getHeight() * tileHeight - windowHeight; 
 		
+		}
+		
+	}
+	public void incrementUnderlyingOffset(int dx, int dy, int windowWidth, int windowHeight) {
+		//some optimizations to be made here
+		underlyingOffset.translate(dx, dy);
+		if(underlyingOffset.x < 0) {
+			underlyingOffset.x = 0;
+		}
+		if(underlyingOffset.y < 0) {
+			underlyingOffset.y = 0;
 		}
 		
 	}

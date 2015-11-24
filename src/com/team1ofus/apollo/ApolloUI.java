@@ -227,6 +227,19 @@ public class ApolloUI {
 		case KeyEvent.VK_UP:
 			panel.render.incrementOffset(0, -1*scrollSpeed, panel.getWidth(), panel.getHeight());
 			break;
+		case KeyEvent.VK_A:
+			panel.render.incrementUnderlyingOffset(-1*scrollSpeed, 0, panel.getWidth(), panel.getHeight());
+			break;
+		case KeyEvent.VK_D:
+			panel.render.incrementUnderlyingOffset(scrollSpeed, 0, panel.getWidth(), panel.getHeight());
+			break;
+		case KeyEvent.VK_S:
+			panel.render.incrementUnderlyingOffset(0, scrollSpeed, panel.getWidth(), panel.getHeight());
+			break;
+		case KeyEvent.VK_W:
+			panel.render.incrementUnderlyingOffset(0, -1*scrollSpeed, panel.getWidth(), panel.getHeight());
+			break;
+			
 		default:
 			break;
 		}
