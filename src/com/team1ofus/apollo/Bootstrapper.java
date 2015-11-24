@@ -7,12 +7,16 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JFrame;
 
+import com.team1ofus.apollo.SplashScreen;
+
 public class Bootstrapper {
 	
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		SplashScreen splash = new SplashScreen(1000); //X000 -> x seconds 
+		splash.showSplashAndExit();	
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
