@@ -113,8 +113,8 @@ public class ApolloUI {
 						int x = (int) (-0.5*(e.getX() - mousePosition.getX()));
 						int y = (int) (-0.5*(e.getY() - mousePosition.getY()));
 						//DebugManagement.writeNotificationToLog("Dragging occurred, dx dy " + x + " , " + y);
-						panel.render.incrementOffset(x, y, frame.getWidth(), frame.getHeight());
-						//pathPanel.setOffset(panel.render.offset);
+						panel.render.incrementOffset(x, y, panel.getWidth(), panel.getHeight());
+						//panel.setOffset(panel.render.offset);
 						repaintPanel();
 						mousePosition = e.getPoint();
 					} else {
