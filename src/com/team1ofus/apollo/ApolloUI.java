@@ -62,6 +62,8 @@ public class ApolloUI {
 	private JComboBox paintMode;
 	int mode = 0;
 	ArrayList<Image> imageSelection = new ArrayList<Image>();
+	ArrayList<String> imageNames = new ArrayList<String>();
+	
 	public ApolloUI() {
 		imageSelection = new ArrayList<Image>(); //editor image selection; could use abstraction but we'll deal with that later.
 		loadImages();
@@ -211,10 +213,13 @@ public class ApolloUI {
 		makePanelDirty();
 	}
 	private void loadImages() {
-		imageSelection.add(loadImage("stratton_hall-page1.jpg"));
-		imageSelection.add(loadImage("stratton_hall-page2.jpg"));
-		imageSelection.add(loadImage("stratton_hall-page3.jpg"));
-		imageSelection.add(loadImage("stratton_hall-page4.jpg"));
+		File dir = new File(".");
+		for (File file : dir.listFiles()) {
+			if (file.getName().endsWith((".jpg"))) {
+				imageNames.add(file.getName());
+				imageSelection.add(loadImage(file.getName()));
+			}
+		}
 	}
 	private BufferedImage loadImage(String path) {
 		BufferedImage img = null;
@@ -276,8 +281,8 @@ public class ApolloUI {
 		
 		windowUI = new JPanel();
 
-		windowUI.setBackground(Color.RED);
-		windowUI.setForeground(Color.RED);
+		//windowUI.setBackground(Color.RED);
+		//windowUI.setForeground(Color.RED);
 		frame.getContentPane().add(windowUI, BorderLayout.EAST);
 		windowUI.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
@@ -307,10 +312,8 @@ public class ApolloUI {
 		underlyingImageSelection = new JComboBox();
 
 		underlyingImageSelection.setAlignmentY(5.0f);
-		underlyingImageSelection.addItem("stratton_hall-page1.jpg");
-		underlyingImageSelection.addItem("stratton_hall-page2.jpg");
-		underlyingImageSelection.addItem("stratton_hall-page3.jpg");
-		underlyingImageSelection.addItem("stratton_hall-page4.jpg"); //will need to link this later
+		for(String s : imageNames)
+			underlyingImageSelection.addItem(s);
 		
 		verticalBox.add(underlyingImageSelection);
 		tiles = new JComboBox();
