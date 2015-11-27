@@ -143,21 +143,25 @@ public class ApolloUI extends JPanel {
 				if (mode == 0)
 					doPaint(panel, e);
 				else if (mode == 1) {
+					//overwrite mode. Existing points will be deleted and replaced.
 					JOptionPane namedialog = new JOptionPane();
 					String s = (String) namedialog.showInputDialog(new JFrame(), "Enter location name:", "Location",
 							JOptionPane.PLAIN_MESSAGE, null, null, "");
 					DebugManagement.writeNotificationToLog("Text point added.");
-					textPanel.addLocation(new TextLocation(s, e.getPoint()));
+					textPanel.removeLocation(panel.render.pickTile(e.getX(), e.getY()));
+					textPanel.addLocation(new TextLocation(s, panel.render.pickTile(e.getX(), e.getY())));
 					repaintPanel();
-					// NEEDS TO BE SENT SOMEWHERE
 					// TODO: send this information somewhere:
 					
+				} else if(mode == 2) {
+					JOptionPane namedialog = new JOptionPane();
+					String s = (String) namedialog.showInputDialog(new JFrame(), "Amend location name", "Location",
+							JOptionPane.PLAIN_MESSAGE, null, null, "");
+					textPanel.updateLocation(s, panel.render.pickTile(e.getX(), e.getY()));
+					repaintPanel();
 				}
 			}
 		});
-
-		// this loads the default image automagically and needs to be changed
-		// when we implement this more formally
 
 		tiles.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -364,7 +368,7 @@ public class ApolloUI extends JPanel {
 		tiles.setModel(new DefaultComboBoxModel(TILE_TYPE.values()));
 
 		paintMode = new JComboBox();
-		paintMode.setModel(new DefaultComboBoxModel(new String[] { "Tile painting", "Location Painting" }));
+		paintMode.setModel(new DefaultComboBoxModel(new String[] {"Tile painting", "Location Painting", "Append Location"}));
 		verticalBox.add(paintMode);
 		tiles.setAlignmentY(5.0f);
 		windowUI.setBounds(691, 0, 150, 560);
@@ -383,6 +387,10 @@ public class ApolloUI extends JPanel {
 			brushes.setEnabled(true);
 			tiles.setEnabled(true);
 		} else if (modeIndex == 1) {
+			underlyingImageSelection.setEnabled(false);
+			brushes.setEnabled(false);
+			tiles.setEnabled(false);
+		} else if (modeIndex == 2) {
 			underlyingImageSelection.setEnabled(false);
 			brushes.setEnabled(false);
 			tiles.setEnabled(false);
