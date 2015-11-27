@@ -34,7 +34,15 @@ public class TextPane extends JPanel {
 				
 				//double xShift = 0;
 				FontMetrics metrics = g.getFontMetrics(g.getFont());
-				int stringLength = (int) metrics.getStringBounds(l.lines.get(i), g).getWidth();
+				int stringLength;
+				if(metrics == null) {
+					DebugManagement.writeLineToLog(SEVERITY_LEVEL.ERROR, "FontMetrics was unable to be loaded in TextPane.");
+					stringLength = 0;
+				} else {
+					stringLength = (int) metrics.getStringBounds(l.lines.get(i), g).getWidth();
+					
+				}
+				
 				int start = stringLength/2;
 				g.drawString(l.lines.get(i), l.location.x*BootstrapperConstants.TILE_WIDTH-(int)start+BootstrapperConstants.TILE_WIDTH/2, l.location.y*BootstrapperConstants.TILE_HEIGHT+g.getFont().getSize()*i);
 				
@@ -64,7 +72,7 @@ public class TextPane extends JPanel {
 		}
 		DebugManagement.writeLineToLog(SEVERITY_LEVEL.WARNING, "Attempted to append when there was nothing to append.");
 		//can't have reached here if the point already existed.
-		locations.add(new TextLocation(input, (new Point(BootstrapperConstants.TILE_WIDTH*location.x, BootstrapperConstants.TILE_HEIGHT*location.y))));
+		locations.add(new TextLocation(input, (new Point(location.x, location.y))));
 	}
 	public static Predicate<TextLocation> isEqual(Point filter) {
 	    return p -> p.location.equals(filter);
