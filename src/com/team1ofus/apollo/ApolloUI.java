@@ -146,10 +146,12 @@ public class ApolloUI extends JPanel {
 					JOptionPane namedialog = new JOptionPane();
 					String s = (String) namedialog.showInputDialog(new JFrame(), "Enter location name:", "Location",
 							JOptionPane.PLAIN_MESSAGE, null, null, "");
-					System.out.println(s);
+					DebugManagement.writeNotificationToLog("Text point added.");
+					textPanel.addLocation(new TextLocation(s, e.getPoint()));
+					repaintPanel();
 					// NEEDS TO BE SENT SOMEWHERE
 					// TODO: send this information somewhere:
-					System.out.println(s);
+					
 				}
 			}
 		});
