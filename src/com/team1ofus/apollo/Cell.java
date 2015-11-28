@@ -68,7 +68,7 @@ public class Cell implements Serializable {
 		}
 		DebugManagement.writeLineToLog(SEVERITY_LEVEL.CORRUPTED, "An attempt was made to append where there was nothing to append.");
 		//nothing happens.
-	}
+	} 
 	/*
 	 * Duplicate locations are deleted and overwritten.
 	 */
