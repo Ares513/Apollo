@@ -151,6 +151,7 @@ public class ApolloUI extends JPanel {
 		layeredPane.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				Point picked = panel.render.pickTile(e.getX(), e.getY());
 				if (mode == 0)
 					doPaint(panel, e);
 				else if (mode == 1) {
@@ -159,10 +160,11 @@ public class ApolloUI extends JPanel {
 					String s = (String) namedialog.showInputDialog(new JFrame(), "Enter location name:", "Location",
 							JOptionPane.PLAIN_MESSAGE, null, null, "");
 					DebugManagement.writeNotificationToLog("Text point added.");
-					textPanel.removeLocation(panel.render.pickTile(e.getX(), e.getY()));
-					textPanel.addLocation(new TextLocation(s, panel.render.pickTile(e.getX(), e.getY()), Color.BLACK));
+					
+					textPanel.addLocation(new TextLocation(s, picked, Color.BLACK));
+					cellToEdit.addLocation(new LocationInfo(s, picked));
 					repaintPanel();
-					// TODO: send this information somewhere:
+				
 					
 				} else if(mode == 2) {
 					JOptionPane namedialog = new JOptionPane();
@@ -170,6 +172,7 @@ public class ApolloUI extends JPanel {
 							JOptionPane.PLAIN_MESSAGE, null, null, "");
 					DebugManagement.writeNotificationToLog("Text point amended.");
 					textPanel.updateLocation(s, panel.render.pickTile(e.getX(), e.getY()));
+					cellToEdit.appendLocation(picked, s);
 					repaintPanel();
 				} else if(mode == 3) {
 					//creating cell points
@@ -181,19 +184,21 @@ public class ApolloUI extends JPanel {
 							JOptionPane.PLAIN_MESSAGE, null, null, "");
 					String entryReference = (String) namedialog.showInputDialog(new JFrame(), "Enter Entry Point", "Cell ID",
 							JOptionPane.PLAIN_MESSAGE, null, null, "");
-					//name of the entrance 
-					textPanel.removeLocation(panel.render.pickTile(e.getX(), e.getY()));
+					//name of the entrance it is at on the other cell.
+					cellToEdit.addLocation(new LocationInfo(s, picked, reference, entryReference));
 					textPanel.addLocation(new TextLocation(s, panel.render.pickTile(e.getX(), e.getY()), Color.BLUE));
 					repaintPanel();
 				} else if(mode == 4) {
 					//creating entry points for other cell points
 					JOptionPane namedialog = new JOptionPane();
-					String s = (String) namedialog.showInputDialog(new JFrame(), "Enter location name:", "Location",
+					String s = (String) namedialog.showInputDialog(new JFrame(), "Enter entry name:", "Location",
 							JOptionPane.PLAIN_MESSAGE, null, null, "");
 					DebugManagement.writeNotificationToLog("Text point added.");
-					String entryReference = (String) namedialog.showInputDialog(new JFrame(), "Enter Entry Point", "Entry Name",
-							JOptionPane.PLAIN_MESSAGE, null, null, "");
-					//name of the entrance 
+					//name of the entryReference
+					cellToEdit.addEntryPoint(new EntryPoint(s, picked));
+					//this would indicate that at point picked, there is an entry label named s.
+					//Other cells could reference it, saying that they are accessing cell (this cell), entry label s.
+					
 					textPanel.removeLocation(panel.render.pickTile(e.getX(), e.getY()));
 					textPanel.addLocation(new TextLocation(s, panel.render.pickTile(e.getX(), e.getY()), Color.GREEN));
 					repaintPanel();
@@ -357,7 +362,7 @@ public class ApolloUI extends JPanel {
 
 		panel = new DrawPane(cellToEdit);
 		panel.setBounds(0, 0, 691, 560);
-		textPanel = new TextPane();
+		textPanel = new TextPane(cellToEdit);
 		layeredPane.add(textPanel);
 		textPanel.setBounds(0, 0, 691, 560);
 		layeredPane.add(panel);

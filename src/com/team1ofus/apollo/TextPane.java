@@ -20,9 +20,27 @@ import javax.swing.JPanel;
 public class TextPane extends JPanel {
 	ArrayList<TextLocation> locations = new ArrayList<TextLocation>();
 	public Point currentTileLocation; //automatically updated.
-	public TextPane() {
+	public TextPane(Cell cellToEdit) {
 		setOpaque(true);
-
+		loadFromCell(cellToEdit);
+	}
+	private void loadFromCell(Cell cellToEdit) {
+		for(LocationInfo l : cellToEdit.getListedLocations()) {
+			if(l.getCellReference() == null) {
+				//generic location, it's black
+				//relates to TFS bug #242.
+				//TODO: fix magic number associations
+				locations.add(new TextLocation(l.getAliases(), l.getLocation(), Color.BLACK));
+				
+			} else {
+				locations.add(new TextLocation(l.getAliases(), l.getLocation(), Color.BLUE));
+				
+			}    
+			DebugManagement.writeNotificationToLog("Loaded a new LocationInfo from the cell at " + l.getLocation().toString());
+		}
+		for(EntryPoint e : cellToEdit.getEntryPoints()) {
+			locations.add(new TextLocation(e.getName(), e.getLocation(), Color.GREEN));
+		}
 	}
 	public void paintComponent(Graphics g) {
 		g.setColor(Color.RED);
@@ -56,6 +74,7 @@ public class TextPane extends JPanel {
 		
 	}
 	public void addLocation(TextLocation input) {
+		removeLocation(input.location);
 		DebugManagement.writeNotificationToLog("Created new location at " + input.location.toString());
 		locations.add(input);
 	}
@@ -76,7 +95,8 @@ public class TextPane extends JPanel {
 		}
 		DebugManagement.writeLineToLog(SEVERITY_LEVEL.WARNING, "Attempted to append when there was nothing to append.");
 		//can't have reached here if the point already existed.
-		locations.add(new TextLocation(input, (new Point(location.x, location.y)), Color.BLACK));
+		//nothing happens
+		//locations.add(new TextLocation(input, (new Point(location.x, location.y)), Color.BLACK));
 	}
 	public static Predicate<TextLocation> isEqual(Point filter) {
 	    return p -> p.location.equals(filter);

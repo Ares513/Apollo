@@ -3,20 +3,24 @@ package com.team1ofus.apollo;
 import java.awt.Point;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.UUID;
+import java.util.function.Predicate;
 
 public class Cell implements Serializable {
 	/**
 	 * 
 	 */
 	private String id;
-	private static final long serialVersionUID = 5L;
+	private static final long serialVersionUID = 6L;
 	private DataTile[][] tiles;
 	//minimum required information
 	double scaling  = 1;
 	private int fixedWidth;
 	private int fixedHeight;
-	ArrayList<LocationInfo> listedLocations; //Specific locations, i.e fountain. No cell association variable if it doesn't associate to anything."
+	private ArrayList<LocationInfo> listedLocations; //Specific locations, i.e fountain. No cell association variable if it doesn't associate to anything.
+	private ArrayList<EntryPoint> entryPoints; //wrap it in ArrayList whenever needed
+	//psuedo-set; duplicate terms cannot be added
 	public Cell(int width, int height, double scaling, TILE_TYPE defaultTile, String name) {
 		id = name;
 		//identifier
@@ -24,6 +28,14 @@ public class Cell implements Serializable {
 		fillTiles(TILE_TYPE.WALL, width, height);
 		fixedWidth = width;
 		fixedHeight = height;
+		entryPoints = new ArrayList<EntryPoint>();
+		listedLocations = new ArrayList<LocationInfo>();
+	}
+	public ArrayList<LocationInfo> getListedLocations() {
+		return listedLocations;
+	}
+	public ArrayList<EntryPoint> getEntryPoints() {
+		return entryPoints;
 	}
 	private void fillTiles(TILE_TYPE fillTile, int width, int height) {
 		for(int i=0; i< width; i++) {
@@ -45,8 +57,41 @@ public class Cell implements Serializable {
 	public int getHeight() {
 		return fixedHeight;
 	}
+
+	public void appendLocation(Point loc, String text) {
+		for(int i=0; i<listedLocations.size(); i++) {
+			if(listedLocations.get(i).getLocation() == loc) {
+				//location matched. duplicate locations not allowed, this must be it.
+				listedLocations.get(i).addAlias(text);
+				return;
+			}
+		}
+		DebugManagement.writeLineToLog(SEVERITY_LEVEL.CORRUPTED, "An attempt was made to append where there was nothing to append.");
+		//nothing happens.
+	}
+	/*
+	 * Duplicate locations are deleted and overwritten.
+	 */
 	public void addLocation(LocationInfo input) {
+		removeLocation(input.getLocation());
 		listedLocations.add(input);
+	}
+	public void addEntryPoint(EntryPoint input) {
+		removeLocation(input.getLocation());
+		entryPoints.add(input); //duplicates can't be added, it's a HashSet
+	}
+	public void removeLocation(Point input) {
+		System.out.println(1);
+		listedLocations.removeIf(isLocationEqual(input));
+	}
+	public void removeEntry(Point input) {
+		entryPoints.removeIf(isEntryEqual(input));
+	}
+	public static Predicate<EntryPoint> isEntryEqual(Point filter) {
+	    return p -> p.getLocation().equals(filter);
+	}
+	public static Predicate<LocationInfo> isLocationEqual(Point filter) {
+	    return p -> p.getLocation().equals(filter);
 	}
 	public void setTile(int x, int y, TILE_TYPE tileToSet) {
 		int xActual = x;

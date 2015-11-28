@@ -13,6 +13,11 @@ public class TextLocation {
 		this.location = location;
 		drawnColor = inColor;
 	}
+	public TextLocation(ArrayList<String> input, Point location, Color inColor) {
+		lines = input;
+		this.location = location;
+		drawnColor = inColor;
+	}
 	public void addString(String input) {
 		lines.add(input);
 	}

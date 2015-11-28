@@ -5,17 +5,26 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class LocationInfo implements Serializable {
-	String id;
+	private String cellReference;
+	private String entryPoint; //Name of the entry point on the other map
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	ArrayList<String> aliases = new ArrayList<String>();
-	Point loc;
-	public LocationInfo(String first, Point location, String cellID) {
+	private ArrayList<String> aliases = new ArrayList<String>(); //names it can be referred to as
+	private Point loc; //location on screen
+	
+	public LocationInfo(String first, Point location, String cellID, String entryPoint) {
 		loc = location;
 		aliases.add(first);
-		id = cellID;
+		cellReference = cellID;
+		this.entryPoint = entryPoint;
+		DebugManagement.writeNotificationToLog("Created a new location with " + cellID +  " reference with " + first + " at " + location + " entry point " + entryPoint);
+	}
+	public LocationInfo(String first, Point location) {
+		loc = location;
+		aliases.add(first);
+		DebugManagement.writeNotificationToLog("Created a new location with no reference with " + first + " at " + location);
 	}
 	public void addAlias(String name) {
 		//TODO: prevent duplicate names.
@@ -29,6 +38,12 @@ public class LocationInfo implements Serializable {
 		return loc;
 	}
 	public String getCellReference() {
-		return id;
+		return cellReference;
+	}
+	public String getEntryPoint() {
+		return entryPoint;
+	}
+	public ArrayList<String> getAliases() {
+		return aliases;
 	}
 }

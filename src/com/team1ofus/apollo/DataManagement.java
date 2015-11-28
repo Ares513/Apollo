@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.nio.file.Files;
@@ -30,12 +31,15 @@ public class DataManagement implements IUIManagementInteractionListener {
 			cells = loadAllCells();
 			
 		} catch (ClassNotFoundException | IOException e) {
+			DebugManagement.writeLineToLog(SEVERITY_LEVEL.CORRUPTED, "Data does not match serialization version or file does not exist.");
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			
+			
 		}
 		//make a placeholder map.
 //		if(cells.size() == 0) {
-//			cells.add(makePlaceholderMap());
+//			
 //		}
 	}
 	/*
@@ -74,8 +78,9 @@ public class DataManagement implements IUIManagementInteractionListener {
 			FileInputStream in = new FileInputStream(target.toString());
 			
 			ObjectInputStream objIn = new ObjectInputStream(in);
+
 			Cell result = (Cell) objIn.readObject();
-			
+				
 			objIn.close();
 			in.close();
 			result.setID(target.getFileName().toString());
@@ -85,6 +90,10 @@ public class DataManagement implements IUIManagementInteractionListener {
 			// TODO Auto-generated catch block		
 	}
 	private void saveCell(String pathWithNameAndExtension, Cell cellToWrite) throws IOException, ClassNotFoundException {
+		DebugManagement.writeNotificationToLog("Initializing save.");
+		DebugManagement.writeNotificationToLog("ID " + cellToWrite.getID().toString());
+		DebugManagement.writeNotificationToLog("Listed Locations " + cellToWrite.getListedLocations().toString());
+		DebugManagement.writeNotificationToLog("Entry points " + cellToWrite.getEntryPoints().toString());
 		FileOutputStream out = new FileOutputStream(pathWithNameAndExtension);
 		ObjectOutputStream objOut = new ObjectOutputStream(out);
 		
