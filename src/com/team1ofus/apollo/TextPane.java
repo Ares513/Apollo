@@ -19,6 +19,7 @@ import javax.swing.JPanel;
  */
 public class TextPane extends JPanel {
 	ArrayList<TextLocation> locations = new ArrayList<TextLocation>();
+	public Point currentTileLocation; //automatically updated.
 	public TextPane() {
 		setOpaque(true);
 
@@ -28,6 +29,7 @@ public class TextPane extends JPanel {
 		g.setFont(new Font("TimesRoman", Font.PLAIN, 12));
 		this.paintComponents(g);
 		for(TextLocation l : locations) {
+			g.setColor(l.drawnColor);
 			//we now need to center the text.
 			//double yShift = g.getFont().getSize()/2;
 			for(int i=0; i<l.lines.size(); i++) {
@@ -50,7 +52,9 @@ public class TextPane extends JPanel {
 		}
 		showConsole(g);
 	}
-
+	public void doPopupBoxes(Graphics g) {
+		
+	}
 	public void addLocation(TextLocation input) {
 		DebugManagement.writeNotificationToLog("Created new location at " + input.location.toString());
 		locations.add(input);
@@ -72,7 +76,7 @@ public class TextPane extends JPanel {
 		}
 		DebugManagement.writeLineToLog(SEVERITY_LEVEL.WARNING, "Attempted to append when there was nothing to append.");
 		//can't have reached here if the point already existed.
-		locations.add(new TextLocation(input, (new Point(location.x, location.y))));
+		locations.add(new TextLocation(input, (new Point(location.x, location.y)), Color.BLACK));
 	}
 	public static Predicate<TextLocation> isEqual(Point filter) {
 	    return p -> p.location.equals(filter);

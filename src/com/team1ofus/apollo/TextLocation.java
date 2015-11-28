@@ -1,14 +1,17 @@
 package com.team1ofus.apollo;
 
+import java.awt.Color;
 import java.awt.Point;
 import java.util.ArrayList;
 
 public class TextLocation {
 	ArrayList<String> lines = new ArrayList<String>();
 	Point location;
-	public TextLocation(String input, Point location) {
+	Color drawnColor;
+	public TextLocation(String input, Point location, Color inColor) {
 		lines.add(input);
 		this.location = location;
+		drawnColor = inColor;
 	}
 	public void addString(String input) {
 		lines.add(input);

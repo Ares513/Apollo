@@ -89,25 +89,36 @@ public class ApolloUI extends JPanel {
 		frame.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
+
+				System.out.println("test");
 				doOffsetCalc(e, lblOffset);
 			}
 		});
-
-		panel.addKeyListener(new KeyAdapter() {
+		textPanel.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				textPanel.grabFocus();
+				DebugManagement.writeNotificationToLog("Offset is " + panel.render.offset);
+				doOffsetCalc(e, lblOffset);
+			}
+		});
+		layeredPane.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				doOffsetCalc(e, lblOffset);
 			}
 		});
 
-		panel.addMouseMotionListener(new MouseMotionAdapter() {
+		layeredPane.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseMoved(MouseEvent e) {
 				mousePosition = new Point(e.getX(), e.getY());
-
 				if (SwingUtilities.isLeftMouseButton(e)) {
 					// left is pressed!
-					doPaint(panel, e);
+					if(mode == 0) {
+						doPaint(panel, e);
+						//no support for mouse held tile painting
+					}
 				}
 			}
 
@@ -137,7 +148,7 @@ public class ApolloUI extends JPanel {
 			}
 
 		});
-		panel.addMouseListener(new MouseAdapter() {
+		layeredPane.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (mode == 0)
@@ -149,7 +160,7 @@ public class ApolloUI extends JPanel {
 							JOptionPane.PLAIN_MESSAGE, null, null, "");
 					DebugManagement.writeNotificationToLog("Text point added.");
 					textPanel.removeLocation(panel.render.pickTile(e.getX(), e.getY()));
-					textPanel.addLocation(new TextLocation(s, panel.render.pickTile(e.getX(), e.getY())));
+					textPanel.addLocation(new TextLocation(s, panel.render.pickTile(e.getX(), e.getY()), Color.BLACK));
 					repaintPanel();
 					// TODO: send this information somewhere:
 					
@@ -157,9 +168,37 @@ public class ApolloUI extends JPanel {
 					JOptionPane namedialog = new JOptionPane();
 					String s = (String) namedialog.showInputDialog(new JFrame(), "Amend location name", "Location",
 							JOptionPane.PLAIN_MESSAGE, null, null, "");
+					DebugManagement.writeNotificationToLog("Text point amended.");
 					textPanel.updateLocation(s, panel.render.pickTile(e.getX(), e.getY()));
 					repaintPanel();
-				}
+				} else if(mode == 3) {
+					//creating cell points
+					JOptionPane namedialog = new JOptionPane();
+					String s = (String) namedialog.showInputDialog(new JFrame(), "Enter location name:", "Location",
+							JOptionPane.PLAIN_MESSAGE, null, null, "");
+					DebugManagement.writeNotificationToLog("Cell point added.");
+					String reference = (String) namedialog.showInputDialog(new JFrame(), "Enter Cell Name", "Cell ID",
+							JOptionPane.PLAIN_MESSAGE, null, null, "");
+					String entryReference = (String) namedialog.showInputDialog(new JFrame(), "Enter Entry Point", "Cell ID",
+							JOptionPane.PLAIN_MESSAGE, null, null, "");
+					//name of the entrance 
+					textPanel.removeLocation(panel.render.pickTile(e.getX(), e.getY()));
+					textPanel.addLocation(new TextLocation(s, panel.render.pickTile(e.getX(), e.getY()), Color.BLUE));
+					repaintPanel();
+				} else if(mode == 4) {
+					//creating entry points for other cell points
+					JOptionPane namedialog = new JOptionPane();
+					String s = (String) namedialog.showInputDialog(new JFrame(), "Enter location name:", "Location",
+							JOptionPane.PLAIN_MESSAGE, null, null, "");
+					DebugManagement.writeNotificationToLog("Text point added.");
+					String entryReference = (String) namedialog.showInputDialog(new JFrame(), "Enter Entry Point", "Entry Name",
+							JOptionPane.PLAIN_MESSAGE, null, null, "");
+					//name of the entrance 
+					textPanel.removeLocation(panel.render.pickTile(e.getX(), e.getY()));
+					textPanel.addLocation(new TextLocation(s, panel.render.pickTile(e.getX(), e.getY()), Color.GREEN));
+					repaintPanel();
+				} 
+
 			}
 		});
 
@@ -167,14 +206,14 @@ public class ApolloUI extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				// selection box changed for tiles
 				painter.selectTileType((TILE_TYPE) tiles.getSelectedItem());
-				panel.grabFocus();
+				textPanel.grabFocus();
 			}
 		});
 		brushes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				// selection box changed for brushes
 				painter.selectBrush(brushes.getSelectedIndex());
-				panel.grabFocus();
+				textPanel.grabFocus();
 
 			}
 		});
@@ -193,7 +232,7 @@ public class ApolloUI extends JPanel {
 		});
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				panel.grabFocus();
+				textPanel.grabFocus();
 				events.triggerSave(cellToEdit);
 			}
 		});
@@ -202,7 +241,7 @@ public class ApolloUI extends JPanel {
 				// when a selection is made.
 				panel.currentImage = imageSelection.get(underlyingImageSelection.getSelectedIndex());
 				makePanelDirty();
-				panel.grabFocus();
+				textPanel.grabFocus();
 			}
 		});
 		paintMode.addActionListener(new ActionListener() {
@@ -368,11 +407,11 @@ public class ApolloUI extends JPanel {
 		tiles.setModel(new DefaultComboBoxModel(TILE_TYPE.values()));
 
 		paintMode = new JComboBox();
-		paintMode.setModel(new DefaultComboBoxModel(new String[] {"Tile painting", "Location Painting", "Append Location"}));
+		paintMode.setModel(new DefaultComboBoxModel(new String[] {"Tile painting", "Location Painting", "Append Location Painting", "Cell Reference Painting", "Entry Point Painting"}));
 		verticalBox.add(paintMode);
 		tiles.setAlignmentY(5.0f);
 		windowUI.setBounds(691, 0, 150, 560);
-
+		textPanel.grabFocus();
 	}
 
 	private void repaintPanel() {
@@ -386,14 +425,11 @@ public class ApolloUI extends JPanel {
 			underlyingImageSelection.setEnabled(true);
 			brushes.setEnabled(true);
 			tiles.setEnabled(true);
-		} else if (modeIndex == 1) {
-			underlyingImageSelection.setEnabled(false);
-			brushes.setEnabled(false);
-			tiles.setEnabled(false);
-		} else if (modeIndex == 2) {
+		} else if (modeIndex >= 1) {
 			underlyingImageSelection.setEnabled(false);
 			brushes.setEnabled(false);
 			tiles.setEnabled(false);
 		}
+		textPanel.grabFocus();
 	}
 }
