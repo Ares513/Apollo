@@ -278,7 +278,7 @@ public class ApolloUI extends JPanel {
 	}
 
 	private void loadImages() {
-		File dir = new File(".");
+		File dir = new File("./maps");
 		for (File file : dir.listFiles()) {
 			if (file.getName().endsWith((".jpg"))) {
 				imageNames.add(file.getName());
