@@ -1,6 +1,7 @@
 package com.team1ofus.apollo;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
@@ -36,19 +37,131 @@ public class CellRenderer {
 				
 				switch(editCell.getTile(i,j).getType()) {
 				case WALL:
-					//Color grey = new Color(Color.gray.getRed(), Color.gray.getGreen(), Color.gray.getBlue(), 125);
-					
-					//g.setColor(grey);
-					
+					//don't draw walls
+					g.setColor(Color.BLACK);
 					break;
 				case PEDESTRIAN_WALKWAY:
-					Color green = new Color(Color.GREEN.getRed(), Color.GREEN.getGreen(), Color.GREEN.getBlue(), 125);
-					g.setColor(green);
+					g.setColor(Color.GRAY);
 					g.fillRect(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight);
+					break;
+				case DOOR:
+					g.setColor(Color.YELLOW);
+					g.fillRect(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight);
+					break;
+				case GRASS:
+					g.setColor(Color.GREEN);
+					g.fillRect(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight);
+					break;
+				case CONGESTED:
+					g.fillRect(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight);
+					
+					g.setColor(Color.magenta);
+				case VERTICAL_UP_STAIRS:
+					g.setColor(Color.RED);
+					//g.fillRect(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight);
+					g.drawLine(i*tileWidth - offset.x + tileWidth/2, j*tileHeight - offset.y, i*tileWidth - offset.x + tileWidth/2, j*tileHeight - offset.y + tileHeight);
+					//base line for arrow
+					g.drawLine(i*tileWidth - offset.x + tileWidth/2, j*tileHeight - offset.y, i*tileWidth - offset.x, j*tileHeight - offset.y + tileHeight/4);
+					g.drawLine(i*tileWidth - offset.x + tileWidth/2, j*tileHeight - offset.y, i*tileWidth - offset.x + tileWidth, j*tileHeight - offset.y + tileHeight/4);
+					//arrow lines
+					
+					break;
+				case VERTICAL_DOWN_STAIRS:
+					g.setColor(Color.BLUE);
+					//g.fillRect(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight);
+					g.drawLine(i*tileWidth - offset.x + tileWidth/2, j*tileHeight - offset.y, i*tileWidth - offset.x + tileWidth/2, j*tileHeight - offset.y + tileHeight);
+					//base line for arrow
+					g.drawLine(i*tileWidth - offset.x + tileWidth/2, j*tileHeight - offset.y + tileHeight, i*tileWidth - offset.x, j*tileHeight - offset.y + tileHeight*(2/4));
+					g.drawLine(i*tileWidth - offset.x + tileWidth/2, j*tileHeight - offset.y + tileHeight, i*tileWidth - offset.x + tileWidth, j*tileHeight - offset.y + tileHeight*(2/4));
+					//arrow lines
+					
+					break;
+				case HORIZONTAL_LEFT_STAIRS:
+					g.setColor(Color.RED);
+
+					g.drawLine(i*tileWidth - offset.x, j*tileHeight - offset.y + tileHeight/2, i*tileWidth - offset.x+tileWidth, j*tileHeight - offset.y + tileHeight/2);
+					//horizontal line
+					//base line for arrow
+					//arrow lines
+					Point p1 = new Point(i*tileWidth - offset.x + tileWidth, j*tileHeight - offset.y + tileHeight/2);
+					Point p2 = new Point(i*tileWidth - offset.x + tileWidth/2, j*tileHeight - offset.y);
+					
+					g.drawLine(p1.x, p2.y, p1.x, p2.y);
+				
+					
+					break;
+				case HORIZONTAL_RIGHT_STAIRS:
+					g.setColor(Color.BLUE);
+
+					g.drawLine(i*tileWidth - offset.x, j*tileHeight - offset.y + tileHeight/2, i*tileWidth - offset.x+tileWidth, j*tileHeight - offset.y + tileHeight/2);
+					//horizontal line
+					//base line for arrow
+					//arrow lines
+					//Point p1 = new Point(i*tileWidth - offset.x + tileWidth, j*tileHeight - offset.y + tileHeight/2);
+					//Point p2 = new Point(i*tileWidth - offset.x + tileWidth/2, j*tileHeight - offset.y);
+					
+					//g.drawLine(p1.x, p2.y, p1.x, p2.y);
+				
+					
+					break;
+				case STEEP:
+					g.setColor(Color.BLUE);
+					g.drawLine(i*tileWidth - offset.x  + tileWidth, j*tileHeight - offset.y, i*tileWidth - offset.x, j*tileHeight - offset.y + tileHeight);
+					g.drawLine(i*tileWidth - offset.x, j*tileHeight - offset.y, i*tileWidth - offset.x  + tileWidth, j*tileHeight - offset.y + tileHeight);
+					
+					g.drawLine(i*tileWidth - offset.x, j*tileHeight - offset.y + tileHeight/2, i*tileWidth - offset.x+tileWidth, j*tileHeight - offset.y + tileHeight/2);
+					//horizontal line
+				
+					break;
+				case IMPASSABLE:
+					g.setColor(Color.BLACK);
+					g.drawLine(i*tileWidth - offset.x  + tileWidth, j*tileHeight - offset.y, i*tileWidth - offset.x, j*tileHeight - offset.y + tileHeight);
+					g.drawLine(i*tileWidth - offset.x, j*tileHeight - offset.y, i*tileWidth - offset.x  + tileWidth, j*tileHeight - offset.y + tileHeight);
+				
+					break;
+				case MALE_BATHROOM:
+					g.setColor(Color.blue);
+					g.fillOval(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight);
+					break;
+				case FEMALE_BATHROOM:
+					g.setColor(Color.pink);
+					g.fillOval(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight);
+					break;
+				case UNISEX_BATHROOM:
+					g.setColor(Color.pink);
+					g.fillArc(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight, 0, 180);
+					g.setColor(Color.blue);
+					
+					g.fillArc(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight, 0, -180);
+					
+					break;
+				case BENCH:
+					
+					//g.fillArc(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight, 0, 180);
+					g.setColor(Color.black);
+					
+					g.fillArc(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight, 0, -180);
+					
+					break;
+				case UNPLOWED:
+					
+					//g.fillArc(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight, 0, 180);
+					g.setColor(Color.black);
+					
+					g.drawArc(i*tileWidth - offset.x, j*tileHeight - offset.y+tileHeight/2, tileWidth, tileHeight/2, 0, 180);
+					
+					break;
+				case CLASSROOM:
+					
+					//g.fillArc(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight, 0, 180);
+					g.setColor(Color.black);
+					g.setFont(new Font("TimesRoman", Font.BOLD, tileHeight));
+					g.drawString("C", i*tileWidth - offset.x + tileWidth/8, j*tileHeight - offset.y + tileHeight);
 					break;
 				default:
 					break;
 				}
+				
 				g.setColor(Color.black);
 				//drawGridLines(g);
 				g.drawRect(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight);
