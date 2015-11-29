@@ -290,7 +290,9 @@ public class ApolloUI extends JPanel {
 	private BufferedImage loadImage(String path) {
 		BufferedImage img = null;
 		try {
-			img = ImageIO.read(new File(path));
+			System.out.println(path);
+			img = ImageIO.read(new File("./maps/" + path));
+			System.out.println("success");
 			return img;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
