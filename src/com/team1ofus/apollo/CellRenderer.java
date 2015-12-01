@@ -31,6 +31,13 @@ public class CellRenderer {
 	    	g.drawImage(underlyingImage, offset.x*-1 - underlyingOffset.x, offset.y*-1 - underlyingOffset.y, Color.white, null);
 		int cellWidth = editCell.getWidth();
 		int cellHeight = editCell.getHeight();
+		Color blue = new Color(Color.blue.getRed(), Color.blue.getGreen(), Color.blue.getBlue(), 125);
+		Color black = new Color(Color.black.getRed(), Color.black.getGreen(), Color.blue.getRed(), 125);
+		Color gray = new Color(Color.gray.getRed(), Color.gray.getGreen(), Color.blue.getRed(), 125);
+		Color yellow = new Color(Color.yellow.getRed(), Color.yellow.getGreen(), Color.blue.getRed(), 125);
+		Color green = new Color(Color.green.getRed(), Color.green.getGreen(), Color.blue.getRed(), 125);
+		Color red = new Color(Color.red.getRed(), Color.red.getGreen(), Color.red.getBlue(), 125);
+		
 		for(int i=0; i<cellWidth; i++) {
 			for(int j=0; j<cellHeight; j++) {
 				try {
@@ -43,18 +50,20 @@ public class CellRenderer {
 				switch(editCell.getTile(i,j).getType()) {
 				case WALL:
 					//don't draw walls
-					g.setColor(Color.BLACK);
+					
+					g.setColor(black);
 					break;
 				case PEDESTRIAN_WALKWAY:
-					g.setColor(Color.GRAY);
+					
+					g.setColor(gray);
 					g.fillRect(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight);
 					break;
 				case DOOR:
-					g.setColor(Color.YELLOW);
+					g.setColor(yellow);
 					g.fillRect(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight);
 					break;
 				case GRASS:
-					g.setColor(Color.GREEN);
+					g.setColor(green);
 					g.fillRect(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight);
 					break;
 				case CONGESTED:
@@ -62,7 +71,7 @@ public class CellRenderer {
 					
 					g.setColor(Color.magenta);
 				case VERTICAL_UP_STAIRS:
-					g.setColor(Color.RED);
+					g.setColor(red);
 					//g.fillRect(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight);
 					g.drawLine(i*tileWidth - offset.x + tileWidth/2, j*tileHeight - offset.y, i*tileWidth - offset.x + tileWidth/2, j*tileHeight - offset.y + tileHeight);
 					//base line for arrow
@@ -72,7 +81,7 @@ public class CellRenderer {
 					
 					break;
 				case VERTICAL_DOWN_STAIRS:
-					g.setColor(Color.BLUE);
+					g.setColor(blue);
 					//g.fillRect(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight);
 					g.drawLine(i*tileWidth - offset.x + tileWidth/2, j*tileHeight - offset.y, i*tileWidth - offset.x + tileWidth/2, j*tileHeight - offset.y + tileHeight);
 					//base line for arrow
@@ -82,7 +91,7 @@ public class CellRenderer {
 					
 					break;
 				case HORIZONTAL_LEFT_STAIRS:
-					g.setColor(Color.RED);
+					g.setColor(red);
 
 					g.drawLine(i*tileWidth - offset.x, j*tileHeight - offset.y + tileHeight/2, i*tileWidth - offset.x+tileWidth, j*tileHeight - offset.y + tileHeight/2);
 					//horizontal line
@@ -96,7 +105,7 @@ public class CellRenderer {
 					
 					break;
 				case HORIZONTAL_RIGHT_STAIRS:
-					g.setColor(Color.BLUE);
+					g.setColor(blue);
 
 					g.drawLine(i*tileWidth - offset.x, j*tileHeight - offset.y + tileHeight/2, i*tileWidth - offset.x+tileWidth, j*tileHeight - offset.y + tileHeight/2);
 					//horizontal line
@@ -109,8 +118,9 @@ public class CellRenderer {
 				
 					
 					break;
-				case STEEP:
-					g.setColor(Color.BLUE);
+
+				case TREE:
+					g.setColor(green);
 					g.drawLine(i*tileWidth - offset.x  + tileWidth, j*tileHeight - offset.y, i*tileWidth - offset.x, j*tileHeight - offset.y + tileHeight);
 					g.drawLine(i*tileWidth - offset.x, j*tileHeight - offset.y, i*tileWidth - offset.x  + tileWidth, j*tileHeight - offset.y + tileHeight);
 					
@@ -118,24 +128,44 @@ public class CellRenderer {
 					//horizontal line
 				
 					break;
+				case BUSH:
+					g.setColor(green);
+					g.drawLine(i*tileWidth - offset.x  + tileWidth, j*tileHeight - offset.y, i*tileWidth - offset.x, j*tileHeight - offset.y + tileHeight);
+					g.drawLine(i*tileWidth - offset.x, j*tileHeight - offset.y, i*tileWidth - offset.x  + tileWidth, j*tileHeight - offset.y + tileHeight);
+					g.fillOval(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight);
+					g.drawLine(i*tileWidth - offset.x, j*tileHeight - offset.y + tileHeight/2, i*tileWidth - offset.x+tileWidth, j*tileHeight - offset.y + tileHeight/2);
+					//horizontal line
+				
+					break;
+				case LINOLEUM:
+					g.setColor(gray);
+					g.drawRect(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth/2, tileHeight/2);
+					g.drawRect(i*tileWidth - offset.x +tileWidth/2, j*tileHeight - offset.y+tileHeight/2, tileWidth/2, tileHeight/2);
+					
+					break;
+				case ELEVATOR:
+					g.setColor(red);
+					g.drawRect(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth/2, tileHeight/2);
+					break;
 				case IMPASSABLE:
-					g.setColor(Color.BLACK);
+					g.setColor(black);
 					g.drawLine(i*tileWidth - offset.x  + tileWidth, j*tileHeight - offset.y, i*tileWidth - offset.x, j*tileHeight - offset.y + tileHeight);
 					g.drawLine(i*tileWidth - offset.x, j*tileHeight - offset.y, i*tileWidth - offset.x  + tileWidth, j*tileHeight - offset.y + tileHeight);
 				
 					break;
 				case MALE_BATHROOM:
-					g.setColor(Color.blue);
+					
+					g.setColor(blue);
 					g.fillOval(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight);
 					break;
 				case FEMALE_BATHROOM:
-					g.setColor(Color.pink);
+					g.setColor(red);
 					g.fillOval(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight);
 					break;
 				case UNISEX_BATHROOM:
-					g.setColor(Color.pink);
+					g.setColor(red);
 					g.fillArc(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight, 0, 180);
-					g.setColor(Color.blue);
+					g.setColor(blue);
 					
 					g.fillArc(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight, 0, -180);
 					
@@ -143,7 +173,7 @@ public class CellRenderer {
 				case BENCH:
 					
 					//g.fillArc(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight, 0, 180);
-					g.setColor(Color.black);
+					g.setColor(black);
 					
 					g.fillArc(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight, 0, -180);
 					
@@ -151,7 +181,7 @@ public class CellRenderer {
 				case UNPLOWED:
 					
 					//g.fillArc(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight, 0, 180);
-					g.setColor(Color.black);
+					g.setColor(black);
 					
 					g.drawArc(i*tileWidth - offset.x, j*tileHeight - offset.y+tileHeight/2, tileWidth, tileHeight/2, 0, 180);
 					
@@ -159,7 +189,7 @@ public class CellRenderer {
 				case CLASSROOM:
 					
 					//g.fillArc(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight, 0, 180);
-					g.setColor(Color.black);
+					g.setColor(black);
 					g.setFont(new Font("TimesRoman", Font.BOLD, tileHeight));
 					g.drawString("C", i*tileWidth - offset.x + tileWidth/8, j*tileHeight - offset.y + tileHeight);
 					break;
@@ -167,7 +197,7 @@ public class CellRenderer {
 					break;
 				}
 				
-				g.setColor(Color.black);
+				g.setColor(black);
 				//drawGridLines(g);
 				g.drawRect(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight);
 //				g.fillRect(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight);
@@ -215,7 +245,8 @@ public class CellRenderer {
 			offset.y = editCell.getHeight() * tileHeight - windowHeight; 
 		
 		}
-		
+		DebugManagement.writeNotificationToLog("Current offest " + offset);
+		DebugManagement.writeNotificationToLog("Window width " + windowWidth + " Window height " + windowHeight);
 	}
 	public void incrementUnderlyingOffset(int dx, int dy, int windowWidth, int windowHeight) {
 		//some optimizations to be made here

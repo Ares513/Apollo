@@ -10,12 +10,15 @@ public enum TILE_TYPE {
 	VERTICAL_DOWN_STAIRS, 
 	HORIZONTAL_LEFT_STAIRS,
 	HORIZONTAL_RIGHT_STAIRS,
-	STEEP, //can path through. Represents hills(inclines in general)
 	IMPASSABLE, //not a wall, but you definitely can't walk through it
 	MALE_BATHROOM,
 	FEMALE_BATHROOM,
 	UNISEX_BATHROOM,
 	BENCH,
+	TREE,
+	BUSH,
+	LINOLEUM, //for tiled/bathrooms, etc
+	ELEVATOR,
 	UNPLOWED,   //Will be for the instances of snow. Will have a higher weight associated with it. 
 	CLASSROOM,  //Gives ability to restrict access during day or night time
 	EXTRA_TILE_TYPE_1, //Reserving more tile types in the case of potential tile types in the future

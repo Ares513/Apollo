@@ -136,7 +136,7 @@ public class ApolloUI extends JPanel {
 						int y = (int) (-0.5 * (e.getY() - mousePosition.getY()));
 						// DebugManagement.writeNotificationToLog("Dragging
 						// occurred, dx dy " + x + " , " + y);
-						panel.render.incrementOffset(x, y, panel.getWidth(), panel.getHeight());
+						panel.render.incrementOffset(x, y, layeredPane.getWidth(), layeredPane.getHeight());
 						textPanel.setOffset(panel.render.offset);
 						repaintPanel();
 						mousePosition = e.getPoint();
@@ -311,28 +311,28 @@ public class ApolloUI extends JPanel {
 		switch (e.getKeyCode()) {
 		// some optimizations to be made here
 		case KeyEvent.VK_LEFT:
-			panel.render.incrementOffset(-1 * scrollSpeed, 0, panel.getWidth(), panel.getHeight());
+			panel.render.incrementOffset(-1 * scrollSpeed, 0, layeredPane.getWidth(), layeredPane.getHeight());
 			break;
 		case KeyEvent.VK_RIGHT:
-			panel.render.incrementOffset(scrollSpeed, 0, panel.getWidth(), panel.getHeight());
+			panel.render.incrementOffset(scrollSpeed, 0, layeredPane.getWidth(), layeredPane.getHeight());
 			break;
 		case KeyEvent.VK_DOWN:
-			panel.render.incrementOffset(0, scrollSpeed, panel.getWidth(), panel.getHeight());
+			panel.render.incrementOffset(0, scrollSpeed, layeredPane.getWidth(), layeredPane.getHeight());
 			break;
 		case KeyEvent.VK_UP:
-			panel.render.incrementOffset(0, -1 * scrollSpeed, panel.getWidth(), panel.getHeight());
+			panel.render.incrementOffset(0, -1 * scrollSpeed, layeredPane.getWidth(), layeredPane.getHeight());
 			break;
 		case KeyEvent.VK_A:
-			panel.render.incrementUnderlyingOffset(-1 * scrollSpeed, 0, panel.getWidth(), panel.getHeight());
+			panel.render.incrementUnderlyingOffset(-1 * scrollSpeed, 0, layeredPane.getWidth(), layeredPane.getHeight());
 			break;
 		case KeyEvent.VK_D:
-			panel.render.incrementUnderlyingOffset(scrollSpeed, 0, panel.getWidth(), panel.getHeight());
+			panel.render.incrementUnderlyingOffset(scrollSpeed, 0, layeredPane.getWidth(), layeredPane.getHeight());
 			break;
 		case KeyEvent.VK_S:
-			panel.render.incrementUnderlyingOffset(0, scrollSpeed, panel.getWidth(), panel.getHeight());
+			panel.render.incrementUnderlyingOffset(0, scrollSpeed, layeredPane.getWidth(), layeredPane.getHeight());
 			break;
 		case KeyEvent.VK_W:
-			panel.render.incrementUnderlyingOffset(0, -1 * scrollSpeed, panel.getWidth(), panel.getHeight());
+			panel.render.incrementUnderlyingOffset(0, -1 * scrollSpeed, layeredPane.getWidth(), layeredPane.getHeight());
 			break;
 
 		default:
@@ -366,33 +366,29 @@ public class ApolloUI extends JPanel {
 		layeredPane = new JLayeredPane();
 		horizontalBox.add(layeredPane);
 		layeredPane.setBackground(Color.CYAN);
-
+		windowUI = new JPanel();
 		panel = new DrawPane(cellToEdit);
-		panel.setBounds(0, 0, 691, 560);
 		textPanel = new TextPane(cellToEdit);
 		layeredPane.add(textPanel);
-		textPanel.setBounds(0, 0, 691, 560);
+		
 		layeredPane.add(panel);
-		layeredPane.setBounds(0, 0, 691, 560);
+		windowUI.setBounds(691, 0, 150, 560);
+		layeredPane.setBounds(0, 0, frame.getBounds().width - windowUI.getWidth(), frame.getBounds().height);
+		textPanel.setBounds(layeredPane.getBounds());
+		panel.setBounds(layeredPane.getBounds());
 		
 		layeredPane.setComponentZOrder(textPanel, 0);
 		layeredPane.setComponentZOrder(panel, 1);
 		layeredPane.setOpaque(true);
-		windowUI = new JPanel();
+		
 		frame.getContentPane().add(windowUI, BorderLayout.WEST);
 		frame.getContentPane().add(windowUI, BorderLayout.EAST);
 		windowUI.setBackground(Color.RED);
 		windowUI.setForeground(Color.RED);
 		windowUI.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-
-		verticalBox_1 = Box.createVerticalBox();
-		windowUI.add(verticalBox_1);
-
-		saveButton = new JButton("Save");
-
-		saveButton.setVerticalAlignment(SwingConstants.TOP);
-		saveButton.setToolTipText("Save to a file.");
-		verticalBox_1.add(saveButton);
+		
+				verticalBox_1 = Box.createVerticalBox();
+				windowUI.add(verticalBox_1);
 
 		verticalBox = Box.createVerticalBox();
 		lblOffset = new JLabel("0,0");
@@ -422,7 +418,13 @@ public class ApolloUI extends JPanel {
 		paintMode.setModel(new DefaultComboBoxModel(new String[] {"Tile painting", "Location Painting", "Append Location Painting", "Cell Reference Painting", "Entry Point Painting"}));
 		verticalBox.add(paintMode);
 		tiles.setAlignmentY(5.0f);
-		windowUI.setBounds(691, 0, 150, 560);
+		
+				saveButton = new JButton("Save");
+				verticalBox.add(saveButton);
+				
+						saveButton.setVerticalAlignment(SwingConstants.TOP);
+						saveButton.setToolTipText("Save to a file.");
+		
 		textPanel.grabFocus();
 	}
 
