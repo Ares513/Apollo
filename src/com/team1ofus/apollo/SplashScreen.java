@@ -30,7 +30,7 @@ public class SplashScreen extends JWindow {
 			for (File file : dir.listFiles()) {
 				if (file.getName().endsWith((".jpg"))) {
 					imageNames.add(file.getName());
-			
+					DebugManagement.metrics();
 					imageSelection.add(loadImage(file.getName()));
 				}
 			}
@@ -53,6 +53,8 @@ public class SplashScreen extends JWindow {
 	  // A simple little method to show a title screen in the center
 	  // of the screen for the amount of time given in the constructor
 	  public void showSplash() {
+		  DebugManagement.metrics();
+		  DebugManagement.writeNotificationToLog("Service Apollo launching, please wait...");
 	    JPanel content = (JPanel)getContentPane();
 	    content.setBackground(Color.white);
 

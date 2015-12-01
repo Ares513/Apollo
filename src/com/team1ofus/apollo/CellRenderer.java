@@ -22,13 +22,17 @@ public class CellRenderer {
 		offset = new Point(0,0);
 		underlyingOffset = new Point(0,0);
 	}
-	public void renderTiles(Graphics g, Image underlyingImage) {
+	public void renderTiles(Graphics g, BufferedImage underlyingImage, int windowWidth, int windowHeight) {
 		g.setColor(Color.WHITE);
 	    g.fillRect(0, 0, tileWidth * editCell.getWidth(), tileHeight * editCell.getHeight());
-	    if(campusMapFlag) //if the campus map is selected, stretch it by 4 times
-	    	g.drawImage(underlyingImage, offset.x*-1 - underlyingOffset.x, offset.y*-1 - underlyingOffset.y, underlyingImage.getWidth(null)*4, underlyingImage.getHeight(null)*4, Color.white, null);
-	    else
+	    
+	    if(campusMapFlag) { //if the campus map is selected, stretch it by 4 times
+	    	BufferedImage img = underlyingImage.getSubimage(offset.x, offset.y, windowWidth, windowHeight);
+	    	//offset.x*-1 - underlyingOffset.x, offset.y*-1 - underlyingOffset.y
+	    	g.drawImage(img, 0 , 0, img.getWidth(null)*4, img.getHeight(null)*4, Color.white, null);
+	    } else {
 	    	g.drawImage(underlyingImage, offset.x*-1 - underlyingOffset.x, offset.y*-1 - underlyingOffset.y, Color.white, null);
+	    }
 		int cellWidth = editCell.getWidth();
 		int cellHeight = editCell.getHeight();
 		Color blue = new Color(Color.blue.getRed(), Color.blue.getGreen(), Color.blue.getBlue(), 125);
@@ -37,9 +41,13 @@ public class CellRenderer {
 		Color yellow = new Color(Color.yellow.getRed(), Color.yellow.getGreen(), Color.blue.getRed(), 125);
 		Color green = new Color(Color.green.getRed(), Color.green.getGreen(), Color.blue.getRed(), 125);
 		Color red = new Color(Color.red.getRed(), Color.red.getGreen(), Color.red.getBlue(), 125);
-		
-		for(int i=0; i<cellWidth; i++) {
-			for(int j=0; j<cellHeight; j++) {
+		//edge bounds to render for map
+		int lowerX = (int)(offset.x / BootstrapperConstants.TILE_WIDTH);
+		int lowerY = (int)(offset.y / BootstrapperConstants.TILE_HEIGHT);
+		int higherX = (int)(offset.x + windowWidth)/BootstrapperConstants.TILE_WIDTH;
+		int higherY = (int)(offset.y + windowHeight)/BootstrapperConstants.TILE_HEIGHT;
+		for(int i=lowerX; i<higherX; i++) {
+			for(int j=lowerY; j<higherY; j++) {
 				try {
 					editCell.getTile(i, j);
 								
