@@ -137,7 +137,7 @@ public class ApolloUI extends JPanel {
 						// DebugManagement.writeNotificationToLog("Dragging
 						// occurred, dx dy " + x + " , " + y);
 						panel.render.incrementOffset(x, y, panel.getWidth(), panel.getHeight());
-						// panel.setOffset(panel.render.offset);
+						textPanel.setOffset(panel.render.offset);
 						repaintPanel();
 						mousePosition = e.getPoint();
 					} else {
@@ -338,7 +338,7 @@ public class ApolloUI extends JPanel {
 		default:
 			break;
 		}
-
+		textPanel.setOffset(panel.render.offset);
 		makePanelDirty();
 		lblOffset.setText(panel.render.offset.getX() + "," + panel.render.offset.getY());
 	}

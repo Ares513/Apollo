@@ -20,6 +20,7 @@ import javax.swing.JPanel;
 public class TextPane extends JPanel {
 	ArrayList<TextLocation> locations = new ArrayList<TextLocation>();
 	public Point currentTileLocation; //automatically updated.
+	private Point offset = new Point(0,0);
 	public TextPane(Cell cellToEdit) {
 		setOpaque(true);
 		loadFromCell(cellToEdit);
@@ -64,7 +65,7 @@ public class TextPane extends JPanel {
 				}
 				
 				int start = stringLength/2;
-				g.drawString(l.lines.get(i), l.location.x*BootstrapperConstants.TILE_WIDTH-(int)start+BootstrapperConstants.TILE_WIDTH/2, l.location.y*BootstrapperConstants.TILE_HEIGHT+g.getFont().getSize()*i);
+				g.drawString(l.lines.get(i), l.location.x*BootstrapperConstants.TILE_WIDTH-(int)start+BootstrapperConstants.TILE_WIDTH/2-offset.x, l.location.y*BootstrapperConstants.TILE_HEIGHT-offset.y+g.getFont().getSize()*i);
 				
 			}
 		}
@@ -127,5 +128,10 @@ public class TextPane extends JPanel {
 		}
 	
 		//draw the number of lines onscreen that are specified, but don't remove them
+	}
+	
+	public void setOffset(Point offset) {
+		this.offset = offset;
+		
 	}
 }
