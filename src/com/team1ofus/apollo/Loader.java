@@ -25,16 +25,21 @@ public class Loader extends JDialog {
 	private JTextField widthInput;
 	private JTextField heightInput;
 	private JTextField nameInput;
+	private JTextField displayName;
 	/**
 	 * Create the dialog.
 	 */
 	public Loader(ArrayList<Cell> allCells) {
 		events = new LoaderInteractionEventObject();
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 550, 300);
 		getContentPane().setLayout(new BorderLayout());
 			JPanel pane = new JPanel();
 			pane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(pane, BorderLayout.SOUTH);
+				
+				displayName = new JTextField();
+				displayName.setColumns(10);
+				pane.add(displayName);
 				JComboBox mapChooser = new JComboBox();
 				mapChooser.setModel(new DefaultComboBoxModel(getNames(allCells)));
 				pane.add(mapChooser);
@@ -133,7 +138,7 @@ public class Loader extends JDialog {
 								throw new FileSystemException("Duplicate file not overwritten.");
 							}
 						}
-						cellToCreate = new Cell(width, height, 1.0, TILE_TYPE.WALL, mapID + ".map");
+						cellToCreate = new Cell(width, height, 1.0, TILE_TYPE.WALL, mapID + ".map", displayName.getText());
 						allCells.add(cellToCreate);
 						mapChooser.removeAllItems();
 						String[] names = getNames(allCells);

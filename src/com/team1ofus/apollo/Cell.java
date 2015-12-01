@@ -12,7 +12,8 @@ public class Cell implements Serializable {
 	 * 
 	 */
 	private String id;
-	private static final long serialVersionUID = 6L;
+	private String displayName;
+	private static final long serialVersionUID = 7L;
 	private DataTile[][] tiles;
 	//minimum required information
 	double scaling  = 1;
@@ -21,7 +22,7 @@ public class Cell implements Serializable {
 	private ArrayList<LocationInfo> listedLocations; //Specific locations, i.e fountain. No cell association variable if it doesn't associate to anything.
 	private ArrayList<EntryPoint> entryPoints; //wrap it in ArrayList whenever needed
 	//psuedo-set; duplicate terms cannot be added
-	public Cell(int width, int height, double scaling, TILE_TYPE defaultTile, String name) {
+	public Cell(int width, int height, double scaling, TILE_TYPE defaultTile, String name, String displayName) {
 		id = name;
 		//identifier
 		tiles = new DataTile[width][height];
@@ -57,7 +58,12 @@ public class Cell implements Serializable {
 	public int getHeight() {
 		return fixedHeight;
 	}
-
+	public DataTile[][] getTile() {
+		return tiles;
+	}
+	public String getDisplayName() {
+		return displayName;
+	}
 	public void appendLocation(Point loc, String text) {
 		for(int i=0; i<listedLocations.size(); i++) {
 			if(listedLocations.get(i).getLocation() == loc) {
@@ -120,4 +126,5 @@ public class Cell implements Serializable {
 			}
 			return tiles[xActual][yActual];
 	}
+
 }

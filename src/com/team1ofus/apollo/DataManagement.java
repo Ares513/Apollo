@@ -47,7 +47,8 @@ public class DataManagement implements IUIManagementInteractionListener {
 	 */
 	private Cell makePlaceholderMap() {
 		Cell output;
-		return output = new Cell(50, 50, 1, TILE_TYPE.WALL, UUID.randomUUID().toString());
+		String uuid = UUID.randomUUID().toString();
+		return output = new Cell(50, 50, 1, TILE_TYPE.WALL, uuid, uuid);
 		
 	}
 	private ArrayList<Cell> loadAllCells() throws ClassNotFoundException, IOException {
