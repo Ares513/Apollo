@@ -44,6 +44,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JLayeredPane;
+import javax.swing.UIManager;
+import java.awt.Toolkit;
 
 public class ApolloUI extends JPanel {
 	private JFrame frame;
@@ -64,16 +66,14 @@ public class ApolloUI extends JPanel {
 	private JComboBox paintMode;
 	private JLayeredPane layeredPane;
 	int mode = 0;
-	ArrayList<Image> imageSelection = new ArrayList<Image>();
+	ArrayList<BufferedImage> imageSelection = new ArrayList<BufferedImage>();
 	ArrayList<String> imageNames = new ArrayList<String>();
 
 	private Box horizontalBox;
-	public ApolloUI() {
-		imageSelection = new ArrayList<Image>(); // editor image selection;
-													// could use abstraction but
-													// we'll deal with that
+	public ApolloUI(ArrayList<String> imageNames, ArrayList<BufferedImage> imageSelection) {
+		this.imageSelection = imageSelection;											// could use abstraction but
+		this.imageNames = imageNames; 				// we'll deal with that
 													// later.
-		loadImages();
 		events = new HumanInteractionEventObject();
 		painter = new PaintTool();
 
@@ -315,30 +315,6 @@ public class ApolloUI extends JPanel {
 		makePanelDirty();
 	}
 
-	private void loadImages() {
-		File dir = new File("./maps");
-		for (File file : dir.listFiles()) {
-			if (file.getName().endsWith((".jpg"))) {
-				imageNames.add(file.getName());
-				imageSelection.add(loadImage(file.getName()));
-			}
-		}
-	}
-
-	private BufferedImage loadImage(String path) {
-		BufferedImage img = null;
-		try {
-			System.out.println(path);
-			img = ImageIO.read(new File("./maps/" + path));
-			System.out.println("success");
-			return img;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return img;
-
-	}
 
 	private void doOffsetCalc(KeyEvent e, JLabel offsetLbl) {
 		switch (e.getKeyCode()) {
@@ -384,6 +360,8 @@ public class ApolloUI extends JPanel {
 	private void buildControls(Cell cellToEdit) {
 
 		frame = new JFrame("Apollo");
+		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(ApolloUI.class.getResource("/com/team1ofus/apollo/hammer-geology-512.png")));
+		frame.setBackground(UIManager.getColor("Button.focus"));
 		frame.setTitle(cellToEdit.getID());
 		frame.setResizable(false);
 		frame.getContentPane().setBounds(100, 100, 969, 596);
@@ -416,7 +394,7 @@ public class ApolloUI extends JPanel {
 		
 		frame.getContentPane().add(windowUI, BorderLayout.WEST);
 		frame.getContentPane().add(windowUI, BorderLayout.EAST);
-		windowUI.setBackground(Color.RED);
+		windowUI.setBackground(UIManager.getColor("CheckBox.light"));
 		windowUI.setForeground(Color.RED);
 		windowUI.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
