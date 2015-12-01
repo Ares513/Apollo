@@ -13,6 +13,8 @@ public class CellRenderer {
 	Point offset;
 	Point underlyingOffset;
 	Cell editCell;
+	private boolean campusMapFlag = false;
+	
 	public CellRenderer(Cell inCell) {
 		editCell = inCell;
 		tileWidth = (int) Math.round(16*inCell.scaling);
@@ -23,7 +25,10 @@ public class CellRenderer {
 	public void renderTiles(Graphics g, Image underlyingImage) {
 		g.setColor(Color.WHITE);
 	    g.fillRect(0, 0, tileWidth * editCell.getWidth(), tileHeight * editCell.getHeight());
-		g.drawImage(underlyingImage, offset.x*-1 - underlyingOffset.x, offset.y*-1 - underlyingOffset.y, Color.white, null);
+	    if(campusMapFlag) //if the campus map is selected, stretch it by 4 times
+	    	g.drawImage(underlyingImage, offset.x*-1 - underlyingOffset.x, offset.y*-1 - underlyingOffset.y, underlyingImage.getWidth(null)*4, underlyingImage.getHeight(null)*4, Color.white, null);
+	    else
+	    	g.drawImage(underlyingImage, offset.x*-1 - underlyingOffset.x, offset.y*-1 - underlyingOffset.y, Color.white, null);
 		int cellWidth = editCell.getWidth();
 		int cellHeight = editCell.getHeight();
 		for(int i=0; i<cellWidth; i++) {
@@ -222,5 +227,8 @@ public class CellRenderer {
 			underlyingOffset.y = 0;
 		}
 		
+	}
+	public void setCampusMapFlag(boolean flag) {
+		campusMapFlag = flag;
 	}
 }

@@ -244,7 +244,12 @@ public class ApolloUI extends JPanel {
 		underlyingImageSelection.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// when a selection is made.
-				panel.currentImage = imageSelection.get(underlyingImageSelection.getSelectedIndex());
+				System.out.println(underlyingImageSelection.getSelectedItem());
+				if(underlyingImageSelection.getSelectedItem().equals("WPI_campus_map_resized_quarter.jpg")) //special handling for campus map
+					panel.setCampusMapFlag(true);
+				else
+					panel.setCampusMapFlag(false);
+				panel.setCurrentImage(imageSelection.get(underlyingImageSelection.getSelectedIndex()));
 				makePanelDirty();
 				textPanel.grabFocus();
 			}

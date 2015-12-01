@@ -26,5 +26,7 @@ public class DrawPane extends JPanel {
 	public void setCurrentImage(Image currentImage) {
 		this.currentImage = currentImage;
 	}
-	
+	public void setCampusMapFlag(boolean flag) {
+		render.setCampusMapFlag(flag);
+	}
 }
