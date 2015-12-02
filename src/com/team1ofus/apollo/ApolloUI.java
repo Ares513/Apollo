@@ -409,7 +409,7 @@ public class ApolloUI extends JPanel {
 		brushes = new JComboBox();
 
 		verticalBox.add(brushes);
-		brushes.setModel(new DefaultComboBoxModel(new String[] { "Single Tile", "2 x 2 Square", "3 x 3 Square" }));
+		brushes.setModel(new DefaultComboBoxModel(new String[] { "Single Tile", "2 x 2 Square", "3 x 3 Square", "5 x 5 Square","7 x 7 Square"}));
 		brushes.setAlignmentY(Component.TOP_ALIGNMENT);
 		windowUI.add(verticalBox);
 
