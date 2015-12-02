@@ -207,6 +207,16 @@ public class CellRenderer {
 					g.setFont(new Font("TimesRoman", Font.BOLD, tileHeight));
 					g.drawString("C", i*tileWidth - offset.x + tileWidth/8, j*tileHeight - offset.y + tileHeight);
 					break;
+				case EXTRA_TILE_TYPE_1:
+					//ROAD TILE
+					//g.fillArc(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight, 0, 180);
+					g.setColor(gray);
+					g.setFont(new Font("TimesRoman", Font.BOLD, tileHeight));
+					g.fillOval(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight);
+					g.drawLine(i*tileWidth - offset.x  + tileWidth, j*tileHeight - offset.y, i*tileWidth - offset.x, j*tileHeight - offset.y + tileHeight);
+					g.drawLine(i*tileWidth - offset.x, j*tileHeight - offset.y, i*tileWidth - offset.x  + tileWidth, j*tileHeight - offset.y + tileHeight);
+				
+					break;
 				default:
 					break;
 				}
