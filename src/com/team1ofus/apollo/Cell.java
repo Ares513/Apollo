@@ -79,16 +79,27 @@ public class Cell implements Serializable {
 	 * Duplicate locations are deleted and overwritten.
 	 */
 	public void addLocation(LocationInfo input) {
-		removeLocation(input.getLocation());
+		removeLocation(input.getLocation(), input.getCellReference());
 		listedLocations.add(input);
 	}
 	public void addEntryPoint(EntryPoint input) {
-		removeLocation(input.getLocation());
+		removeEntry(input.getLocation());
 		entryPoints.add(input); //duplicates can't be added, it's a HashSet
 	}
-	public void removeLocation(Point input) {
-		System.out.println(1);
-		listedLocations.removeIf(isLocationEqual(input));
+	public void removeLocation(Point input, String ref) {
+		
+		listedLocations.removeIf(isLocationEqual(input, ref));
+	}
+	public void removePointLocation(Point input) {
+		for(int i=0; i<listedLocations.size(); i++) {
+			if(listedLocations.get(i).getLocation().equals(input)) {
+				listedLocations.remove(i);
+				DebugManagement.writeNotificationToLog("Deleted a point!");
+				i=0;
+			}
+		}
+		listedLocations.removeIf(isLocationPointEqual(input));
+		
 	}
 	public void removeEntry(Point input) {
 		entryPoints.removeIf(isEntryEqual(input));
@@ -96,7 +107,10 @@ public class Cell implements Serializable {
 	public static Predicate<EntryPoint> isEntryEqual(Point filter) {
 	    return p -> p.getLocation().equals(filter);
 	}
-	public static Predicate<LocationInfo> isLocationEqual(Point filter) {
+	public static Predicate<LocationInfo> isLocationEqual(Point filter, String ref) {
+	    return p -> p.getLocation().equals(filter) && p.getCellReference().equals(ref);
+	}
+	public static Predicate<LocationInfo> isLocationPointEqual(Point filter) {
 	    return p -> p.getLocation().equals(filter);
 	}
 	public void setTile(int x, int y, TILE_TYPE tileToSet) {

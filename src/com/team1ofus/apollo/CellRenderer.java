@@ -22,13 +22,17 @@ public class CellRenderer {
 		offset = new Point(0,0);
 		underlyingOffset = new Point(0,0);
 	}
-	public void renderTiles(Graphics g, Image underlyingImage) {
+	public void renderTiles(Graphics g, BufferedImage underlyingImage, int windowWidth, int windowHeight) {
 		g.setColor(Color.WHITE);
 	    g.fillRect(0, 0, tileWidth * editCell.getWidth(), tileHeight * editCell.getHeight());
-	    if(campusMapFlag) //if the campus map is selected, stretch it by 4 times
+	    
+	    if(campusMapFlag) { //if the campus map is selected, stretch it by 4 times
+	    	//BufferedImage img = underlyingImage.getSubimage(offset.x, offset.y, windowWidth, windowHeight);
+	    	//offset.x*-1 - underlyingOffset.x, offset.y*-1 - underlyingOffset.y
 	    	g.drawImage(underlyingImage, offset.x*-1 - underlyingOffset.x, offset.y*-1 - underlyingOffset.y, underlyingImage.getWidth(null)*4, underlyingImage.getHeight(null)*4, Color.white, null);
-	    else
+	    } else {
 	    	g.drawImage(underlyingImage, offset.x*-1 - underlyingOffset.x, offset.y*-1 - underlyingOffset.y, Color.white, null);
+	    }
 		int cellWidth = editCell.getWidth();
 		int cellHeight = editCell.getHeight();
 		Color blue = new Color(Color.blue.getRed(), Color.blue.getGreen(), Color.blue.getBlue(), 125);
@@ -37,9 +41,19 @@ public class CellRenderer {
 		Color yellow = new Color(Color.yellow.getRed(), Color.yellow.getGreen(), Color.blue.getRed(), 125);
 		Color green = new Color(Color.green.getRed(), Color.green.getGreen(), Color.blue.getRed(), 125);
 		Color red = new Color(Color.red.getRed(), Color.red.getGreen(), Color.red.getBlue(), 125);
-		
-		for(int i=0; i<cellWidth; i++) {
-			for(int j=0; j<cellHeight; j++) {
+		//edge bounds to render for map
+		int lowerX = (int)(offset.x / BootstrapperConstants.TILE_WIDTH);
+		int lowerY = (int)(offset.y / BootstrapperConstants.TILE_HEIGHT);
+		int higherX = (int)(offset.x + windowWidth)/BootstrapperConstants.TILE_WIDTH;
+		int higherY = (int)(offset.y + windowHeight)/BootstrapperConstants.TILE_HEIGHT;
+		if(windowWidth > BootstrapperConstants.TILE_WIDTH * cellWidth) {
+			higherX = cellWidth;
+		}
+		if(windowHeight > BootstrapperConstants.TILE_HEIGHT * cellHeight) {
+			higherY = cellHeight;
+		}
+		for(int i=lowerX; i<higherX; i++) {
+			for(int j=lowerY; j<higherY; j++) {
 				try {
 					editCell.getTile(i, j);
 								
@@ -193,6 +207,16 @@ public class CellRenderer {
 					g.setFont(new Font("TimesRoman", Font.BOLD, tileHeight));
 					g.drawString("C", i*tileWidth - offset.x + tileWidth/8, j*tileHeight - offset.y + tileHeight);
 					break;
+				case EXTRA_TILE_TYPE_1:
+					//ROAD TILE
+					//g.fillArc(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight, 0, 180);
+					g.setColor(black);
+					g.setFont(new Font("TimesRoman", Font.BOLD, tileHeight));
+					g.fillOval(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight);
+					g.drawLine(i*tileWidth - offset.x  + tileWidth, j*tileHeight - offset.y, i*tileWidth - offset.x, j*tileHeight - offset.y + tileHeight);
+					g.drawLine(i*tileWidth - offset.x, j*tileHeight - offset.y, i*tileWidth - offset.x  + tileWidth, j*tileHeight - offset.y + tileHeight);
+				
+					break;
 				default:
 					break;
 				}
@@ -234,6 +258,7 @@ public class CellRenderer {
 	public void incrementOffset(int dx, int dy, int windowWidth, int windowHeight) {
 		//some optimizations to be made here
 		offset.translate(dx, dy);
+
 		if(offset.x < 0) {
 			offset.x = 0;
 		} else if(offset.x > editCell.getWidth() * tileWidth - windowWidth) {
@@ -244,6 +269,12 @@ public class CellRenderer {
 		} else if(offset.y > editCell.getHeight() * tileHeight - windowHeight) {
 			offset.y = editCell.getHeight() * tileHeight - windowHeight; 
 		
+		}
+		if(offset.x < 0) {
+			offset.x = 0;
+		}
+		if(offset.y < 0) {
+			offset.y = 0;
 		}
 		DebugManagement.writeNotificationToLog("Current offest " + offset);
 		DebugManagement.writeNotificationToLog("Window width " + windowWidth + " Window height " + windowHeight);

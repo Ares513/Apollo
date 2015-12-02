@@ -11,6 +11,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.nio.file.FileSystemException;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
@@ -29,9 +30,9 @@ public class Loader extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public Loader(ArrayList<Cell> allCells) {
+	public Loader(ArrayList<Cell> allCells, ArrayList<String> imageNames, ArrayList<BufferedImage> images) {
 		events = new LoaderInteractionEventObject();
-		setBounds(100, 100, 550, 300);
+		setBounds(100, 100, 597, 326);
 		getContentPane().setLayout(new BorderLayout());
 			JPanel pane = new JPanel();
 			pane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -118,7 +119,25 @@ public class Loader extends JDialog {
 				verticalBox.add(heightInput);
 				heightInput.setColumns(10);
 				
-				Component verticalStrut = Box.createVerticalStrut(110);
+				JComboBox imageSelectionList = new JComboBox();
+				verticalBox.add(imageSelectionList);
+				for(String s : imageNames) {
+					imageSelectionList.addItem(s);
+				} //in list
+				
+				JButton sizeValues = new JButton("Autosize from image selection");
+				sizeValues.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						if(imageSelectionList.getSelectedIndex() >= 0) {
+							//valid selection made
+							widthInput.setText(Integer.toString((int)Math.ceil(images.get(imageSelectionList.getSelectedIndex()).getWidth()/BootstrapperConstants.TILE_WIDTH)));
+							heightInput.setText(Integer.toString((int)Math.ceil(images.get(imageSelectionList.getSelectedIndex()).getHeight()/BootstrapperConstants.TILE_WIDTH)));
+							
+						}
+					}
+				});
+				verticalBox.add(sizeValues);
+				Component verticalStrut = Box.createVerticalStrut(75);
 				verticalBox.add(verticalStrut);
 				btnCreateNewMap.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {

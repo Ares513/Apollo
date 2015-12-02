@@ -23,13 +23,25 @@ public class PaintTool {
 	 * sizes?
 	 */
 	private void initializeBrushes() {
-		brushes = new Brush[3];
+		brushes = new Brush[5];
 		Point[] brush1points = {new Point(0,0)}; //single tile
 		brushes[0] = new Brush(brush1points);
 		Point[] brush2points = {new Point(0,0), new Point(1,0), new Point(0,1), new Point(1,1)}; //2 x 2 square
 		brushes[1] = new Brush(brush2points);
 		Point[] brush3points = {new Point(0,0), new Point(1,0), new Point(0,1), new Point(-1,0), new Point(0,-1), new Point(1,-1), new Point(-1,1), new Point(-1,-1), new Point(1,1)}; //3 x 3 square
 		brushes[2] = new Brush(brush3points);
+		Point[] brush4points = {new Point(0,0), new Point(1,0), new Point(0,1), new Point(-1,0), new Point(0,-1), new Point(1,-1), new Point(-1,1), new Point(-1,-1), new Point(1,1),
+				new Point(2,0), new Point(2,1), new Point(0,2), new Point(1,2), new Point(2,2), new Point(2,-1), new Point(2,-2), new Point(-2,0), new Point(0,-2),
+				new Point(1,-2), new Point(-2,-2), new Point(-2,1), new Point(-2,2), new Point(-2,-1), new Point(-1,-2), new Point(-1,2)}; //5 x 5 square
+		brushes[3] = new Brush(brush4points);
+		Point[] brush5points = {new Point(0,0), new Point(1,0), new Point(0,1), new Point(-1,0), new Point(0,-1), new Point(1,-1), new Point(-1,1), new Point(-1,-1), new Point(1,1),
+				new Point(2,0), new Point(2,1), new Point(0,2), new Point(1,2), new Point(2,2), new Point(2,-1), new Point(2,-2), new Point(-2,0), new Point(0,-2),
+				new Point(1,-2), new Point(-2,-2), new Point(-2,1), new Point(-2,2), new Point(-2,-1), new Point(-1,-2), new Point(-1,2),
+				new Point(-3,3), new Point(-2,3), new Point(-1,3), new Point(0,3), new Point(1,3), new Point(2,3),
+				new Point(3,3), new Point(3,2), new Point(3,1), new Point(3,0), new Point(3,-1), new Point(3,-2),
+				new Point(3,-3), new Point(2,-3), new Point(1,-3), new Point(0,-3), new Point(-1,-3), new Point(-2,-3),
+				new Point(-3,-3), new Point(-3,-2), new Point(-3,-1), new Point(-3,0), new Point(-3,1), new Point(-3,2)}; //7 x 7 square
+		brushes[4] = new Brush(brush5points);
 	}
 	
 	/*

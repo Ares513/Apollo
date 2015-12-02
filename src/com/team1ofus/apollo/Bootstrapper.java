@@ -24,7 +24,7 @@ public class Bootstrapper {
 					data = new DataManagement();
 					
 					UIManagement UI;
-					UI = new UIManagement(data.getCells());
+					UI = new UIManagement(data.getCells(), splash.imageNames, splash.imageSelection);
 					UI.events.addListener(data);
 					UI.begin();
 				} catch (Exception e) {

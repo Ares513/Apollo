@@ -44,6 +44,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JLayeredPane;
+import javax.swing.UIManager;
+import java.awt.Toolkit;
 
 public class ApolloUI extends JPanel {
 	private JFrame frame;
@@ -65,16 +67,14 @@ public class ApolloUI extends JPanel {
 	private JLayeredPane layeredPane;
 	private NameChecker nameChecker;
 	int mode = 0;
-	ArrayList<Image> imageSelection = new ArrayList<Image>();
+	ArrayList<BufferedImage> imageSelection = new ArrayList<BufferedImage>();
 	ArrayList<String> imageNames = new ArrayList<String>();
 
 	private Box horizontalBox;
-	public ApolloUI() {
-		imageSelection = new ArrayList<Image>(); // editor image selection;
-													// could use abstraction but
-													// we'll deal with that
+	public ApolloUI(ArrayList<String> imageNames, ArrayList<BufferedImage> imageSelection) {
+		this.imageSelection = imageSelection;											// could use abstraction but
+		this.imageNames = imageNames; 				// we'll deal with that
 													// later.
-		loadImages();
 		events = new HumanInteractionEventObject();
 		painter = new PaintTool();
 
@@ -125,7 +125,7 @@ public class ApolloUI extends JPanel {
 
 			@Override
 			public void mouseDragged(MouseEvent e) {
-				if (SwingUtilities.isLeftMouseButton(e)) {
+				if (SwingUtilities.isLeftMouseButton(e) && mode == 0) {
 					// left is pressed!
 					doPaint(panel, e);
 				} else if (SwingUtilities.isRightMouseButton(e)) {
@@ -160,6 +160,11 @@ public class ApolloUI extends JPanel {
 					JOptionPane namedialog = new JOptionPane();
 					String s = (String) namedialog.showInputDialog(new JFrame(), "Enter location name:", "Location",
 							JOptionPane.PLAIN_MESSAGE, null, null, "");
+					if(s == null || s.trim().length() == 0) {
+						//invalid.
+						DebugManagement.writeLineToLog(SEVERITY_LEVEL.SEVERE, "Rejected empty input.");
+						return;
+					}
 					DebugManagement.writeNotificationToLog("Text point added.");
 					
 					textPanel.addLocation(new TextLocation(s, picked, Color.BLACK));
@@ -180,11 +185,27 @@ public class ApolloUI extends JPanel {
 					JOptionPane namedialog = new JOptionPane();
 					String s = (String) namedialog.showInputDialog(new JFrame(), "Enter location name:", "Location",
 							JOptionPane.PLAIN_MESSAGE, null, null, "");
+					if(s == null || s.trim().length() == 0) {
+						//invalid.
+						DebugManagement.writeLineToLog(SEVERITY_LEVEL.SEVERE, "Rejected empty input.");
+						return;
+					}
 					DebugManagement.writeNotificationToLog("Cell point added.");
+					
 					String reference = (String) namedialog.showInputDialog(new JFrame(), "Enter Cell Name", "Cell ID",
 							JOptionPane.PLAIN_MESSAGE, null, null, "");
+					if(reference == null || s.trim().length() == 0) {
+						//invalid.
+						DebugManagement.writeLineToLog(SEVERITY_LEVEL.SEVERE, "Rejected empty input.");
+						return;
+					}
 					String entryReference = (String) namedialog.showInputDialog(new JFrame(), "Enter Entry Point", "Cell ID",
 							JOptionPane.PLAIN_MESSAGE, null, null, "");
+					if(entryReference == null || s.trim().length() == 0) {
+						//invalid.
+						DebugManagement.writeLineToLog(SEVERITY_LEVEL.SEVERE, "Rejected empty input.");
+						return;
+					}
 					//name of the entrance it is at on the other cell.
 					cellToEdit.addLocation(new LocationInfo(s, picked, reference, entryReference));
 					textPanel.addLocation(new TextLocation(s, panel.render.pickTile(e.getX(), e.getY()), Color.BLUE));
@@ -194,6 +215,11 @@ public class ApolloUI extends JPanel {
 					JOptionPane namedialog = new JOptionPane();
 					String s = (String) namedialog.showInputDialog(new JFrame(), "Enter entry name:", "Location",
 							JOptionPane.PLAIN_MESSAGE, null, null, "");
+					if(s == null || s.trim().length() == 0) {
+						//invalid.
+						DebugManagement.writeLineToLog(SEVERITY_LEVEL.SEVERE, "Rejected empty input.");
+						return;
+					}
 					DebugManagement.writeNotificationToLog("Text point added.");
 					//name of the entryReference
 					cellToEdit.addEntryPoint(new EntryPoint(s, picked));
@@ -203,7 +229,14 @@ public class ApolloUI extends JPanel {
 					textPanel.removeLocation(panel.render.pickTile(e.getX(), e.getY()));
 					textPanel.addLocation(new TextLocation(s, panel.render.pickTile(e.getX(), e.getY()), Color.GREEN));
 					repaintPanel();
-				} 
+				} else if(mode == 5) {
+					//remove mode
+					cellToEdit.removePointLocation(picked);
+					cellToEdit.removeEntry(picked);
+					textPanel.removeLocation(picked);
+					DebugManagement.writeNotificationToLog("Removed at " + picked);
+					repaintPanel();
+				}
 
 			}
 		});
@@ -283,30 +316,6 @@ public class ApolloUI extends JPanel {
 		makePanelDirty();
 	}
 
-	private void loadImages() {
-		File dir = new File("./maps");
-		for (File file : dir.listFiles()) {
-			if (file.getName().endsWith((".jpg"))) {
-				imageNames.add(file.getName());
-				imageSelection.add(loadImage(file.getName()));
-			}
-		}
-	}
-
-	private BufferedImage loadImage(String path) {
-		BufferedImage img = null;
-		try {
-			System.out.println(path);
-			img = ImageIO.read(new File("./maps/" + path));
-			System.out.println("success");
-			return img;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return img;
-
-	}
 
 	private void doOffsetCalc(KeyEvent e, JLabel offsetLbl) {
 		switch (e.getKeyCode()) {
@@ -352,11 +361,13 @@ public class ApolloUI extends JPanel {
 	private void buildControls(Cell cellToEdit) {
 
 		frame = new JFrame("Apollo");
+		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(ApolloUI.class.getResource("/com/team1ofus/apollo/hammer-geology-512.png")));
+		frame.setBackground(UIManager.getColor("Button.focus"));
 		frame.setTitle(cellToEdit.getID());
 		frame.setResizable(false);
 		frame.getContentPane().setBounds(100, 100, 969, 596);
 
-		frame.setBounds(100, 100, 969, 596);
+		frame.setBounds(100, 100, 1439, 1023);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		panel = new DrawPane(cellToEdit);
 		frame.setVisible(true);
@@ -384,7 +395,7 @@ public class ApolloUI extends JPanel {
 		
 		frame.getContentPane().add(windowUI, BorderLayout.WEST);
 		frame.getContentPane().add(windowUI, BorderLayout.EAST);
-		windowUI.setBackground(Color.RED);
+		windowUI.setBackground(UIManager.getColor("CheckBox.light"));
 		windowUI.setForeground(Color.RED);
 		windowUI.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
@@ -399,7 +410,7 @@ public class ApolloUI extends JPanel {
 		brushes = new JComboBox();
 
 		verticalBox.add(brushes);
-		brushes.setModel(new DefaultComboBoxModel(new String[] { "Single Tile", "2 x 2 Square", "3 x 3 Square" }));
+		brushes.setModel(new DefaultComboBoxModel(new String[] { "Single Tile", "2 x 2 Square", "3 x 3 Square", "5 x 5 Square","7 x 7 Square"}));
 		brushes.setAlignmentY(Component.TOP_ALIGNMENT);
 		windowUI.add(verticalBox);
 
@@ -416,7 +427,7 @@ public class ApolloUI extends JPanel {
 		tiles.setModel(new DefaultComboBoxModel(TILE_TYPE.values()));
 
 		paintMode = new JComboBox();
-		paintMode.setModel(new DefaultComboBoxModel(new String[] {"Tile painting", "Location Painting", "Append Location Painting", "Cell Reference Painting", "Entry Point Painting"}));
+		paintMode.setModel(new DefaultComboBoxModel(new String[] {"Tile painting", "Location Painting", "Append Location Painting", "Cell Reference Painting", "Entry Point Painting", "Delete Locations, References And Points"}));
 		verticalBox.add(paintMode);
 		tiles.setAlignmentY(5.0f);
 		
@@ -430,7 +441,7 @@ public class ApolloUI extends JPanel {
 	}
 
 	private void repaintPanel() {
-		layeredPane.repaint();
+		layeredPane.repaint(layeredPane.getBounds());
 
 	}
 

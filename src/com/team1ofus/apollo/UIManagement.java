@@ -2,6 +2,7 @@ package com.team1ofus.apollo;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import javax.swing.DefaultComboBoxModel;
@@ -16,11 +17,14 @@ public class UIManagement implements IDataUpdateListener, IHumanInteractionListe
 	Loader loader;
 
 	ArrayList<Cell> cells;
+	ArrayList<String> imageNames;
+	ArrayList<BufferedImage> images;
 	public UIManagementInteractionEventObject events; //later, add getters and setters to prevent direct access.
 	
-	public UIManagement(ArrayList<Cell> allCells) {
+	public UIManagement(ArrayList<Cell> allCells, ArrayList<String> imageNames, ArrayList<BufferedImage> images) {
 		events = new UIManagementInteractionEventObject();
-		
+		this.imageNames = imageNames;
+		this.images = images;
 		cells = allCells; //loaded from DataManagement
 		//Changes are made to Cells until a Save operation is made.
 	
@@ -29,7 +33,7 @@ public class UIManagement implements IDataUpdateListener, IHumanInteractionListe
 	 * Launch the application once event handling and stitching is complete.
 	 */
 	public void begin() {
-		loader = new Loader(cells);
+		loader = new Loader(cells, imageNames, images);
 		loader.events.addChooseListener(this);
 		//await loader callback.
 		
@@ -51,7 +55,8 @@ public class UIManagement implements IDataUpdateListener, IHumanInteractionListe
 	@Override
 	public void selectionMade(Cell selection, ArrayList<Cell> allCells) {
 		// TODO Auto-generated method stub
-		window = new ApolloUI();
+		//guarantee that 
+		window = new ApolloUI(imageNames, images);
 		window.events.addSaveListener(this);
 		cells = allCells;
 		events.triggerSave(cells);
