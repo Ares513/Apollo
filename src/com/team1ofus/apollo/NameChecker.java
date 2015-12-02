@@ -131,10 +131,9 @@ public class NameChecker {
 			return false;
 		}
 		for(int i = 0; i<AcceptableIdentifiers.length;i++){
-			if(identifierVal.charAt(i)== AcceptableIdentifiers[i]){
+			if(identifierVal.charAt(0)== AcceptableIdentifiers[i]){
 				return true;
 			}
-			return false;
 		}
 		return false;
 		
