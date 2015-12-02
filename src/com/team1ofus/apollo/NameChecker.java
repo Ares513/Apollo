@@ -15,6 +15,8 @@ public class NameChecker {
 	private int numStringSegments = 0;
 	
 	//The constructor
+	public NameChecker(){ 
+	}
 	public NameChecker(String stringToCheck,boolean type){
 		this.stringToCheck = stringToCheck;
 		this.type = type;
@@ -29,6 +31,9 @@ public class NameChecker {
 		
 		if(this.type == false){   //false is Cell Name
 			numStringSegments = 2;
+			if(stringToCheck.equals("World")){
+				return true;
+			}
 			if(stringArraySize != numStringSegments){ 
 				return false;
 			}
@@ -97,7 +102,6 @@ public class NameChecker {
 		}
 		System.out.println("Not a valid string name: Cell name has invalid characters");
 		return false;
-
 	}
 	
 	//This is a helper function that will check if a Cell floor value is valid

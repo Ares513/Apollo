@@ -33,6 +33,7 @@ import java.awt.GridLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 
@@ -155,7 +156,7 @@ public class ApolloUI extends JPanel {
 				Point picked = panel.render.pickTile(e.getX(), e.getY());
 				if (mode == 0)
 					doPaint(panel, e);
-				else if (mode == 1) {
+				else if (mode == 1) {					
 					//overwrite mode. Existing points will be deleted and replaced.
 					JOptionPane namedialog = new JOptionPane();
 					String s = (String) namedialog.showInputDialog(new JFrame(), "Enter location name:", "Location",
@@ -165,10 +166,10 @@ public class ApolloUI extends JPanel {
 						DebugManagement.writeLineToLog(SEVERITY_LEVEL.SEVERE, "Rejected empty input.");
 						return;
 					}
+							
 					DebugManagement.writeNotificationToLog("Text point added.");
-					
 					textPanel.addLocation(new TextLocation(s, picked, Color.BLACK));
-					cellToEdit.addLocation(new LocationInfo(s, picked));
+					cellToEdit.addLocation(new LocationInfo(s, picked));												
 					repaintPanel();
 				
 					
@@ -192,20 +193,51 @@ public class ApolloUI extends JPanel {
 					}
 					DebugManagement.writeNotificationToLog("Cell point added.");
 					
-					String reference = (String) namedialog.showInputDialog(new JFrame(), "Enter Cell Name", "Cell ID",
-							JOptionPane.PLAIN_MESSAGE, null, null, "");
-					if(reference == null || s.trim().length() == 0) {
-						//invalid.
-						DebugManagement.writeLineToLog(SEVERITY_LEVEL.SEVERE, "Rejected empty input.");
-						return;
+					String reference = null;
+					boolean valid = false;
+					//The while loop below will run infinitely until the user puts in a valid input for cell name
+					while(valid == false){
+						 reference = (String) namedialog.showInputDialog(new JFrame(), "Enter Cell Name", "Cell ID",JOptionPane.PLAIN_MESSAGE, null, null, "");
+						//Checks cell names
+						 nameChecker = new NameChecker(reference,false); 	
+						if(reference == null || s.trim().length() == 0) {
+							//invalid.
+							DebugManagement.writeLineToLog(SEVERITY_LEVEL.SEVERE, "Rejected empty input.");
+							
+						}						
+						else if(nameChecker.isNameValid() == false){
+							DebugManagement.writeLineToLog(SEVERITY_LEVEL.FATAL, "Cell Name is invalid");
+							JOptionPane warning = new JOptionPane();
+							warning.showMessageDialog(new JFrame(), "Cell Name is invalid");
+							
+						}
+						else{
+							valid = true;
+						}
 					}
-					String entryReference = (String) namedialog.showInputDialog(new JFrame(), "Enter Entry Point", "Cell ID",
-							JOptionPane.PLAIN_MESSAGE, null, null, "");
-					if(entryReference == null || s.trim().length() == 0) {
-						//invalid.
-						DebugManagement.writeLineToLog(SEVERITY_LEVEL.SEVERE, "Rejected empty input.");
-						return;
+					
+					String entryReference = null;
+					valid = false;
+					
+					while(valid == false){
+						 entryReference = (String) namedialog.showInputDialog(new JFrame(), "Enter entry name:", "Location",
+								JOptionPane.PLAIN_MESSAGE, null, null, "");
+						 nameChecker = new NameChecker(entryReference,true);
+						if(entryReference == null || entryReference.trim().length() == 0) {
+							//invalid.
+							DebugManagement.writeLineToLog(SEVERITY_LEVEL.SEVERE, "Rejected empty input.");
+						
+						}
+						else if(nameChecker.isNameValid() == false){
+							DebugManagement.writeLineToLog(SEVERITY_LEVEL.FATAL, "Entry Point Name is invalid");
+							JOptionPane warning = new JOptionPane();
+							warning.showMessageDialog(new JFrame(), "Entry Point is invalid");
+						}
+						else{
+							valid = true;
+						}
 					}
+					
 					//name of the entrance it is at on the other cell.
 					cellToEdit.addLocation(new LocationInfo(s, picked, reference, entryReference));
 					textPanel.addLocation(new TextLocation(s, panel.render.pickTile(e.getX(), e.getY()), Color.BLUE));
@@ -213,13 +245,29 @@ public class ApolloUI extends JPanel {
 				} else if(mode == 4) {
 					//creating entry points for other cell points
 					JOptionPane namedialog = new JOptionPane();
-					String s = (String) namedialog.showInputDialog(new JFrame(), "Enter entry name:", "Location",
-							JOptionPane.PLAIN_MESSAGE, null, null, "");
-					if(s == null || s.trim().length() == 0) {
-						//invalid.
-						DebugManagement.writeLineToLog(SEVERITY_LEVEL.SEVERE, "Rejected empty input.");
-						return;
+					
+					String s = null;
+					boolean valid = false;
+					
+					while(valid == false){
+						 s = (String) namedialog.showInputDialog(new JFrame(), "Enter entry name:", "Location",
+								JOptionPane.PLAIN_MESSAGE, null, null, "");
+						 nameChecker = new NameChecker(s,true);
+						if(s == null || s.trim().length() == 0) {
+							//invalid.
+							DebugManagement.writeLineToLog(SEVERITY_LEVEL.SEVERE, "Rejected empty input.");
+						
+						}
+						else if(nameChecker.isNameValid() == false){
+							DebugManagement.writeLineToLog(SEVERITY_LEVEL.FATAL, "Entry Point Name is invalid");
+							JOptionPane warning = new JOptionPane();
+							warning.showMessageDialog(new JFrame(), "Entry Point is invalid");
+						}
+						else{
+							valid = true;
+						}
 					}
+					
 					DebugManagement.writeNotificationToLog("Text point added.");
 					//name of the entryReference
 					cellToEdit.addEntryPoint(new EntryPoint(s, picked));

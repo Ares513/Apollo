@@ -138,5 +138,14 @@ public class NameCheckerTest {
 		NameChecker testName = new NameChecker("AK", true);
 		assertEquals(testName.isNameValid(),false);
 	}
+	
+	@Test
+	public void worldCheck() {
+		System.out.println("");
+		System.out.println("worldCheck");
+		System.out.println("Should check if world is valid as cellName");
+		NameChecker testName = new NameChecker("World", false);
+		assertEquals(testName.isNameValid(),true);
+	}
 
 }
