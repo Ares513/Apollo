@@ -366,7 +366,7 @@ public class ApolloUI extends JPanel {
 		frame.setResizable(false);
 		frame.getContentPane().setBounds(100, 100, 969, 596);
 
-		frame.setBounds(100, 100, 969, 596);
+		frame.setBounds(100, 100, 1439, 1023);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		panel = new DrawPane(cellToEdit);
 		frame.setVisible(true);

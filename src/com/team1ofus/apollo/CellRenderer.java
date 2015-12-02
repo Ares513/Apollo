@@ -27,9 +27,9 @@ public class CellRenderer {
 	    g.fillRect(0, 0, tileWidth * editCell.getWidth(), tileHeight * editCell.getHeight());
 	    
 	    if(campusMapFlag) { //if the campus map is selected, stretch it by 4 times
-	    	BufferedImage img = underlyingImage.getSubimage(offset.x, offset.y, windowWidth, windowHeight);
+	    	//BufferedImage img = underlyingImage.getSubimage(offset.x, offset.y, windowWidth, windowHeight);
 	    	//offset.x*-1 - underlyingOffset.x, offset.y*-1 - underlyingOffset.y
-	    	g.drawImage(img, 0 , 0, img.getWidth(null)*4, img.getHeight(null)*4, Color.white, null);
+	    	g.drawImage(underlyingImage, offset.x*-1 - underlyingOffset.x, offset.y*-1 - underlyingOffset.y, underlyingImage.getWidth(null)*4, underlyingImage.getHeight(null)*4, Color.white, null);
 	    } else {
 	    	g.drawImage(underlyingImage, offset.x*-1 - underlyingOffset.x, offset.y*-1 - underlyingOffset.y, Color.white, null);
 	    }
@@ -46,6 +46,12 @@ public class CellRenderer {
 		int lowerY = (int)(offset.y / BootstrapperConstants.TILE_HEIGHT);
 		int higherX = (int)(offset.x + windowWidth)/BootstrapperConstants.TILE_WIDTH;
 		int higherY = (int)(offset.y + windowHeight)/BootstrapperConstants.TILE_HEIGHT;
+		if(windowWidth > BootstrapperConstants.TILE_WIDTH * cellWidth) {
+			higherX = cellWidth;
+		}
+		if(windowHeight > BootstrapperConstants.TILE_HEIGHT * cellHeight) {
+			higherY = cellHeight;
+		}
 		for(int i=lowerX; i<higherX; i++) {
 			for(int j=lowerY; j<higherY; j++) {
 				try {
@@ -242,6 +248,7 @@ public class CellRenderer {
 	public void incrementOffset(int dx, int dy, int windowWidth, int windowHeight) {
 		//some optimizations to be made here
 		offset.translate(dx, dy);
+
 		if(offset.x < 0) {
 			offset.x = 0;
 		} else if(offset.x > editCell.getWidth() * tileWidth - windowWidth) {
@@ -252,6 +259,12 @@ public class CellRenderer {
 		} else if(offset.y > editCell.getHeight() * tileHeight - windowHeight) {
 			offset.y = editCell.getHeight() * tileHeight - windowHeight; 
 		
+		}
+		if(offset.x < 0) {
+			offset.x = 0;
+		}
+		if(offset.y < 0) {
+			offset.y = 0;
 		}
 		DebugManagement.writeNotificationToLog("Current offest " + offset);
 		DebugManagement.writeNotificationToLog("Window width " + windowWidth + " Window height " + windowHeight);
