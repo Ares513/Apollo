@@ -63,6 +63,7 @@ public class ApolloUI extends JPanel {
 	private JComboBox underlyingImageSelection;
 	private JComboBox paintMode;
 	private JLayeredPane layeredPane;
+	private NameChecker nameChecker;
 	int mode = 0;
 	ArrayList<Image> imageSelection = new ArrayList<Image>();
 	ArrayList<String> imageNames = new ArrayList<String>();
