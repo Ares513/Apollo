@@ -183,7 +183,7 @@ public class ApolloUI extends JPanel {
 					repaintPanel();
 				} else if(mode == 3) {
 					//creating cell points
-					JOptionPane namedialog = new JOptionPane();
+					JOptionPane namedialog = new JOptionPane();/*
 					String s = (String) namedialog.showInputDialog(new JFrame(), "Enter location name:", "Location",
 							JOptionPane.PLAIN_MESSAGE, null, null, "");
 					if(s == null || s.trim().length() == 0) {
@@ -191,7 +191,7 @@ public class ApolloUI extends JPanel {
 						DebugManagement.writeLineToLog(SEVERITY_LEVEL.SEVERE, "Rejected empty input.");
 						return;
 					}
-					DebugManagement.writeNotificationToLog("Cell point added.");
+					DebugManagement.writeNotificationToLog("Cell point added.");*/
 					
 					String reference = null;
 					boolean valid = false;
@@ -241,8 +241,8 @@ public class ApolloUI extends JPanel {
 					}
 					
 					//name of the entrance it is at on the other cell.
-					cellToEdit.addLocation(new LocationInfo(s, picked, reference, entryReference));
-					textPanel.addLocation(new TextLocation(s, panel.render.pickTile(e.getX(), e.getY()), Color.BLUE));
+					cellToEdit.addLocation(new LocationInfo(entryReference, picked, reference, entryReference));
+					textPanel.addLocation(new TextLocation(entryReference, panel.render.pickTile(e.getX(), e.getY()), Color.BLUE));
 					repaintPanel();
 				} else if(mode == 4) {
 					//creating entry points for other cell points
