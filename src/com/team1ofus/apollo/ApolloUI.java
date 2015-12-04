@@ -200,9 +200,10 @@ public class ApolloUI extends JPanel {
 						 reference = (String) namedialog.showInputDialog(new JFrame(), "Enter Cell Name", "Cell ID",JOptionPane.PLAIN_MESSAGE, null, null, "");
 						//Checks cell names
 						 nameChecker = new NameChecker(reference,false); 	
-						if(reference == null || s.trim().length() == 0) {
+						if(reference == null || reference.trim().length() == 0) {
 							//invalid.
 							DebugManagement.writeLineToLog(SEVERITY_LEVEL.SEVERE, "Rejected empty input.");
+							return;
 							
 						}						
 						else if(nameChecker.isNameValid() == false){
@@ -226,6 +227,7 @@ public class ApolloUI extends JPanel {
 						if(entryReference == null || entryReference.trim().length() == 0) {
 							//invalid.
 							DebugManagement.writeLineToLog(SEVERITY_LEVEL.SEVERE, "Rejected empty input.");
+							return;
 						
 						}
 						else if(nameChecker.isNameValid() == false){
@@ -256,6 +258,7 @@ public class ApolloUI extends JPanel {
 						if(s == null || s.trim().length() == 0) {
 							//invalid.
 							DebugManagement.writeLineToLog(SEVERITY_LEVEL.SEVERE, "Rejected empty input.");
+							return;
 						
 						}
 						else if(nameChecker.isNameValid() == false){
