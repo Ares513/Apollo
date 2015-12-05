@@ -9,7 +9,7 @@ public class DebugManagement {
 		Date d = new Date();
 		System.out.println("[ " + d + "] " + severity.toString() + ": " + message);
 		DebugConsole.addLine("[ " + d + "] " + severity.toString() + ": " + message);
-				
+			 	
 	}
 	public static void writeNotificationToLog(String message) {
 		Date d = new Date();	
