@@ -14,8 +14,6 @@ import java.util.function.Predicate;
 
 import core.DebugManagement;
 import core.SEVERITY_LEVEL;
-import data.EntryPoint;
-import data.LocationInfo;
 
 public class HashCell implements Serializable {
 	/**

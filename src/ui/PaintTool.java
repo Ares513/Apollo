@@ -4,9 +4,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.team1ofus.apollo.DataTile;
 import com.team1ofus.apollo.TILE_TYPE;
-
-import data.DataTile;
 
 public class PaintTool {
 

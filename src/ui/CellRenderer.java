@@ -7,11 +7,11 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 
+import com.team1ofus.apollo.DataTile;
 import com.team1ofus.apollo.HashCell;
 
 import core.BootstrapperConstants;
 import core.DebugManagement;
-import data.DataTile;
 
 public class CellRenderer {
 	int tileWidth;

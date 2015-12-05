@@ -13,14 +13,14 @@ import java.util.function.Predicate;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import com.team1ofus.apollo.EntryPoint;
 import com.team1ofus.apollo.HashCell;
+import com.team1ofus.apollo.LocationInfo;
 
 import core.BootstrapperConstants;
 import core.DebugConsole;
 import core.DebugManagement;
 import core.SEVERITY_LEVEL;
-import data.EntryPoint;
-import data.LocationInfo;
 
 /*
  * Intended to be efficient at drawing text in a standardized fashion over the screen.

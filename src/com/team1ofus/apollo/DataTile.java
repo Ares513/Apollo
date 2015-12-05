@@ -1,8 +1,6 @@
-package data;
+package com.team1ofus.apollo;
 
 import java.io.Serializable;
-
-import com.team1ofus.apollo.TILE_TYPE;
 
 /*
  * We only need a single DataTile class.

@@ -7,10 +7,6 @@ import java.util.HashSet;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-import data.DataTile;
-import data.EntryPoint;
-import data.LocationInfo;
-
 public class Cell implements Serializable {
 	/**
 	 * 

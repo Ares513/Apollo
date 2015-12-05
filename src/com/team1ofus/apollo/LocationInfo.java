@@ -1,4 +1,4 @@
-package data;
+package com.team1ofus.apollo;
 
 import java.awt.Point;
 import java.io.Serializable;

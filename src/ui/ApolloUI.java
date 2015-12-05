@@ -37,7 +37,9 @@ import javax.swing.JDialog;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 
+import com.team1ofus.apollo.EntryPoint;
 import com.team1ofus.apollo.HashCell;
+import com.team1ofus.apollo.LocationInfo;
 import com.team1ofus.apollo.TILE_TYPE;
 
 import java.awt.Component;
