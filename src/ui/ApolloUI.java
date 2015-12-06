@@ -1,48 +1,33 @@
 package ui;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.JInternalFrame;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import java.awt.Color;
 
-import javax.imageio.ImageIO;
 import javax.swing.Box;
+
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
-import java.awt.Image;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.swing.JSpinner;
-import java.awt.GridLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 
 import com.team1ofus.apollo.EntryPoint;
 import com.team1ofus.apollo.HashCell;
 import com.team1ofus.apollo.LocationInfo;
 import com.team1ofus.apollo.TILE_TYPE;
 
-import java.awt.Component;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
@@ -73,7 +58,6 @@ public class ApolloUI extends JPanel {
 	DrawPane panel;
 	TextPane textPanel;
 	int scrollSpeed = 10;
-	private Box verticalBox_1;
 	private JButton saveButton;
 	public HumanInteractionEventObject events;
 	private JComboBox underlyingImageSelection;
@@ -304,7 +288,6 @@ public class ApolloUI extends JPanel {
 
 			}
 		});
-
 		tiles.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// selection box changed for tiles
@@ -414,7 +397,7 @@ public class ApolloUI extends JPanel {
 		}
 		textPanel.setOffset(panel.render.offset);
 		makePanelDirty();
-		lblOffset.setText(panel.render.offset.getX() + "," + panel.render.offset.getY());
+		lblOffset.setText("Offset: " + panel.render.offset.getX() + "," + panel.render.offset.getY());
 	}
 
 	public void paintComponent(Graphics g) {
@@ -441,7 +424,7 @@ public class ApolloUI extends JPanel {
 		frame.getContentPane().add(horizontalBox, BorderLayout.CENTER);
 		layeredPane = new JLayeredPane();
 		horizontalBox.add(layeredPane);
-		layeredPane.setBackground(Color.CYAN);
+		layeredPane.setBackground(Color.GRAY);
 		windowUI = new JPanel();
 		panel = new DrawPane(HashCellToEdit);
 		textPanel = new TextPane(HashCellToEdit);
@@ -457,50 +440,71 @@ public class ApolloUI extends JPanel {
 		layeredPane.setComponentZOrder(panel, 1);
 		layeredPane.setOpaque(true);
 		
-		frame.getContentPane().add(windowUI, BorderLayout.WEST);
 		frame.getContentPane().add(windowUI, BorderLayout.EAST);
+		//windowUI.setBackground(new Color(172, 43, 55));
 		windowUI.setBackground(UIManager.getColor("CheckBox.light"));
 		windowUI.setForeground(Color.RED);
 		windowUI.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-				verticalBox_1 = Box.createVerticalBox();
-				windowUI.add(verticalBox_1);
-
 		verticalBox = Box.createVerticalBox();
-		lblOffset = new JLabel("0,0");
-		lblOffset.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblOffset = new JLabel("Offset: 0,0");
+		lblOffset.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		//lblOffset.setForeground(new Color(169, 176, 183));
 		verticalBox.add(lblOffset);
 
+		verticalBox.add(Box.createVerticalStrut(20));
+		
+		JLabel lblBrushes = new JLabel("Brush");
+		lblBrushes.setFont(new Font("Tahoma", Font.BOLD, 14));
+		verticalBox.add(lblBrushes);
+		verticalBox.add(Box.createVerticalStrut(2));
 		brushes = new JComboBox();
-
-		verticalBox.add(brushes);
 		brushes.setModel(new DefaultComboBoxModel(new String[] { "Single Tile", "2 x 2 Square", "3 x 3 Square", "5 x 5 Square","7 x 7 Square"}));
-		brushes.setAlignmentY(Component.TOP_ALIGNMENT);
-		windowUI.add(verticalBox);
+		brushes.setAlignmentX(Box.LEFT_ALIGNMENT);
+		verticalBox.add(brushes);
 
+		verticalBox.add(Box.createVerticalStrut(10));
+		
+		JLabel lblImage = new JLabel("Underlying Image");
+		lblImage.setFont(new Font("Tahoma", Font.BOLD, 14));
+		verticalBox.add(lblImage);
+		verticalBox.add(Box.createVerticalStrut(2));
 		underlyingImageSelection = new JComboBox();
-
-		underlyingImageSelection.setAlignmentY(5.0f);
 		for(String s : imageNames) {
 			underlyingImageSelection.addItem(s);
 		}
+		underlyingImageSelection.setAlignmentX(Box.LEFT_ALIGNMENT);
 		verticalBox.add(underlyingImageSelection);
-		tiles = new JComboBox();
-		verticalBox.add(tiles);
-		tiles.setAlignmentY(5.0f);
-		tiles.setModel(new DefaultComboBoxModel(TILE_TYPE.values()));
 
+		verticalBox.add(Box.createVerticalStrut(10));
+		
+		JLabel lblTiles = new JLabel("Tile");
+		lblTiles.setFont(new Font("Tahoma", Font.BOLD, 14));
+		verticalBox.add(lblTiles);
+		verticalBox.add(Box.createVerticalStrut(2));
+		tiles = new JComboBox();
+		tiles.setModel(new DefaultComboBoxModel(TILE_TYPE.values()));
+		tiles.setAlignmentX(Box.LEFT_ALIGNMENT);
+		verticalBox.add(tiles);
+
+		verticalBox.add(Box.createVerticalStrut(10));
+		
+		JLabel lblMode = new JLabel("Mode");
+		lblMode.setFont(new Font("Tahoma", Font.BOLD, 14));
+		verticalBox.add(lblMode);
+		verticalBox.add(Box.createVerticalStrut(2));
 		paintMode = new JComboBox();
 		paintMode.setModel(new DefaultComboBoxModel(new String[] {"Tile painting", "Location Painting", "Append Location Painting", "HashCell Reference Painting", "Entry Point Painting", "Delete Locations, References And Points"}));
+		paintMode.setAlignmentX(Box.LEFT_ALIGNMENT);
 		verticalBox.add(paintMode);
-		tiles.setAlignmentY(5.0f);
+
+		verticalBox.add(Box.createVerticalStrut(10));
 		
-				saveButton = new JButton("Save");
-				verticalBox.add(saveButton);
-				
-						saveButton.setVerticalAlignment(SwingConstants.TOP);
-						saveButton.setToolTipText("Save to a file.");
+		saveButton = new JButton("Save");
+		verticalBox.add(saveButton);
+		saveButton.setToolTipText("Save to a file.");
 		
+		windowUI.add(verticalBox);
 		textPanel.grabFocus();
 	}
 

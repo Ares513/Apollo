@@ -7,6 +7,8 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JFrame;
 
+import com.alee.laf.WebLookAndFeel;
+
 import core.SplashScreen;
 import data.DataManagement;
 import ui.UIManagement;
@@ -17,6 +19,7 @@ public class Bootstrapper {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		WebLookAndFeel.install();
 		SplashScreen splash = new SplashScreen(1000); //X000 -> x seconds 
 		splash.showSplashAndExit();	
 		EventQueue.invokeLater(new Runnable() {
