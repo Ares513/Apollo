@@ -29,15 +29,16 @@ public class HashCell implements Serializable {
 	private ArrayList<LocationInfo> listedLocations = new ArrayList<LocationInfo>(); //Specific locations, i.e fountain. No cell association variable if it doesn't associate to anything.
 	private ArrayList<EntryPoint> entryPoints = new ArrayList<EntryPoint>(); //wrap it in ArrayList whenever needed
 	//psuedo-set; duplicate terms cannot be added
-	public HashCell(int width, int height, String name, String displayName) {
+	public HashCell(int width, int height, String name, String displayName, ArrayList<LocationInfo> arrayList, ArrayList<EntryPoint> arrayList2) {
 		id = name;
 		//identifier
-		
+		this.listedLocations = arrayList;
+		this.entryPoints = arrayList2;
 		fixedWidth = width;
 		fixedHeight = height;
 		//We'll use fixedWidth and fixedHeight to cap the width and height of edited points.
-		entryPoints = new ArrayList<EntryPoint>();
-		listedLocations = new ArrayList<LocationInfo>();
+		arrayList2 = new ArrayList<EntryPoint>();
+		arrayList = new ArrayList<LocationInfo>();
 	}
 	public ArrayList<LocationInfo> getListedLocations() {
 		return listedLocations;
