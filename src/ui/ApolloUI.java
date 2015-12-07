@@ -406,6 +406,7 @@ public class ApolloUI extends JPanel {
 	}
 
 	private void buildControls(HashCell HashCellToEdit) {
+		Color labelColor = Color.BLACK;
 
 		frame = new JFrame("Apollo");
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(ApolloUI.class.getResource("/com/team1ofus/apollo/hammer-geology-512.png")));
@@ -441,66 +442,76 @@ public class ApolloUI extends JPanel {
 		layeredPane.setOpaque(true);
 		
 		frame.getContentPane().add(windowUI, BorderLayout.EAST);
-		//windowUI.setBackground(new Color(172, 43, 55));
+		//windowUI.setBackground(new Color(150, 0, 20));
 		windowUI.setBackground(UIManager.getColor("CheckBox.light"));
 		windowUI.setForeground(Color.RED);
-		windowUI.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		windowUI.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
 		
 		verticalBox = Box.createVerticalBox();
 		lblOffset = new JLabel("Offset: 0,0");
 		lblOffset.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		//lblOffset.setForeground(new Color(169, 176, 183));
+		lblOffset.setForeground(labelColor);
+		lblOffset.setAlignmentX(Box.RIGHT_ALIGNMENT);
 		verticalBox.add(lblOffset);
 
 		verticalBox.add(Box.createVerticalStrut(20));
 		
 		JLabel lblBrushes = new JLabel("Brush");
 		lblBrushes.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblBrushes.setForeground(labelColor);
+		lblBrushes.setAlignmentX(Box.RIGHT_ALIGNMENT);
 		verticalBox.add(lblBrushes);
 		verticalBox.add(Box.createVerticalStrut(2));
 		brushes = new JComboBox();
 		brushes.setModel(new DefaultComboBoxModel(new String[] { "Single Tile", "2 x 2 Square", "3 x 3 Square", "5 x 5 Square","7 x 7 Square"}));
-		brushes.setAlignmentX(Box.LEFT_ALIGNMENT);
+		brushes.setAlignmentX(Box.RIGHT_ALIGNMENT);
 		verticalBox.add(brushes);
 
 		verticalBox.add(Box.createVerticalStrut(10));
 		
 		JLabel lblImage = new JLabel("Underlying Image");
 		lblImage.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblImage.setForeground(labelColor);
+		lblImage.setAlignmentX(Box.RIGHT_ALIGNMENT);
 		verticalBox.add(lblImage);
 		verticalBox.add(Box.createVerticalStrut(2));
 		underlyingImageSelection = new JComboBox();
 		for(String s : imageNames) {
 			underlyingImageSelection.addItem(s);
 		}
-		underlyingImageSelection.setAlignmentX(Box.LEFT_ALIGNMENT);
+		underlyingImageSelection.setAlignmentX(Box.RIGHT_ALIGNMENT);
 		verticalBox.add(underlyingImageSelection);
 
 		verticalBox.add(Box.createVerticalStrut(10));
 		
 		JLabel lblTiles = new JLabel("Tile");
 		lblTiles.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblTiles.setForeground(labelColor);
+		lblTiles.setAlignmentX(Box.RIGHT_ALIGNMENT);
 		verticalBox.add(lblTiles);
 		verticalBox.add(Box.createVerticalStrut(2));
 		tiles = new JComboBox();
 		tiles.setModel(new DefaultComboBoxModel(TILE_TYPE.values()));
-		tiles.setAlignmentX(Box.LEFT_ALIGNMENT);
+		tiles.setAlignmentX(Box.RIGHT_ALIGNMENT);
 		verticalBox.add(tiles);
 
 		verticalBox.add(Box.createVerticalStrut(10));
 		
 		JLabel lblMode = new JLabel("Mode");
 		lblMode.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblMode.setForeground(labelColor);
+		lblMode.setAlignmentX(Box.RIGHT_ALIGNMENT);
 		verticalBox.add(lblMode);
 		verticalBox.add(Box.createVerticalStrut(2));
 		paintMode = new JComboBox();
 		paintMode.setModel(new DefaultComboBoxModel(new String[] {"Tile painting", "Location Painting", "Append Location Painting", "HashCell Reference Painting", "Entry Point Painting", "Delete Locations, References And Points"}));
-		paintMode.setAlignmentX(Box.LEFT_ALIGNMENT);
+		paintMode.setAlignmentX(Box.RIGHT_ALIGNMENT);
 		verticalBox.add(paintMode);
 
 		verticalBox.add(Box.createVerticalStrut(10));
 		
 		saveButton = new JButton("Save");
+		saveButton.setAlignmentX(Box.RIGHT_ALIGNMENT);
 		verticalBox.add(saveButton);
 		saveButton.setToolTipText("Save to a file.");
 		
