@@ -11,7 +11,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import com.team1ofus.apollo.HashCell;
+import com.team1ofus.apollo.*;
 
 import core.BootstrapperConstants;
 import core.DebugManagement;
@@ -165,7 +165,7 @@ public class Loader extends JDialog {
 								throw new FileSystemException("Duplicate file not overwritten.");
 							}
 						}
-						cellToCreate = new HashCell(width, height, mapID + ".cell", displayName.getText());
+						cellToCreate = new HashCell(width, height, mapID + ".cell", displayName.getText(), new ArrayList<LocationInfo>(), new ArrayList<EntryPoint>());
 						allCells.add(cellToCreate);
 						mapChooser.removeAllItems();
 						String[] names = getNames(allCells);
