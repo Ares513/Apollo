@@ -47,6 +47,7 @@ public class CellRenderer {
 		Color yellow = new Color(Color.yellow.getRed(), Color.yellow.getGreen(), Color.blue.getRed(), 125);
 		Color green = new Color(Color.green.getRed(), Color.green.getGreen(), Color.blue.getRed(), 125);
 		Color red = new Color(Color.red.getRed(), Color.red.getGreen(), Color.red.getBlue(), 125);
+		Color lightpurple = new Color(234, 150, 212, 125);
 		//edge bounds to render for map
 		int lowerX = (int)(offset.x / BootstrapperConstants.TILE_WIDTH);
 		int lowerY = (int)(offset.y / BootstrapperConstants.TILE_HEIGHT);
@@ -88,15 +89,15 @@ public class CellRenderer {
 					break;
 				case CONGESTED:
 					g.fillRect(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight);
-					
 					g.setColor(Color.magenta);
+					break;
 				case VERTICAL_UP_STAIRS:
 					g.setColor(red);
 					//g.fillRect(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight);
 					g.drawLine(i*tileWidth - offset.x + tileWidth/2, j*tileHeight - offset.y, i*tileWidth - offset.x + tileWidth/2, j*tileHeight - offset.y + tileHeight);
 					//base line for arrow
-					g.drawLine(i*tileWidth - offset.x + tileWidth/2, j*tileHeight - offset.y, i*tileWidth - offset.x, j*tileHeight - offset.y + tileHeight/4);
-					g.drawLine(i*tileWidth - offset.x + tileWidth/2, j*tileHeight - offset.y, i*tileWidth - offset.x + tileWidth, j*tileHeight - offset.y + tileHeight/4);
+					g.drawLine(i*tileWidth - offset.x + tileWidth/2, j*tileHeight - offset.y, i*tileWidth - offset.x, j*tileHeight - offset.y + tileHeight/2);
+					g.drawLine(i*tileWidth - offset.x + tileWidth/2, j*tileHeight - offset.y, i*tileWidth - offset.x + tileWidth, j*tileHeight - offset.y + tileHeight/2);
 					//arrow lines
 					
 					break;
@@ -105,22 +106,25 @@ public class CellRenderer {
 					//g.fillRect(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight);
 					g.drawLine(i*tileWidth - offset.x + tileWidth/2, j*tileHeight - offset.y, i*tileWidth - offset.x + tileWidth/2, j*tileHeight - offset.y + tileHeight);
 					//base line for arrow
-					g.drawLine(i*tileWidth - offset.x + tileWidth/2, j*tileHeight - offset.y + tileHeight, i*tileWidth - offset.x, j*tileHeight - offset.y + tileHeight*(2/4));
-					g.drawLine(i*tileWidth - offset.x + tileWidth/2, j*tileHeight - offset.y + tileHeight, i*tileWidth - offset.x + tileWidth, j*tileHeight - offset.y + tileHeight*(2/4));
+					g.drawLine(i*tileWidth - offset.x + tileWidth/2, j*tileHeight - offset.y + tileHeight, i*tileWidth - offset.x, j*tileHeight - offset.y + tileHeight/2);
+					g.drawLine(i*tileWidth - offset.x + tileWidth/2, j*tileHeight - offset.y + tileHeight, i*tileWidth - offset.x + tileWidth, j*tileHeight - offset.y + tileHeight/2);
 					//arrow lines
 					
 					break;
 				case HORIZONTAL_LEFT_STAIRS:
 					g.setColor(red);
 
-					g.drawLine(i*tileWidth - offset.x, j*tileHeight - offset.y + tileHeight/2, i*tileWidth - offset.x+tileWidth, j*tileHeight - offset.y + tileHeight/2);
+					g.drawLine(i*tileWidth - offset.x, j*tileHeight - offset.y + tileHeight/2, i*tileWidth - offset.x + tileWidth, j*tileHeight - offset.y + tileHeight/2);
+
+					g.drawLine(i*tileWidth - offset.x, j*tileHeight - offset.y + tileHeight/2, i*tileWidth - offset.x + tileWidth/2, j*tileHeight - offset.y);
+					g.drawLine(i*tileWidth - offset.x, j*tileHeight - offset.y + tileHeight/2, i*tileWidth - offset.x + tileWidth/2, j*tileHeight - offset.y + tileHeight);
 					//horizontal line
 					//base line for arrow
 					//arrow lines
-					Point p1 = new Point(i*tileWidth - offset.x + tileWidth, j*tileHeight - offset.y + tileHeight/2);
-					Point p2 = new Point(i*tileWidth - offset.x + tileWidth/2, j*tileHeight - offset.y);
+					//Point p1 = new Point(i*tileWidth - offset.x + tileWidth, j*tileHeight - offset.y + tileHeight/2);
+					//Point p2 = new Point(i*tileWidth - offset.x + tileWidth/2, j*tileHeight - offset.y);
 					
-					g.drawLine(p1.x, p2.y, p1.x, p2.y);
+					//g.drawLine(p1.x, p2.y, p1.x, p2.y);
 				
 					
 					break;
@@ -128,6 +132,9 @@ public class CellRenderer {
 					g.setColor(blue);
 
 					g.drawLine(i*tileWidth - offset.x, j*tileHeight - offset.y + tileHeight/2, i*tileWidth - offset.x+tileWidth, j*tileHeight - offset.y + tileHeight/2);
+
+					g.drawLine(i*tileWidth - offset.x + tileWidth, j*tileHeight - offset.y + tileHeight/2, i*tileWidth - offset.x + tileWidth/2, j*tileHeight - offset.y);
+					g.drawLine(i*tileWidth - offset.x + tileWidth, j*tileHeight - offset.y + tileHeight/2, i*tileWidth - offset.x + tileWidth/2, j*tileHeight - offset.y + tileHeight);
 					//horizontal line
 					//base line for arrow
 					//arrow lines
@@ -209,15 +216,13 @@ public class CellRenderer {
 				case CLASSROOM:
 					
 					//g.fillArc(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight, 0, 180);
-					g.setColor(black);
-					g.setFont(new Font("TimesRoman", Font.BOLD, tileHeight));
-					g.drawString("C", i*tileWidth - offset.x + tileWidth/8, j*tileHeight - offset.y + tileHeight);
+					g.setColor(lightpurple);
+					g.fillRect(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight);
 					break;
 				case EXTRA_TILE_TYPE_1:
 					//ROAD TILE
 					//g.fillArc(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight, 0, 180);
 					g.setColor(black);
-					g.setFont(new Font("TimesRoman", Font.BOLD, tileHeight));
 					g.fillOval(i*tileWidth - offset.x, j*tileHeight - offset.y, tileWidth, tileHeight);
 					g.drawLine(i*tileWidth - offset.x  + tileWidth, j*tileHeight - offset.y, i*tileWidth - offset.x, j*tileHeight - offset.y + tileHeight);
 					g.drawLine(i*tileWidth - offset.x, j*tileHeight - offset.y, i*tileWidth - offset.x  + tileWidth, j*tileHeight - offset.y + tileHeight);
