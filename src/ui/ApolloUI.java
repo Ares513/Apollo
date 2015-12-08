@@ -284,6 +284,19 @@ public class ApolloUI extends JPanel {
 					textPanel.removeLocation(picked);
 					DebugManagement.writeNotificationToLog("Removed at " + picked);
 					repaintPanel();
+				} else if(mode == 6) {
+					//Display name
+					JOptionPane namedialog = new JOptionPane();
+					String s = (String) namedialog.showInputDialog(new JFrame(), "Enter cell display name:", "Display Name",
+							JOptionPane.PLAIN_MESSAGE, null, null, "");
+					if(s == null || s.trim().length() == 0) {
+						//invalid.
+						DebugManagement.writeLineToLog(SEVERITY_LEVEL.SEVERE, "Rejected empty input.");
+						return;
+					}
+							
+					DebugManagement.writeNotificationToLog("Display name changed");
+					HashCellToEdit.setDisplay(s);	
 				}
 
 			}
@@ -504,7 +517,7 @@ public class ApolloUI extends JPanel {
 		verticalBox.add(lblMode);
 		verticalBox.add(Box.createVerticalStrut(2));
 		paintMode = new JComboBox();
-		paintMode.setModel(new DefaultComboBoxModel(new String[] {"Tile painting", "Location Painting", "Append Location Painting", "HashCell Reference Painting", "Entry Point Painting", "Delete Locations, References And Points"}));
+		paintMode.setModel(new DefaultComboBoxModel(new String[] {"Tile painting", "Location Painting", "Append Location Painting", "HashCell Reference Painting", "Entry Point Painting", "Delete Locations, References And Points", "Set Display Name"}));
 		paintMode.setAlignmentX(Box.RIGHT_ALIGNMENT);
 		verticalBox.add(paintMode);
 
@@ -516,6 +529,9 @@ public class ApolloUI extends JPanel {
 		saveButton.setToolTipText("Save to a file.");
 		
 		windowUI.add(verticalBox);
+		
+		frame.setSize(1439, 1023);
+		frame.setLocationRelativeTo(null);
 		textPanel.grabFocus();
 	}
 
