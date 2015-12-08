@@ -516,6 +516,9 @@ public class ApolloUI extends JPanel {
 		saveButton.setToolTipText("Save to a file.");
 		
 		windowUI.add(verticalBox);
+		
+		frame.setSize(1439, 1023);
+		frame.setLocationRelativeTo(null);
 		textPanel.grabFocus();
 	}
 
