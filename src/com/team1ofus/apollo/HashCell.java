@@ -32,6 +32,7 @@ public class HashCell implements Serializable {
 	public HashCell(int width, int height, String name, String displayName, ArrayList<LocationInfo> arrayList, ArrayList<EntryPoint> arrayList2) {
 		id = name;
 		//identifier
+		this.displayName = displayName;
 		this.listedLocations = arrayList;
 		this.entryPoints = arrayList2;
 		fixedWidth = width;
