@@ -53,7 +53,7 @@ public class TextPane extends JPanel {
 		}
 	}
 	public void paintComponent(Graphics g) {
-		g.setFont(new Font("Symbol", Font.PLAIN, 20));
+		g.setFont(new Font("TimesNewRoman", Font.PLAIN, 20));
 		this.paintComponents(g);
 		for(TextLocation l : locations) {
 			
