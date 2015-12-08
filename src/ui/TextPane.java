@@ -40,7 +40,7 @@ public class TextPane extends JPanel {
 				//generic location, it's black
 				//relates to TFS bug #242.
 				//TODO: fix magic number associations
-				locations.add(new TextLocation(l.getAliases(), l.getLocation(), Color.BLACK));
+				locations.add(new TextLocation(l.getAliases(), l.getLocation(), Color.WHITE));
 				
 			} else {
 				locations.add(new TextLocation(l.getAliases(), l.getLocation(), Color.BLUE));
@@ -53,11 +53,10 @@ public class TextPane extends JPanel {
 		}
 	}
 	public void paintComponent(Graphics g) {
-		g.setColor(Color.RED);
-		g.setFont(new Font("TimesRoman", Font.PLAIN, 12));
+		g.setFont(new Font("Symbol", Font.PLAIN, 20));
 		this.paintComponents(g);
 		for(TextLocation l : locations) {
-			g.setColor(l.drawnColor);
+			
 			//we now need to center the text.
 			//double yShift = g.getFont().getSize()/2;
 			for(int i=0; i<l.lines.size(); i++) {
@@ -74,6 +73,13 @@ public class TextPane extends JPanel {
 				}
 				
 				int start = stringLength/2;
+				g.setColor(Color.BLACK);
+				g.drawString(l.lines.get(i), ShiftWest(l.location.x*BootstrapperConstants.TILE_WIDTH-(int)start+BootstrapperConstants.TILE_WIDTH/2-offset.x,1), ShiftNorth(l.location.y*BootstrapperConstants.TILE_HEIGHT-offset.y+g.getFont().getSize()*i,1));
+				g.drawString(l.lines.get(i), ShiftWest(l.location.x*BootstrapperConstants.TILE_WIDTH-(int)start+BootstrapperConstants.TILE_WIDTH/2-offset.x,1), ShiftSouth(l.location.y*BootstrapperConstants.TILE_HEIGHT-offset.y+g.getFont().getSize()*i,1));
+				g.drawString(l.lines.get(i), ShiftEast(l.location.x*BootstrapperConstants.TILE_WIDTH-(int)start+BootstrapperConstants.TILE_WIDTH/2-offset.x,1), ShiftNorth(l.location.y*BootstrapperConstants.TILE_HEIGHT-offset.y+g.getFont().getSize()*i,1));
+				g.drawString(l.lines.get(i), ShiftEast(l.location.x*BootstrapperConstants.TILE_WIDTH-(int)start+BootstrapperConstants.TILE_WIDTH/2-offset.x,1), ShiftSouth(l.location.y*BootstrapperConstants.TILE_HEIGHT-offset.y+g.getFont().getSize()*i,1));
+				
+				g.setColor(l.drawnColor);
 				g.drawString(l.lines.get(i), l.location.x*BootstrapperConstants.TILE_WIDTH-(int)start+BootstrapperConstants.TILE_WIDTH/2-offset.x, l.location.y*BootstrapperConstants.TILE_HEIGHT-offset.y+g.getFont().getSize()*i);
 				
 			}
@@ -143,4 +149,17 @@ public class TextPane extends JPanel {
 		this.offset = offset;
 		
 	}
+	private int ShiftNorth(int p, int distance) {
+		return (p - distance);
+		}
+	private	int ShiftSouth(int p, int distance) {
+		return (p + distance);
+		}
+	private int ShiftEast(int p, int distance) {
+		return (p + distance);
+		}
+	private int ShiftWest(int p, int distance) {
+		return (p - distance);
+		}
+	
 }
