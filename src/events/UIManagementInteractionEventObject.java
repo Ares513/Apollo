@@ -17,9 +17,9 @@ public class UIManagementInteractionEventObject {
 	public void removeListener(IUIManagementInteractionListener input) {
 		listeners.remove(input);
 	}
-	public void triggerSave(ArrayList<HashCell> cellsToSave) {
+	public void triggerSave(HashCell cellToSave) {
 		for(IUIManagementInteractionListener listener : listeners) {
-			listener.onSaveTriggered(cellsToSave);
+			listener.onSaveTriggered(cellToSave);
 		}
 	}
 }

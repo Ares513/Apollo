@@ -24,6 +24,8 @@ import java.util.stream.Stream;
 import com.team1ofus.apollo.Cell;
 import com.team1ofus.apollo.HashCell;
 import com.team1ofus.apollo.TILE_TYPE;
+import com.sun.prism.impl.Disposer.Target;
+import com.sun.xml.internal.ws.api.pipe.ThrowableContainerPropertySet;
 import com.team1ofus.apollo.*;
 import core.BootstrapperConstants;
 import core.DebugManagement;
@@ -39,10 +41,10 @@ public class DataManagement implements IUIManagementInteractionListener {
 		//process: load blank map into memory, then save it
 
 		try {
-			
-			cells = loadAllCells();
+			//no sense in loading all the cells.
+			//cells = loadAllCells();
 			if(upgradeNeeded) {
-				saveAllCells(cells);
+				saveAllCells();
 				
 			}
 		} catch (ClassNotFoundException | IOException e) {
@@ -65,6 +67,26 @@ public class DataManagement implements IUIManagementInteractionListener {
 		String uuid = UUID.randomUUID().toString();
 		return new HashCell(50, 50, uuid, uuid, new ArrayList<LocationInfo>(), new ArrayList<EntryPoint>());
 		
+	}
+	public HashCell LoadSingleHashCell(String name) throws ClassNotFoundException, IOException {
+		ArrayList<Cell> output = new ArrayList<Cell>();
+		List<Path> filteredPaths = getAvailableOldCells(BootstrapperConstants.APP_FILE_DIRECTORY);
+		DebugManagement.writeNotificationToLog("Out of date Cell objects: " + filteredPaths.toString());
+		for(Path p : filteredPaths) {
+			
+			output.add(loadCell(p));
+			upgradeNeeded = true;
+		}
+		List<Path> filteredHashPaths = getAvailableCells(BootstrapperConstants.APP_FILE_DIRECTORY);
+		for(Path p : filteredHashPaths) {
+			if(p.toString().contains(name)) {
+				//the one we're looking for
+				return loadHashCell(p);
+			}
+			
+		}
+		DebugManagement.writeLineToLog(SEVERITY_LEVEL.FATAL, "SELECTED MAP NOT FOUND!");
+		return null;
 	}
 	private ArrayList<HashCell> loadAllCells() throws ClassNotFoundException, IOException {
 		ArrayList<Cell> output = new ArrayList<Cell>();
@@ -107,7 +129,9 @@ public class DataManagement implements IUIManagementInteractionListener {
 			return hashOutput;
 		
 	}
-	private void saveAllCells(ArrayList<HashCell> cellsToSave) throws ClassNotFoundException, IOException {
+	private void saveAllCells() throws ClassNotFoundException, IOException {
+		ArrayList<HashCell> cellsToSave = loadAllCells();
+		DebugManagement.writeNotificationToLog("Old format maps detected. Loading and saving all cells. Please wait.");
 		for(HashCell c : cellsToSave) {
 				DebugManagement.writeNotificationToLog("Saving " + c.getID());
 				saveCell(BootstrapperConstants.APP_FILE_DIRECTORY + File.separator + c.getID().replace(".map", "").replace(".cell", "") + ".cell", c);
@@ -192,7 +216,7 @@ public class DataManagement implements IUIManagementInteractionListener {
 		}
 		return output;
 	}
-	private List<Path> getAvailableCells(String directoryPathWithNameAndExtension) throws IOException {
+	public List<Path> getAvailableCells(String directoryPathWithNameAndExtension) throws IOException {
 		List<Path> output = new ArrayList<Path>();
 		File file = new File(BootstrapperConstants.APP_FILE_DIRECTORY);
 		
@@ -207,15 +231,32 @@ public class DataManagement implements IUIManagementInteractionListener {
 		}
 		return output;
 	}
-
+	public ArrayList<String> getAvailableCellNames(String directoryPathWithNameAndExtension) throws IOException {
+		ArrayList<String> output = new ArrayList<String>();
+		File file = new File(BootstrapperConstants.APP_FILE_DIRECTORY);
+		DebugManagement.writeNotificationToLog("Getting file names from directory.");
+		File[] listOfFiles = file.listFiles();
+		for(File f : listOfFiles) {
+			if(f.isFile()) {
+				String fileName = f.getName();
+				if(fileName.contains(".cell")) {
+					DebugManagement.writeNotificationToLog("Found " + f.toPath().toString());
+					
+					output.add(f.toPath().getFileName().toString());
+				}
+			}
+		}
+		return output;
+	}
 	public ArrayList<HashCell> getCells() {
 		return cells;
 	}
 	
 	@Override
-	public void onSaveTriggered(ArrayList<HashCell> cellsToSave) {
+	public void onSaveTriggered(HashCell cellToSave) {
 		try {
-			saveAllCells(cellsToSave);
+			DebugManagement.writeNotificationToLog("Saving cell " + cellToSave.getID());
+			saveCell(BootstrapperConstants.APP_FILE_DIRECTORY + File.separator + cellToSave.getID().replace(".map", "").replace(".cell", "") + ".cell", cellToSave);
 		} catch (ClassNotFoundException e) {
 			//Something is wrong with our serialization format.
 			// TODO Auto-generated catch block

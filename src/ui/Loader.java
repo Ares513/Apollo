@@ -19,10 +19,12 @@ import com.team1ofus.apollo.LocationInfo;
 import core.BootstrapperConstants;
 import core.DebugManagement;
 import core.SEVERITY_LEVEL;
+import data.DataManagement;
 import events.LoaderInteractionEventObject;
 
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.nio.file.FileSystemException;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
@@ -47,7 +49,7 @@ public class Loader extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public Loader(ArrayList<HashCell> allCells, ArrayList<String> imageNames, ArrayList<BufferedImage> images) {
+	public Loader(DataManagement data, ArrayList<String> imageNames, ArrayList<BufferedImage> images) {
 		events = new LoaderInteractionEventObject();
 		setBounds(100, 100, 597, 200);
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.X_AXIS));
@@ -112,7 +114,17 @@ public class Loader extends JDialog {
 		okHBox.add(displayName);
 		
 		JComboBox mapChooser = new JComboBox();
-		mapChooser.setModel(new DefaultComboBoxModel(getNames(allCells)));
+		ArrayList<String> files = null;
+		try {
+			files = data.getAvailableCellNames(BootstrapperConstants.APP_FILE_DIRECTORY);
+		
+		} catch (IOException e1) {
+			DebugManagement.writeLineToLog(SEVERITY_LEVEL.CORRUPTED, "An invalid filename was read.");
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		mapChooser.setModel(new DefaultComboBoxModel(files.toArray()));
+		
 		okHBox.add(mapChooser);
 		
 		okButton = new JButton("OK");
@@ -143,27 +155,32 @@ public class Loader extends JDialog {
 				int width = Integer.parseInt(widthInput.getText());
 				int height = Integer.parseInt(heightInput.getText());
 				String mapID = nameInput.getText();
-				if(mapID.contains(".map")) {
+				if(mapID.contains(".cell")) {
 					throw new FileSystemException("Do not include extensions");
 				}
-				String[] duplicateCheck = getNames(allCells);
-				for(int i=0; i<duplicateCheck.length; i++) {
-					if(mapID.equals(duplicateCheck[i])) {
+				ArrayList<String> names =  data.getAvailableCellNames(BootstrapperConstants.APP_FILE_DIRECTORY);
+				
+				String[] nameArray = names.toArray(new String[names.size()]);
+				
+				for(int i=0; i<nameArray.length; i++) {
+					if(mapID.equals(nameArray[i])) {
 						throw new FileSystemException("Duplicate file not overwritten.");
 					}
 				}
 				cellToCreate = new HashCell(width, height, mapID + ".cell", displayName.getText(), new ArrayList<LocationInfo>(), new ArrayList<EntryPoint>());
-				allCells.add(cellToCreate);
+				
 				mapChooser.removeAllItems();
-				String[] names = getNames(allCells);
-				for(int i=0; i<names.length; i++) {
-					mapChooser.addItem(names[i]);
+				for(int i=0; i<nameArray.length; i++) {
+					mapChooser.addItem(nameArray[i]);
 				}
 				
 				
 				} catch(NumberFormatException | FileSystemException er) {
 					//if errors are encountered in parsing, do nothing.
 					DebugManagement.writeLineToLog(SEVERITY_LEVEL.ERROR, "Problem adding Map in Loader!");
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
 			}
 		});
@@ -171,7 +188,17 @@ public class Loader extends JDialog {
 		okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				events.selectionMade(allCells.get(mapChooser.getSelectedIndex()), allCells);
+				try {
+					events.selectionMade(data.LoadSingleHashCell(mapChooser.getSelectedItem().toString()));
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					DebugManagement.writeLineToLog(SEVERITY_LEVEL.CORRUPTED, "Selection data doesn't match with available files!");
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
 				
 			}
 		});
@@ -181,12 +208,6 @@ public class Loader extends JDialog {
 		setLocationRelativeTo(null);
 		setVisible(true);
 			
-	}
-	private String[] getNames(ArrayList<HashCell> allCells) {
-		String[] result = new String[allCells.size()];
-		for(int c = 0; c < allCells.size(); c++)
-			result[c] = allCells.get(c).getID();
-		return result;
 	}
 	
 
