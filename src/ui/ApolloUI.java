@@ -433,7 +433,7 @@ public class ApolloUI extends JPanel {
 			brushes.setSelectedIndex(Math.max(0, brushes.getSelectedIndex()-1));
 			break;
 		case KeyEvent.VK_E:
-			brushes.setSelectedIndex(Math.min(brushes.getItemCount(), brushes.getSelectedIndex()+1));
+			brushes.setSelectedIndex(Math.min(brushes.getItemCount()-1, brushes.getSelectedIndex()+1));
 			
 			
 			break;
