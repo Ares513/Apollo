@@ -140,7 +140,12 @@ public class HashCell implements Serializable {
 			yActual = actualHeight;
 			DebugManagement.writeNotificationToLog("Out of bounds in Y dimension for setTile.");
 		}
-		tiles.put(new Point(xActual, yActual), tileToSet);
+		if(tileToSet == TILE_TYPE.WALL) {
+			tiles.remove(new Point(xActual, yActual));
+		} else {
+			tiles.put(new Point(xActual, yActual), tileToSet);
+			
+		}
 		
 	}
 	public TILE_TYPE getTile(int x, int y) {
