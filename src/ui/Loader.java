@@ -34,6 +34,8 @@ import javax.swing.Box;
 import java.awt.Component;
 import javax.swing.JLabel;
 import javax.swing.BoxLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class Loader extends JDialog {
 	public LoaderInteractionEventObject events;
@@ -50,6 +52,13 @@ public class Loader extends JDialog {
 	 * Create the dialog.
 	 */
 	public Loader(DataManagement data, ArrayList<String> imageNames, ArrayList<BufferedImage> images) {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent arg0) {
+				DebugManagement.writeNotificationToLog("Shutting down!");
+				System.exit(0);
+			}
+		});
 		events = new LoaderInteractionEventObject();
 		setBounds(100, 100, 597, 200);
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.X_AXIS));
@@ -207,7 +216,7 @@ public class Loader extends JDialog {
 		setSize((int) horizontalBox.getPreferredSize().getWidth() + 10, 150);
 		setLocationRelativeTo(null);
 		setVisible(true);
-			
+		this.toFront();
 	}
 	
 
