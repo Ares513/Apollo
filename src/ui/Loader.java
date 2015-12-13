@@ -177,8 +177,10 @@ public class Loader extends JDialog {
 					}
 				}
 				cellToCreate = new HashCell(width, height, mapID + ".cell", displayName.getText(), new ArrayList<LocationInfo>(), new ArrayList<EntryPoint>());
-				
+				data.onSaveTriggered(cellToCreate);
 				mapChooser.removeAllItems();
+				names =  data.getAvailableCellNames(BootstrapperConstants.APP_FILE_DIRECTORY);
+				nameArray = names.toArray(new String[names.size()]);
 				for(int i=0; i<nameArray.length; i++) {
 					mapChooser.addItem(nameArray[i]);
 				}

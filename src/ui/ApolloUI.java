@@ -371,9 +371,14 @@ public class ApolloUI extends JPanel {
 	private void doPaint(DrawPane panel, MouseEvent e) {
 		// PICK TILES HERE
 		Point picked = panel.render.pickTile(e.getX(), e.getY());
-		BrushArgs eArgs= new BrushArgs(e.getPoint(), lastMouseClick, 3);
+		BrushArgs eArgs= new BrushArgs(picked, lastMouseClick, 3, panel.render, imageSelection.get(underlyingImageSelection.getSelectedIndex()));
 		painter.applyBrush(panel.render, picked.x, picked.y, eArgs);
-		lastMouseClick = picked;
+		if(lastMouseClick == null) {
+			lastMouseClick = picked;
+			
+		} else {
+			lastMouseClick = null;
+		}
 		makePanelDirty();
 	}
 
@@ -477,7 +482,7 @@ public class ApolloUI extends JPanel {
 		verticalBox.add(lblBrushes);
 		verticalBox.add(Box.createVerticalStrut(2));
 		brushes = new JComboBox();
-		brushes.setModel(new DefaultComboBoxModel(new String[] { "Single Tile", "2 x 2 Square", "3 x 3 Square", "5 x 5 Square","7 x 7 Square", "Box", "Line"}));
+		brushes.setModel(new DefaultComboBoxModel(painter.getBrushNames()));
 		brushes.setAlignmentX(Box.RIGHT_ALIGNMENT);
 		verticalBox.add(brushes);
 
@@ -555,3 +560,4 @@ public class ApolloUI extends JPanel {
 		textPanel.grabFocus();
 	}
 }
+//new String[] { "Single Tile", "2 x 2 Square", "3 x 3 Square", "5 x 5 Square","7 x 7 Square", "Box", "Line"}

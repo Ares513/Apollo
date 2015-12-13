@@ -3,6 +3,8 @@ package ui;
 import java.awt.Point;
 import java.util.ArrayList;
 
+import com.sun.xml.internal.ws.util.InjectionPlan;
+
 public class LineBrush implements IBrush {
 	String name;
 	public LineBrush(String name) {
@@ -16,8 +18,8 @@ public class LineBrush implements IBrush {
 			return result;
 			
 		} else {
-			ArrayList<Point> result = getLine(bArgs.currentMouseLoc.x, bArgs.currentMouseLoc.y, bArgs.lastMouseLocation.x, bArgs.lastMouseLocation.y);
-			System.out.println(result);
+			ArrayList<Point> result = getLine(0 ,0 , bArgs.lastMouseLocation.x- bArgs.currentMouseLoc.x, bArgs.lastMouseLocation.y - bArgs.currentMouseLoc.y);
+			
 			return result.toArray(new Point[result.size()]);
 		}
 		

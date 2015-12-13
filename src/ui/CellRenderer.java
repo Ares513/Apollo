@@ -256,8 +256,8 @@ public class CellRenderer {
 			higherY = cellHeight;
 		}
 
-		int right = windowWidth;
-		int bottom = windowHeight;
+		int right = Math.min(windowWidth, editCell.getWidth()*BootstrapperConstants.TILE_WIDTH);
+		int bottom = Math.min(windowWidth, editCell.getHeight()*BootstrapperConstants.TILE_HEIGHT);
 		//DebugManagement.writeNotificationToLog("LowerX " + lowerX + " LowerY " + lowerY  + " higherX" + higherX + " higherY " + higherY);
 		g.setColor(black);
 		for (int i = lowerX; i < higherX; i++) {
@@ -284,10 +284,7 @@ public class CellRenderer {
 	}
 
 	public void editTile(int x, int y, DataTile swapped) {
-		// edits the contents of a tile
-		if (x >= 0 && x < editCell.getWidth() && y >= 0 && y < editCell.getHeight()) {
 			editCell.setTile(x, y, swapped.getType());
-		}
 
 	}
 
@@ -319,12 +316,6 @@ public class CellRenderer {
 	public void incrementUnderlyingOffset(int dx, int dy, int windowWidth, int windowHeight) {
 		// some optimizations to be made here
 		underlyingOffset.translate(dx, dy);
-		if (underlyingOffset.x < 0) {
-			underlyingOffset.x = 0;
-		}
-		if (underlyingOffset.y < 0) {
-			underlyingOffset.y = 0;
-		}
 
 	}
 

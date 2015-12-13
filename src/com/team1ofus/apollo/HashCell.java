@@ -133,10 +133,12 @@ public class HashCell implements Serializable {
 		int actualWidth = getWidth() - 1;
 		if(x > actualWidth) {
 			xActual = actualWidth;
+			DebugManagement.writeNotificationToLog("Out of bounds in X dimension for setTile.");
 		}
 		int actualHeight = getHeight() - 1;
 		if(y > actualHeight) {
 			yActual = actualHeight;
+			DebugManagement.writeNotificationToLog("Out of bounds in Y dimension for setTile.");
 		}
 		tiles.put(new Point(xActual, yActual), tileToSet);
 		

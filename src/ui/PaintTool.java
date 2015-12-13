@@ -20,8 +20,11 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.sun.corba.se.spi.orbutil.fsm.Guard.Result;
 import com.team1ofus.apollo.DataTile;
 import com.team1ofus.apollo.TILE_TYPE;
+
+import core.DebugManagement;
 
 public class PaintTool {
 
@@ -43,7 +46,7 @@ public class PaintTool {
 	 * sizes?
 	 */
 	private void initializeBrushes() {
-		brushes = new IBrush[7];
+		brushes = new IBrush[8];
 		Point[] brush1points = {new Point(0,0)}; //single tile
 		brushes[0] = new ExplicitBrush(brush1points, "Single tile");
 		Point[] brush2points = {new Point(0,0), new Point(1,0), new Point(0,1), new Point(1,1)}; //2 x 2 square
@@ -86,6 +89,7 @@ public class PaintTool {
 		
 		brushes[5] = new ExplicitBrush(circlePts.toArray(new Point[circlePts.size()]), "Box outline");
 		brushes[6] = new LineBrush("Line");
+		brushes[7] = new ImageBrush();
 	}
 	
 	/*
@@ -98,7 +102,13 @@ public class PaintTool {
 			c++;
 		}
 	}
-	
+	public String[] getBrushNames() {
+		String[] result = new String[brushes.length];
+		for(int i=0; i<brushes.length; i++) {
+			result[i] = brushes[i].getName();
+		}
+		return result;
+	}
 	/*
 	 * Selects the brush based on index
 	 */
@@ -113,8 +123,8 @@ public class PaintTool {
 		tileToPaint = tileMap.get(typeIndex);
 	}
 	public void applyBrush(CellRenderer render, int x, int y, BrushArgs eArgs) {
-		
-		for(Point p : brushes[getBrushSelection()].getReferencePoints(eArgs)) {
+		Point[] result = brushes[getBrushSelection()].getReferencePoints(eArgs);
+		for(Point p : result ) {
 			render.editTile(x + p.x, y + p.y, new DataTile(getTileToPaint()));
 		}
 		
