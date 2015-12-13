@@ -90,8 +90,8 @@ public class CellRenderer {
 				g.fillRect(p.x * tileWidth - offset.x, p.y * tileHeight - offset.y, tileWidth, tileHeight);
 				break;
 			case CONGESTED:
-				g.fillRect(p.x * tileWidth - offset.x, p.y * tileHeight - offset.y, tileWidth, tileHeight);
 				g.setColor(Color.magenta);
+				g.fillRect(p.x * tileWidth - offset.x, p.y * tileHeight - offset.y, tileWidth, tileHeight);
 				break;
 			case VERTICAL_UP_STAIRS:
 				g.setColor(red);

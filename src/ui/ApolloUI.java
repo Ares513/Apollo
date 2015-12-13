@@ -76,7 +76,7 @@ public class ApolloUI extends JPanel {
 	Point lastMouseClick;
 	private Box horizontalBox;
 	private Box horizontalBox_1;
-	private Button Undo;
+	private JButton Undo;
 	public ApolloUI(ArrayList<String> imageNames, ArrayList<BufferedImage> imageSelection) {
 		DebugManagement.writeNotificationToLog("Created a new ApolloUI instance.");
 		this.imageSelection = imageSelection;
@@ -563,19 +563,18 @@ public class ApolloUI extends JPanel {
 		
 		windowUI.add(verticalBox);
 		
-		Undo = new Button("Undo");
+		Undo = new JButton("Undo");
 		Undo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				painter.undo(panel.render);
 				repaintPanel();
 			}
 		});
-		Undo.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-		Undo.setMaximumSize(new Dimension(61, 25));
+		Undo.setAlignmentX(Box.RIGHT_ALIGNMENT);
 		verticalBox.add(Undo);
 		
 		saveButton = new JButton("Save");
-		saveButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		saveButton.setAlignmentX(Box.RIGHT_ALIGNMENT);
 		verticalBox.add(saveButton);
 		saveButton.setToolTipText("Save to a file.");
 		
