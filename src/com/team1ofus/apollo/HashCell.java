@@ -41,6 +41,9 @@ public class HashCell implements Serializable {
 		arrayList2 = new ArrayList<EntryPoint>();
 		arrayList = new ArrayList<LocationInfo>();
 	}
+	public HashMap<Point, TILE_TYPE> getTiles() {
+		return tiles;
+	}
 	public ArrayList<LocationInfo> getListedLocations() {
 		return listedLocations;
 	}
@@ -139,25 +142,11 @@ public class HashCell implements Serializable {
 		
 	}
 	public TILE_TYPE getTile(int x, int y) {
-			
-			int xActual = x;
-			int yActual = y;
-			int actualWidth = getWidth() - 1;
-			if(x > actualWidth) {
-				xActual = actualWidth;
-			}
-			int actualHeight = getHeight() - 1;
-			if(y > actualHeight) {
-				yActual = actualHeight;
-			}
-			Point p = new Point(xActual, yActual);
-			if(tiles.containsKey(p)) {
-				return tiles.get(new Point(xActual, yActual));
-			} else {
-				return TILE_TYPE.WALL;
-			}
-			
+		return tiles.get(new Point(x, y));
 	}
-
+	public TILE_TYPE getTile(Point p) {
+		return tiles.get(p);
+		
+	}
 
 }
