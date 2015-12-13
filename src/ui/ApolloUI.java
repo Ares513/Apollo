@@ -46,6 +46,11 @@ import core.DebugManagement;
 import events.HumanInteractionEventObject;
 
 import java.awt.Toolkit;
+import java.awt.Component;
+import javax.swing.SwingConstants;
+import java.awt.Button;
+import java.awt.Dimension;
+import java.awt.ComponentOrientation;
 
 public class ApolloUI extends JPanel {
 	private JFrame frame;
@@ -70,6 +75,8 @@ public class ApolloUI extends JPanel {
 	ArrayList<String> imageNames = new ArrayList<String>();
 	Point lastMouseClick;
 	private Box horizontalBox;
+	private Box horizontalBox_1;
+	private Button Undo;
 	public ApolloUI(ArrayList<String> imageNames, ArrayList<BufferedImage> imageSelection) {
 		DebugManagement.writeNotificationToLog("Created a new ApolloUI instance.");
 		this.imageSelection = imageSelection;
@@ -410,7 +417,26 @@ public class ApolloUI extends JPanel {
 		case KeyEvent.VK_W:
 			panel.render.incrementUnderlyingOffset(0, -1 * scrollSpeed, layeredPane.getWidth(), layeredPane.getHeight());
 			break;
-
+		case KeyEvent.VK_Z:
+			painter.undo(panel.render);
+			break;
+		case KeyEvent.VK_1:
+			tiles.setSelectedIndex(TILE_TYPE.WALL.ordinal());
+			break;
+			
+		case KeyEvent.VK_2:
+			tiles.setSelectedIndex(TILE_TYPE.PEDESTRIAN_WALKWAY.ordinal());
+			break;
+		case KeyEvent.VK_3:
+			tiles.setSelectedIndex(TILE_TYPE.CLASSROOM.ordinal());
+		case KeyEvent.VK_Q:
+			brushes.setSelectedIndex(Math.max(0, brushes.getSelectedIndex()-1));
+			break;
+		case KeyEvent.VK_E:
+			brushes.setSelectedIndex(Math.min(brushes.getItemCount(), brushes.getSelectedIndex()+1));
+			
+			
+			break;
 		default:
 			break;
 		}
@@ -529,12 +555,26 @@ public class ApolloUI extends JPanel {
 
 		verticalBox.add(Box.createVerticalStrut(10));
 		
+		windowUI.add(verticalBox);
+		
+		Undo = new Button("Undo");
+		Undo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				painter.undo(panel.render);
+				repaintPanel();
+			}
+		});
+		Undo.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+		Undo.setMaximumSize(new Dimension(61, 25));
+		verticalBox.add(Undo);
+		
 		saveButton = new JButton("Save");
-		saveButton.setAlignmentX(Box.RIGHT_ALIGNMENT);
+		saveButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		verticalBox.add(saveButton);
 		saveButton.setToolTipText("Save to a file.");
 		
-		windowUI.add(verticalBox);
+		horizontalBox_1 = Box.createHorizontalBox();
+		verticalBox.add(horizontalBox_1);
 		
 		frame.setSize(1439, 1023);
 		frame.setLocationRelativeTo(null);

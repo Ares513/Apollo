@@ -31,8 +31,8 @@ public class ImageBrush implements IBrush {
 		int imageWidth = bArgs.underlyingImage.getWidth();
 		int imageHeight = bArgs.underlyingImage.getHeight();
 		BufferedImage buffy = bArgs.underlyingImage;
-		for(int i=0; i < imageWidth; i = i + 8) {
-			for(int j=0; j < imageHeight; j = j + 8) {
+		for(int i=0; i < imageWidth; i = i + 4) {
+			for(int j=0; j < imageHeight; j = j + 4) {
 				
 				int color = buffy.getRGB(i, j);
 
@@ -40,14 +40,14 @@ public class ImageBrush implements IBrush {
 				int  green = (color & 0x0000ff00) >> 8;
 				int  blue = color & 0x000000ff;
 				int alpha = (color>>24) & 0xff;
-				System.out.println(red);
-				System.out.println(green);
-				System.out.println(blue);
 				
-				if(red > 240 && green > 240 && blue > 240) {
-					Point picked = bArgs.render.pickTile(i-bArgs.render.underlyingOffset.x, j-bArgs.render.underlyingOffset.y);
+				if(red < 240 && green < 240 && blue < 240) {
+					Point picked = bArgs.render.pickTile(i+bArgs.render.underlyingOffset.x, j+bArgs.render.underlyingOffset.y);
 					picked.translate(-bArgs.currentMouseLoc.x, -bArgs.currentMouseLoc.y);
-					result.add(picked);
+					if(!result.contains(picked)) {
+						result.add(picked);
+						
+					}
 				
 				}
 				
