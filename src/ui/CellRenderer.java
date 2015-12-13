@@ -7,12 +7,14 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 
+import com.sun.org.apache.xml.internal.resolver.helpers.Debug;
 import com.team1ofus.apollo.DataTile;
 import com.team1ofus.apollo.HashCell;
 import com.team1ofus.apollo.TILE_TYPE;
 
 import core.BootstrapperConstants;
 import core.DebugManagement;
+import core.SEVERITY_LEVEL;
 
 public class CellRenderer {
 	int tileWidth;
@@ -70,7 +72,10 @@ public class CellRenderer {
 
 		for (Point p : editCell.getTiles().keySet()) {
 			TILE_TYPE type = editCell.getTile(p);
-			switch (editCell.getTile(p)) {
+			if(type == null) {
+				continue;
+			}
+			switch (type) {
 			case PEDESTRIAN_WALKWAY:
 
 				g.setColor(gray);

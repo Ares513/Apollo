@@ -19,8 +19,10 @@ Brush               Composition                  Holds the brush objects
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Stack;
 
 import com.sun.corba.se.spi.orbutil.fsm.Guard.Result;
+import com.sun.org.apache.bcel.internal.generic.LASTORE;
 import com.team1ofus.apollo.DataTile;
 import com.team1ofus.apollo.TILE_TYPE;
 
@@ -32,7 +34,7 @@ public class PaintTool {
 	private IBrush[] brushes; // available brushes
 	private TILE_TYPE tileToPaint; //tiletype selected to paint with
 	private HashMap<Integer, TILE_TYPE> tileMap = new HashMap<Integer, TILE_TYPE>();
-	
+	private UndoData undoData = new UndoData();
 	public PaintTool() {
 		tileToPaint = TILE_TYPE.WALL;
 		brushSelection = 0;
@@ -124,14 +126,45 @@ public class PaintTool {
 	}
 	public void applyBrush(CellRenderer render, int x, int y, BrushArgs eArgs) {
 		Point[] result = brushes[getBrushSelection()].getReferencePoints(eArgs);
+		TILE_TYPE[] data = new TILE_TYPE[result.length];
+		for(int i=0; i<result.length; i++) {
+			data[i] = render.editCell.getTile(new Point(x + result[i].x, y + result[i].y));
+		}
+		
+
 		for(Point p : result ) {
 			render.editTile(x + p.x, y + p.y, new DataTile(getTileToPaint()));
 		}
+		TILE_TYPE[] after = new TILE_TYPE[result.length];
+		for(int i=0; i<result.length; i++) {
+			after[i] = render.editCell.getTile(new Point(x + result[i].x, y + result[i].y));
+		}
+		boolean differs = false;
+		for(int i=0; i < result.length; i++) {
+			
+			if(data[i] != after[i]) {
+				differs = true;
+				break;
+			}
+		}
+		if(!differs) {
+			DebugManagement.writeNotificationToLog("Before and after are identical. Not storing to Undo history.");
+		} else {
+			undoData.push(result, data, new Point(x, y));
+			
+		}
 		
+	}
+	public void undo(CellRenderer render) {
+		undoData.undo(render);
+	}
+	public int getUndoStack() {
+		return undoData.size();
 	}
 	/*
 	 * Selects the tiletype based on enum
 	 */
+	
 	public void selectTileType(TILE_TYPE type) {
 			tileToPaint = type;
 	}
