@@ -20,13 +20,16 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.sun.corba.se.spi.orbutil.fsm.Guard.Result;
 import com.team1ofus.apollo.DataTile;
 import com.team1ofus.apollo.TILE_TYPE;
+
+import core.DebugManagement;
 
 public class PaintTool {
 
 	private int brushSelection; //brush index
-	private Brush[] brushes; // available brushes
+	private IBrush[] brushes; // available brushes
 	private TILE_TYPE tileToPaint; //tiletype selected to paint with
 	private HashMap<Integer, TILE_TYPE> tileMap = new HashMap<Integer, TILE_TYPE>();
 	
@@ -43,17 +46,17 @@ public class PaintTool {
 	 * sizes?
 	 */
 	private void initializeBrushes() {
-		brushes = new Brush[6];
+		brushes = new IBrush[8];
 		Point[] brush1points = {new Point(0,0)}; //single tile
-		brushes[0] = new Brush(brush1points);
+		brushes[0] = new ExplicitBrush(brush1points, "Single tile");
 		Point[] brush2points = {new Point(0,0), new Point(1,0), new Point(0,1), new Point(1,1)}; //2 x 2 square
-		brushes[1] = new Brush(brush2points);
+		brushes[1] = new ExplicitBrush(brush2points, "2x2 square");
 		Point[] brush3points = {new Point(0,0), new Point(1,0), new Point(0,1), new Point(-1,0), new Point(0,-1), new Point(1,-1), new Point(-1,1), new Point(-1,-1), new Point(1,1)}; //3 x 3 square
-		brushes[2] = new Brush(brush3points);
+		brushes[2] = new ExplicitBrush(brush3points, "3x3 square");
 		Point[] brush4points = {new Point(0,0), new Point(1,0), new Point(0,1), new Point(-1,0), new Point(0,-1), new Point(1,-1), new Point(-1,1), new Point(-1,-1), new Point(1,1),
 				new Point(2,0), new Point(2,1), new Point(0,2), new Point(1,2), new Point(2,2), new Point(2,-1), new Point(2,-2), new Point(-2,0), new Point(0,-2),
 				new Point(1,-2), new Point(-2,-2), new Point(-2,1), new Point(-2,2), new Point(-2,-1), new Point(-1,-2), new Point(-1,2)}; //5 x 5 square
-		brushes[3] = new Brush(brush4points);
+		brushes[3] = new ExplicitBrush(brush4points, "4x4 square");
 		Point[] brush5points = {new Point(0,0), new Point(1,0), new Point(0,1), new Point(-1,0), new Point(0,-1), new Point(1,-1), new Point(-1,1), new Point(-1,-1), new Point(1,1),
 				new Point(2,0), new Point(2,1), new Point(0,2), new Point(1,2), new Point(2,2), new Point(2,-1), new Point(2,-2), new Point(-2,0), new Point(0,-2),
 				new Point(1,-2), new Point(-2,-2), new Point(-2,1), new Point(-2,2), new Point(-2,-1), new Point(-1,-2), new Point(-1,2),
@@ -61,18 +64,32 @@ public class PaintTool {
 				new Point(3,3), new Point(3,2), new Point(3,1), new Point(3,0), new Point(3,-1), new Point(3,-2),
 				new Point(3,-3), new Point(2,-3), new Point(1,-3), new Point(0,-3), new Point(-1,-3), new Point(-2,-3),
 				new Point(-3,-3), new Point(-3,-2), new Point(-3,-1), new Point(-3,0), new Point(-3,1), new Point(-3,2)}; //7 x 7 square
-		brushes[4] = new Brush(brush5points);
+		brushes[4] = new ExplicitBrush(brush5points, "5x5 Square");
 		
 		ArrayList<Point> circlePts = new ArrayList<Point>();
-		for(float i=0; i< Math.PI * 2; i = (float) (i + Math.PI/4)) {
-			for(float j=0; j< Math.PI * 2; j = (float) (j + Math.PI/4)) {
+		int i = 0;
+		int j = 0;
+		for(i=0; i< 3; i++) {
+			circlePts.add(new Point(i, j));
+			for(j=0; j< 3; j++) {
+				circlePts.add(new Point(i, j));
 				
-				circlePts.add(new Point((int)Math.round(Math.cos(i)*3),(int)Math.round(Math.cos(j)*3)));
+				
+			}
+			
+		}
+		for(j=0; j<3; j++) {
+			circlePts.add(new Point(i, j));
+			for(i=0; i< 3; i++) {
+				circlePts.add(new Point(i, j));
+				
 				
 			}
 		}
-		brushes[5] = new Brush(circlePts.toArray(new Point[circlePts.size()]));
 		
+		brushes[5] = new ExplicitBrush(circlePts.toArray(new Point[circlePts.size()]), "Box outline");
+		brushes[6] = new LineBrush("Line");
+		brushes[7] = new ImageBrush();
 	}
 	
 	/*
@@ -85,7 +102,13 @@ public class PaintTool {
 			c++;
 		}
 	}
-	
+	public String[] getBrushNames() {
+		String[] result = new String[brushes.length];
+		for(int i=0; i<brushes.length; i++) {
+			result[i] = brushes[i].getName();
+		}
+		return result;
+	}
 	/*
 	 * Selects the brush based on index
 	 */
@@ -99,8 +122,9 @@ public class PaintTool {
 	public void selectTileType(int typeIndex) {
 		tileToPaint = tileMap.get(typeIndex);
 	}
-	public void applyBrush(CellRenderer render, int x, int y) {
-		for(Point p : brushes[getBrushSelection()].getReferencePoints()) {
+	public void applyBrush(CellRenderer render, int x, int y, BrushArgs eArgs) {
+		Point[] result = brushes[getBrushSelection()].getReferencePoints(eArgs);
+		for(Point p : result ) {
 			render.editTile(x + p.x, y + p.y, new DataTile(getTileToPaint()));
 		}
 		
@@ -116,7 +140,7 @@ public class PaintTool {
 		return brushSelection;
 	}
 
-	public Brush[] getBrushes() {
+	public IBrush[] getBrushes() {
 		return brushes;
 	}
 

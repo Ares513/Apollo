@@ -15,6 +15,7 @@ import javax.swing.border.EmptyBorder;
 import com.team1ofus.apollo.HashCell;
 
 import core.DebugManagement;
+import data.DataManagement;
 import events.IDataUpdateListener;
 import events.IHumanInteractionListener;
 import events.ILoaderInteractionListener;
@@ -24,24 +25,23 @@ public class UIManagement implements IDataUpdateListener, IHumanInteractionListe
 	ApolloUI window;
 	Loader loader;
 
-	ArrayList<HashCell> cells;
+	HashCell editCell;
 	ArrayList<String> imageNames;
 	ArrayList<BufferedImage> images;
 	public UIManagementInteractionEventObject events; //later, add getters and setters to prevent direct access.
-	
-	public UIManagement(ArrayList<HashCell> allCells, ArrayList<String> imageNames, ArrayList<BufferedImage> images) {
+	DataManagement data;
+	public UIManagement(DataManagement data, ArrayList<String> imageNames, ArrayList<BufferedImage> images) {
 		events = new UIManagementInteractionEventObject();
 		this.imageNames = imageNames;
 		this.images = images;
-		cells = allCells; //loaded from DataManagement
 		//Changes are made to Cells until a Save operation is made.
-	
+        this.data = data;
 	}
 	/*
 	 * Launch the application once event handling and stitching is complete.
 	 */
 	public void begin() {
-		loader = new Loader(cells, imageNames, images);
+		loader = new Loader(data, imageNames, images);
 		loader.events.addChooseListener(this);
 		//await loader callback.
 		
@@ -56,18 +56,22 @@ public class UIManagement implements IDataUpdateListener, IHumanInteractionListe
 	}
 	@Override
 	public void onSaveTriggered(HashCell cellToSave) {
-		cells.set(0, cellToSave);
-		events.triggerSave(cells);
+		
+		events.triggerSave(cellToSave);
 		
 	}
 	@Override
-	public void selectionMade(HashCell selection, ArrayList<HashCell> allCells) {
+	public void selectionMade(HashCell selection) {
+		editCell = selection;
 		DebugManagement.writeNotificationToLog("Loader selection made!");
 		window = new ApolloUI(imageNames, images);
+		DebugManagement.writeNotificationToLog("Finished creating ApolloUI instance.");
 		window.events.addSaveListener(this);
-		cells = allCells;
-		events.triggerSave(cells);
+		DebugManagement.writeNotificationToLog("saveListener added to ApolloUI.");
+		events.triggerSave(editCell);
+		DebugManagement.writeNotificationToLog("Writeback save complete");
 		loader.dispose();
+		DebugManagement.writeNotificationToLog("Loader disposed.");
 		window.initialize(selection);
 	}
 
