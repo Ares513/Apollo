@@ -433,6 +433,8 @@ public class ApolloUI extends JPanel {
 		case KeyEvent.VK_4:
 			tiles.setSelectedIndex(TILE_TYPE.DOOR.ordinal());
 			break;
+		case KeyEvent.VK_5:
+			tiles.setSelectedIndex(TILE_TYPE.UNISEX_BATHROOM.ordinal());
 		case KeyEvent.VK_Q:
 			brushes.setSelectedIndex(Math.max(0, brushes.getSelectedIndex()-1));
 			break;

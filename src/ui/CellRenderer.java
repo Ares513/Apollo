@@ -212,9 +212,9 @@ public class CellRenderer {
 				break;
 			case UNPLOWED:
 				g.setColor(black);
-
-				g.drawArc(p.x * tileWidth - offset.x, p.y * tileHeight - offset.y + tileHeight / 2, tileWidth,
-						tileHeight / 2, 0, 180);
+				g.fillRect(p.x * tileWidth - offset.x, p.y * tileHeight - offset.y, tileWidth, tileHeight);
+				//g.drawArc(p.x * tileWidth - offset.x, p.y * tileHeight - offset.y + tileHeight / 2, tileWidth,
+				//		tileHeight / 2, 0, 180);
 
 				break;
 			case CLASSROOM:
