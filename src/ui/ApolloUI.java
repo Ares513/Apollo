@@ -321,6 +321,7 @@ public class ApolloUI extends JPanel {
 		brushes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				// selection box changed for brushes
+				lastMouseClick = null;
 				painter.selectBrush(brushes.getSelectedIndex());
 				textPanel.grabFocus();
 
@@ -378,7 +379,7 @@ public class ApolloUI extends JPanel {
 	private void doPaint(DrawPane panel, MouseEvent e) {
 		// PICK TILES HERE
 		Point picked = panel.render.pickTile(e.getX(), e.getY());
-		BrushArgs eArgs= new BrushArgs(picked, lastMouseClick, 3, panel.render, imageSelection.get(underlyingImageSelection.getSelectedIndex()));
+		BrushArgs eArgs= new BrushArgs(picked, lastMouseClick, 3, panel.render, imageSelection.get(underlyingImageSelection.getSelectedIndex()), e.getPoint());
 		painter.applyBrush(panel.render, picked.x, picked.y, eArgs);
 		if(lastMouseClick == null) {
 			lastMouseClick = picked;

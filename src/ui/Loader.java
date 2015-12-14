@@ -219,6 +219,7 @@ public class Loader extends JDialog {
 		setLocationRelativeTo(null);
 		setVisible(true);
 		this.toFront();
+		this.setAlwaysOnTop(true);
 	}
 	
 

@@ -14,14 +14,15 @@ public class BrushArgs {
 	int size;
 	CellRenderer render;
 	BufferedImage underlyingImage;
-	
-	public BrushArgs(Point currentMouseLoc, Point lastMouseLocation, int size, CellRenderer render, BufferedImage underlyingImage) {
+	Point pixelMouse;
+	public BrushArgs(Point currentMouseLoc, Point lastMouseLocation, int size, CellRenderer render, BufferedImage underlyingImage, Point pixelMouse) {
 		super();
 		this.lastMouseLocation = lastMouseLocation;
 		this.currentMouseLoc = currentMouseLoc;
 		this.size = size;
 		this.render = render;
 		this.underlyingImage = underlyingImage;
+		this.pixelMouse = pixelMouse;
 	}
 	
 }

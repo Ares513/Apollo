@@ -27,6 +27,7 @@ import com.team1ofus.apollo.DataTile;
 import com.team1ofus.apollo.TILE_TYPE;
 
 import core.DebugManagement;
+import jdk.management.resource.internal.inst.InitInstrumentation;
 
 public class PaintTool {
 
@@ -48,7 +49,7 @@ public class PaintTool {
 	 * sizes?
 	 */
 	private void initializeBrushes() {
-		brushes = new IBrush[8];
+		brushes = new IBrush[9];
 		Point[] brush1points = {new Point(0,0)}; //single tile
 		brushes[0] = new ExplicitBrush(brush1points, "Single tile");
 		Point[] brush2points = {new Point(0,0), new Point(1,0), new Point(0,1), new Point(1,1)}; //2 x 2 square
@@ -67,7 +68,13 @@ public class PaintTool {
 				new Point(3,-3), new Point(2,-3), new Point(1,-3), new Point(0,-3), new Point(-1,-3), new Point(-2,-3),
 				new Point(-3,-3), new Point(-3,-2), new Point(-3,-1), new Point(-3,0), new Point(-3,1), new Point(-3,2)}; //7 x 7 square
 		brushes[4] = new ExplicitBrush(brush5points, "5x5 Square");
-		
+		ArrayList<Point> brush7points = new ArrayList<Point>(); 
+		for(int i=0; i< 7; i++) {
+			for(int j=0; j < 7; j++) {
+				brush7points.add(new Point(3-i, 3-j));
+			}
+		}
+		brushes[5] = new ExplicitBrush(brush7points.toArray(new Point[brush7points.size()]), "7x7 Square");
 		ArrayList<Point> circlePts = new ArrayList<Point>();
 		int i = 0;
 		int j = 0;
@@ -89,9 +96,10 @@ public class PaintTool {
 			}
 		}
 		
-		brushes[5] = new ExplicitBrush(circlePts.toArray(new Point[circlePts.size()]), "Box outline");
-		brushes[6] = new LineBrush("Line");
-		brushes[7] = new ImageBrush();
+		brushes[6] = new ExplicitBrush(circlePts.toArray(new Point[circlePts.size()]), "Box outline");
+		brushes[7] = new LineBrush("Line");
+		brushes[8] = new ImageBrush();
+		
 	}
 	
 	/*

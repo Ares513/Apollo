@@ -94,8 +94,8 @@ public class CellRenderer {
 				g.fillRect(p.x * tileWidth - offset.x, p.y * tileHeight - offset.y, tileWidth, tileHeight);
 				break;
 			case CONGESTED:
-				g.setColor(Color.magenta);
 				g.fillRect(p.x * tileWidth - offset.x, p.y * tileHeight - offset.y, tileWidth, tileHeight);
+				g.setColor(Color.magenta);
 				break;
 			case VERTICAL_UP_STAIRS:
 				g.setColor(red);
@@ -229,6 +229,11 @@ public class CellRenderer {
 				// ROAD TILE
 				g.setColor(black);
 				g.fillOval(p.x * tileWidth - offset.x, p.y * tileHeight - offset.y, tileWidth, tileHeight);
+				g.drawLine(p.x * tileWidth - offset.x + tileWidth, p.y * tileHeight - offset.y,
+						p.x * tileWidth - offset.x, p.y * tileHeight - offset.y + tileHeight);
+				g.drawLine(p.x * tileWidth - offset.x, p.y * tileHeight - offset.y,
+						p.x * tileWidth - offset.x + tileWidth, p.y * tileHeight - offset.y + tileHeight);
+
 				break;
 			default:
 				break;
