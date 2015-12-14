@@ -71,10 +71,14 @@ public class CellRenderer {
 		}
 
 		for (Point p : editCell.getTiles().keySet()) {
+			if(p.x < lowerX || p.x > higherX || p.y < lowerY || p.y > higherY) {
+				continue; //skip tiles outside of the render
+			}
 			TILE_TYPE type = editCell.getTile(p);
 			if(type == null) {
 				continue;
 			}
+			
 			switch (type) {
 			case PEDESTRIAN_WALKWAY:
 
@@ -225,11 +229,6 @@ public class CellRenderer {
 				// ROAD TILE
 				g.setColor(black);
 				g.fillOval(p.x * tileWidth - offset.x, p.y * tileHeight - offset.y, tileWidth, tileHeight);
-				g.drawLine(p.x * tileWidth - offset.x + tileWidth, p.y * tileHeight - offset.y,
-						p.x * tileWidth - offset.x, p.y * tileHeight - offset.y + tileHeight);
-				g.drawLine(p.x * tileWidth - offset.x, p.y * tileHeight - offset.y,
-						p.x * tileWidth - offset.x + tileWidth, p.y * tileHeight - offset.y + tileHeight);
-
 				break;
 			default:
 				break;
@@ -249,10 +248,6 @@ public class CellRenderer {
 		int lowerY = (int) Math.ceil(offset.y / BootstrapperConstants.TILE_HEIGHT);
 		int higherX = (int) Math.ceil((offset.x + windowWidth) / BootstrapperConstants.TILE_WIDTH);
 		int higherY = (int) Math.ceil((offset.y + windowHeight) / BootstrapperConstants.TILE_HEIGHT);
-		lowerX = 0;
-		lowerY = 0;
-		higherX = editCell.getWidth();
-		higherY = editCell.getHeight();
 		//override, most maps are plenty small
 		if (windowWidth > BootstrapperConstants.TILE_WIDTH * cellWidth) {
 			higherX = cellWidth;
@@ -265,13 +260,15 @@ public class CellRenderer {
 		int bottom = Math.min(windowWidth, editCell.getHeight()*BootstrapperConstants.TILE_HEIGHT);
 		//DebugManagement.writeNotificationToLog("LowerX " + lowerX + " LowerY " + lowerY  + " higherX" + higherX + " higherY " + higherY);
 		g.setColor(black);
-		for (int i = lowerX; i < higherX; i++) {
+		right = Math.min(right, higherX*BootstrapperConstants.TILE_WIDTH);
+		for (int i = lowerY; i < higherY; i++) {
 			g.drawLine(0, i*BootstrapperConstants.TILE_HEIGHT - offset.y, right, i*BootstrapperConstants.TILE_HEIGHT - offset.y);
 			
 
 		
 		}
-		for (int j = lowerY; j < higherY; j++) {
+		bottom = Math.min(bottom, higherY*BootstrapperConstants.TILE_HEIGHT);
+		for (int j = lowerX; j < higherX; j++) {
 			
 			g.drawLine(j*BootstrapperConstants.TILE_WIDTH - offset.x, 0, j*BootstrapperConstants.TILE_WIDTH - offset.x, bottom);
 			
