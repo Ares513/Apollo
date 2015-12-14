@@ -587,6 +587,7 @@ public class ApolloUI extends JPanel {
 	}
 
 	private void repaintPanel() {
+		
 		layeredPane.repaint(layeredPane.getBounds());
 
 	}
